@@ -1,0 +1,196 @@
+classDiagram
+direction LR
+
+class Partie {
+  - joueurs : vector<Joueur>
+  - marche : Marche
+  - tour_courant : Tour
+  - nb_tour : int
+  - idx_joueur_actuel : int
+  - modeDieu : ModeDieu
+  +commencer()
+  +commencerTour()
+  +jouerTour()
+  +finTour()
+  +estTerminee() : bool
+  +toggleModeDieu()
+  +GOD_mettreTousJoueurs1PV()
+  +GOD_acheterDepuisDeckMarche(idx:int, j:Joueur)
+}
+
+class ModeDieu {
+  - actif : bool
+  +activer()
+  +desactiver()
+}
+
+class Tour {
+  - joueur : Joueur*
+  - reserveOr : int
+  - reserveDegats : int
+  +ajouterOr(m:int)
+  +ajouterDegats(m:int)
+  +reinitialiser()
+}
+
+class Joueur {
+  - nom : string
+  - pv : int = 50
+  - deck : Deck
+  - defausse : Pile
+  - main : Main
+  - enJeu : vector<Carte*>
+  - champions : vector<Champion*>
+  +piocher(n:int)
+  +jouerCarte(idx:int, partie:Partie)
+  +acheterDepuisMarche(slot:int, partie:Partie)
+  +acheterGemmeFeu(partie:Partie)
+  +resoudreDegats(reserve:int, cible:Attaquable*)
+  +finTour(partie:Partie)
+  +aGardeMobilise(): bool
+}
+
+class Main {
+  - cartes : vector<Carte*>
+  +ajouter(c:Carte*)
+  +prendre(idx:int) : Carte*
+  +taille() : int
+}
+
+class Deck {
+  - cartes : deque<Carte*>
+  +melanger()
+  +piocher() : Carte*
+  +ajouterDessous(c:Carte*)
+  +estVide() : bool
+  +rechargerDepuis(defausse:Pile)
+}
+
+class Pile {
+  - cartes : vector<Carte*>
+  +ajouter(c:Carte*)
+  +prendreDessus() : Carte*
+  +taille() : int
+  +melanger()
+}
+
+class Marche {
+  - deckMarche : Deck
+  - ligne : vector<Carte*>  // taille 5
+  - pileGemmesFeu : Pile
+  - zoneSacrifice : Pile
+  +remplirLigne()
+  +acquerirDepuisLigne(slot:int, par:Joueur, partie:Partie)
+  +acquerirGemmeFeu(par:Joueur, partie:Partie)
+  +acquerirDepuisDeck(idx:int, par:Joueur, partie:Partie) // GOD
+  +retournerGemmeFeuDansPile(c:GemmeDeFeu*)
+}
+
+class Attaquable {
+<<interface>>
+  +prendreDegats(m:int)
+  +proprietaire() : Joueur*
+}
+
+class Carte {
+<<abstract>>
+  - id : int
+  - nom : string
+  - cout : int
+  - faction : Faction
+  - effetsPrimaire : vector<Effet>
+  - effetsAllie : vector<Effet>
+  - effetsActiver : vector<Effet>
+  - effetsSacrifice : vector<Effet>
+  +lorsDeJeu(p:Joueur, partie:Partie)
+  +peutDeclencherAllie(p:Joueur) : bool
+  +activer(p:Joueur, partie:Partie)
+  +sacrifier(p:Joueur, partie:Partie)
+}
+
+class CarteAction
+class CarteObjet
+class Champion {
+  - defense : int
+  - estGarde : bool
+  - mobilise : bool
+  - aEteActiveCeTour : bool
+  +activer(p:Joueur, partie:Partie)
+  +prendreDegats(m:int)
+  +assommer()
+  +mobiliser()
+}
+
+class GemmeDeFeu {
+  +special : string = "revient dans pile Gemmes de Feu si sacrifiée"
+}
+
+class Effet {
+  - type : TypeEffet
+  - montant : int
+  - cible : TypeCible
+  +appliquer(src:Joueur*, tgt:any, partie:Partie)
+}
+
+class BibliothequeCartes {
+  +creerDeckDepart() : Deck
+  +creerDeckMarche() : Deck
+}
+
+class Phase {
+<<enumeration>>
+  PRINCIPALE
+  DEFAUSSE
+  PIOCHE
+}
+
+class Faction {
+<<enumeration>>
+  AUCUNE
+  IMPERIALE
+  GUILDE
+  NECROS
+  SAUVAGE
+}
+
+class TypeEffet {
+<<enumeration>>
+  AJOUT_OR
+  AJOUT_COMBAT
+  AJOUT_VIE
+  PIOCHER
+  DEFAUSSE_CIBLE
+  ASSOMMER_CHAMPION
+  ASSOMMER_TOUS_CHAMPIONS
+  ACQUERIR_CARTE_EN_MAIN
+}
+
+class TypeCible {
+<<enumeration>>
+  SOI
+  ADVERSAIRE
+  CHAMPION
+  TOUS_CHAMPIONS
+  NIMPORTE
+  AUCUNE
+}
+
+Partie --> Marche
+Partie --> Tour
+Partie --> Joueur
+Partie --> ModeDieu
+Joueur --> Deck
+Joueur --> Pile : defausse
+Joueur --> Main
+Joueur --> "0..*" Carte : enJeu
+Joueur --> "0..*" Champion : champions
+Marche --> Deck : deckMarche
+Marche --> Pile : pileGemmesFeu
+Marche --> Pile : zoneSacrifice
+Carte <|-- CarteAction
+Carte <|-- CarteObjet
+Carte <|-- Champion
+Carte <|-- GemmeDeFeu
+Carte o--> Effet
+Champion ..|> Attaquable
+Joueur ..|> Attaquable
