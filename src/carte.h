@@ -22,23 +22,24 @@ protected:
 public:
     // Constructeur & destructeur
     // On a préféré rajouter les effets avec les setters, pour une meilleure lisibilté lors de la construction de BibliothequeCartes
-    Carte(int id, std::string nom, int cout, Faction f, std::vector<Effet> effetsPrimaires);
+    Carte(std::string nom, int cout, Faction f);
     virtual ~Carte() = default;
 
     // Getters
-    std::string getNom() const { return nom; }
-    int getCout() const { return cout; }
-    Faction getFaction() const { return faction; }
-    std::vector<Effet> getEffetsPrimaire() const {return effetsPrimaire};
-    std::vector<Effet> getEffetsAllie() const {return effetsAllie};
-    std::vector<Effet> getEffetsActiver() const {return effetsActiver};
-    std::vector<Effet> getEffetsSacrifice() const {return effetsSacrifice};
+    int Carte::getId() const { return id; }
+    std::string Carte::getNom() const { return nom; }
+    int Carte::getCout() const { return cout; }
+    Faction Carte::getFaction() const { return faction; }
+    std::vector<Effet> Carte::getEffetsPrimaire() const {return effetsPrimaire};
+    std::vector<Effet> Carte::getEffetsAllie() const {return effetsAllie};
+    std::vector<Effet> Carte::getEffetsActiver() const {return effetsActiver};
+    std::vector<Effet> Carte::getEffetsSacrifice() const {return effetsSacrifice};
     
     // Setters
-    void ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); }
-    void ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); }
-    void ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); }
-    void ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); }
+    Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); }
+    Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); }
+    Carte* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); }
+    Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); }
 
     // Méthodes
     virtual void lorsDeJeu(Joueur& j, Partie& p) = 0;

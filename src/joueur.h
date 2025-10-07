@@ -25,6 +25,7 @@ public:
     void resoudreDegats(int reserve, Attaquable* cible);
     void finTour();
     bool aGardeMobilise() const;
+    void soigner(int montant);
 
     // interface Attaquable
     void prendreDegats(int m) override;

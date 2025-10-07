@@ -2,9 +2,17 @@
 #include "Joueur.h"
 #include "Partie.h"
 
-Carte::Carte(int id, const std::string& nom, int cout, Faction f)
-    : id(id), nom(nom), cout(cout), faction(f) {}
+// Constructeur
+Carte::Carte( const std::string& nom, int cout, Faction f) : nom(nom), cout(cout), faction(f) {
+    static int compteurId = 0;
+    id = compteurId;
+    compteurId++;
+}
 
+// Destructeur
+Carte::~Carte() = default;
+
+// Méthodes
 bool Carte::peutDeclencherAllie(Joueur& j) {
     // Joueur et Main restent à définir
     return j.getMain().contientCarteDeFaction(faction);
