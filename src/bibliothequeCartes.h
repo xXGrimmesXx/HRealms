@@ -1,12 +1,14 @@
 #ifndef BIBLIOTHEQUECARTES_H
 #define BIBLIOTHEQUECARTES_H
-#include "Deck.h"
-#include "Pile.h"
-#include "CarteAction.h"
-#include "CarteObjet.h"
-#include "Champion.h"
-#include "Effet.h"
+#include "deck.h"
+#include "pile.h"
+#include "carteAction.h"
+#include "carteObjet.h"
+#include "champion.h"
+#include "effet.h"
 #include "faction.h"
+#include "typeEffet.h"
+#include "typeCible.h"
 #include <string>
 
 class BibliothequeCartes {

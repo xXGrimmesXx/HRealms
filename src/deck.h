@@ -8,6 +8,8 @@ class Deck {
 private:
     std::deque<Carte*> cartes;
 public:
+    Deck() = default;
+    ~Deck();
     void melanger();
     Carte* piocher();
     void ajouterDessous(Carte* c);

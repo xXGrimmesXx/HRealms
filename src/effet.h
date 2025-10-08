@@ -19,6 +19,7 @@ private:
 
 public:
     Effet(TypeEffet t, int m1, int m2, TypeCible c);
+    Effet(TypeEffet t, int m1, TypeCible c);
     void appliquer(Joueur* src, void* tgt, Partie& partie,int choix) const;
 
     TypeEffet getTypeEffet(){return type;}

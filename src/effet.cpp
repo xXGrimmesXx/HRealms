@@ -1,7 +1,14 @@
 #include "effet.h"
 
 
-Effet::Effet(TypeEffet t, int m1,int m2=0, TypeCible c){
+Effet::Effet(TypeEffet t, int m1, TypeCible c){
+    type = t;
+    montant1 = m1;
+    montant2 =0;
+    cible = c;
+}
+
+Effet::Effet(TypeEffet t, int m1,int m2, TypeCible c){
     type = t;
     montant1 = m1;
     montant2 =m2;

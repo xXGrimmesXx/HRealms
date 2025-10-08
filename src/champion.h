@@ -1,5 +1,11 @@
 #pragma once
 #include "Carte.h"
+#include "effet.h"
+#include "faction.h"
+#include "joueur.h"
+#include "partie.h"
+#include <vector>
+#include <string>
 
 class Champion : public Carte {
 
@@ -11,11 +17,11 @@ class Champion : public Carte {
 public:
 
     // Constructeur
-    Champion(const std::string& nom, int cout, Faction f, bool garde,int vie);
+    Champion(const std::string& nom, int cout, Faction f, bool garde, int vie) : Carte(nom, cout, f), vie(vie), garde(garde), mobilise(false), effetsActiver() {}
 
     // Getters & setters
     std::vector<Effet> getEffetsActiver() const {return effetsActiver;}
-    Carte* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); return this; }
+    Champion* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); return this; }
     bool estGarde() const { return garde; }
     void setGarde(bool g) { garde = g; }
     bool estMobilise() const { return mobilise; }

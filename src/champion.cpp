@@ -1,12 +1,5 @@
 #include "champion.h"
 
-
-Champion::Champion(const std::string& nom, int cout, Faction f, bool garde, int vie) : Carte(nom, cout, f) {
-    this->vie = vie;
-    this->garde = garde;
-    this->mobilise = false;
-}
-
 Champion::~Champion() {}
 
 void Champion::lorsDeJeu(Joueur& j, Partie& p) {
