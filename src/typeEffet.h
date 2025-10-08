@@ -1,6 +1,7 @@
 #pragma once
 
-enum class TypeEffet {AJOUT_OR,
+enum class TypeEffet {
+      AJOUT_OR,
       AJOUT_COMBAT,
       AJOUT_VIE,
       PIOCHER,
