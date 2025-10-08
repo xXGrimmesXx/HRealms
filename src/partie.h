@@ -23,4 +23,17 @@ public:
     void toggleGodMode();
     void GOD_mettreTousJoueurs1PV();
     void GOD_acheterDepuisDeckMarche(int idx, Joueur& j);
+
+    //getters setters
+    Tour* getTourCourant() const { return tour_courant; }
+    Joueur& getJoueurActuel() { return joueurs[idx_joueur_actuel];}
+    Marche& getMarche() { return marche; }
+    GodMode& getGodMode() { return godMode; }
+    int getNbTour() const { return nb_tour; }
+    const std::vector<Joueur>& getJoueurs() const { return joueurs; }
+    void setIdxJoueurActuel(int idx) { idx_joueur_actuel = idx; }
+    void setNbTour(int n) { nb_tour = n; }
+    void setTourCourant(Tour* t) { tour_courant = t; }
+    void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
+
 };

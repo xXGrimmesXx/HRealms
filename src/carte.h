@@ -26,20 +26,20 @@ public:
     virtual ~Carte() = default;
 
     // Getters
-    int Carte::getId() const { return id; }
-    std::string Carte::getNom() const { return nom; }
-    int Carte::getCout() const { return cout; }
-    Faction Carte::getFaction() const { return faction; }
-    std::vector<Effet> Carte::getEffetsPrimaire() const {return effetsPrimaire};
-    std::vector<Effet> Carte::getEffetsAllie() const {return effetsAllie};
-    std::vector<Effet> Carte::getEffetsActiver() const {return effetsActiver};
-    std::vector<Effet> Carte::getEffetsSacrifice() const {return effetsSacrifice};
-    
+    int getId() const { return id; }
+    std::string getNom() const { return nom; }
+    int getCout() const { return cout; }
+    Faction getFaction() const { return faction; }
+    std::vector<Effet> getEffetsPrimaire() const {return effetsPrimaire;}
+    std::vector<Effet> getEffetsAllie() const {return effetsAllie;}
+    std::vector<Effet> getEffetsActiver() const {return effetsActiver;}
+    std::vector<Effet> getEffetsSacrifice() const {return effetsSacrifice;}
+
     // Setters
-    Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); }
-    Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); }
-    Carte* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); }
-    Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); }
+    Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); return this; }
+    Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); return this; }
+    Carte* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); return this; }
+    Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); return this; }
 
     // Méthodes
     virtual void lorsDeJeu(Joueur& j, Partie& p) = 0;
