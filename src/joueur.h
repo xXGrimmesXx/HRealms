@@ -31,6 +31,13 @@ public:
     void prendreDegats(int m) override;
     Joueur* proprietaire() override { return this; }
 
+    // getters et setters
+    std::string getNom() const { return nom; }
+    Main& getMain() { return main; }
+    Deck& getDeck() { return deck; }
+    Pile& getDefausse() { return defausse; }
+    std::vector<Champion*>& getChampions() { return champions; }
+    const std::vector<Champion*>& getChampions() const { return champions; }
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }
 };

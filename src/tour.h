@@ -14,4 +14,6 @@ public:
     void reinitialiser();
     int getOr() const;
     int getDegats() const;
+    Joueur* getJoueur() const;
+    void setJoueur(Joueur* j);
 };

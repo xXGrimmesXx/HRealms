@@ -4,19 +4,79 @@
 Partie::Partie() : nb_tour(0), idx_joueur_actuel(0), tour_courant(nullptr) {}
 
 void Partie::commencer() {
-    // init joueurs, decks, marché
+    // Initialisation de la partie
+    std::cout << "Combien de jouers ? (2-4) ";
+    int n;
+    std::cin >> n;
+    while (n < 2 || n > 4) {
+        std::cout << "Nombre de joueurs invalide. Veuillez entrer un nombre entre 2 et 4: ";
+        std::cin >> n;
+    }
+    for (int i = 1; i <= n; ++i) {
+        std::string nom;
+        std::cout << "Nom du joueur " << i << " : ";
+        std::cin >> nom;
+        joueurs.push_back(Joueur(nom));
+    }
+    marche = Marche();
+    nb_tour = 1;
+    idx_joueur_actuel = 0;
 }
 
 void Partie::jouerTour() {
-    // logiquement : commencerTour -> jouer -> finTour
+    Joueur& joueurActuel = joueurs[idx_joueur_actuel];
+    if (tour_courant == nullptr || tour_courant->getJoueur() != &joueurActuel) {
+        if (tour_courant != nullptr) {
+            delete tour_courant; // Libérer la mémoire de l'ancien tour
+        }
+        tour_courant = new Tour(&joueurActuel);
+    }
+    std::cout << "Tour " << nb_tour << " - Joueur: " << joueurActuel.getNom() << std::endl;
+    joueurActuel.piocher(5);
+    while(joueurActuel.getMain().taille() > 0) {
+        std::cout << "Cartes en main: " << joueurActuel.getMain().taille() << std::endl;
+        std::cout << "Or disponible: " << tour_courant->getOr() << ", Points de combat disponibles: " << tour_courant->getDegats() << std::endl;
+        std::cout << "Que voulez-vous faire ? (1: Jouer une carte, 2: Acheter une carte du marché, 3: Acheter une gemme de feu, 4: Finir le tour) ";
+        int choix;
+        std::cin >> choix;
+        if (choix == 1) {
+            int idx;
+            std::cout << "Index de la carte à jouer (0-" << joueurActuel.getMain().taille()-1 << "): ";
+            std::cin >> idx;
+            joueurActuel.jouerCarte(idx);
+        } else if (choix == 2) {
+            int slot;
+            std::cout << "Slot du marché à acheter (0-4): ";
+            std::cin >> slot;
+            joueurActuel.acheterDepuisMarche(slot);
+        } else if (choix == 3) {
+            joueurActuel.acheterGemmeFeu();
+        } else if (choix == 4) {
+            break;
+        } else {
+            std::cout << "Choix invalide, veuillez réessayer." << std::endl;
+        }
+    }
+    finTour();
 }
 
 void Partie::finTour() {
-    // reset, passer au joueur suivant
+    Joueur& joueurActuel = joueurs[idx_joueur_actuel];
+    joueurActuel.finTour();
+    tour_courant->reinitialiser();
+    idx_joueur_actuel = (idx_joueur_actuel + 1) % joueurs.size();
+    if (idx_joueur_actuel == 0) {
+        nb_tour++;
+    }
 }
 
 bool Partie::estTerminee() const {
-    // un joueur a 0 PV ?
+    for (const auto& j : joueurs) {
+        if (j.getPv() <= 0) {
+            std::cout << "Le joueur " << j.getNom() << " a perdu !" << std::endl;
+            return true;
+        }
+    }
     return false;
 }
 
@@ -29,5 +89,6 @@ void Partie::GOD_mettreTousJoueurs1PV() {
 }
 
 void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur& j) {
-    // implementation god mode
+    tour_courant->ajouterOr(100); // Donner suffisamment d'or pour l'achat
+    marche.acquerirDepuisDeck(idx, j, *this);
 }
