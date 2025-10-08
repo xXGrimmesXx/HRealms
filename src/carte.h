@@ -14,6 +14,7 @@ protected:
     std::string nom;
     int cout;
     Faction faction;
+    int bonusParAllie;
     std::vector<Effet> effetsPrimaire;
     std::vector<Effet> effetsAllie;
     std::vector<Effet> effetsSacrifice;

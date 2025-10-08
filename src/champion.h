@@ -3,19 +3,27 @@
 
 class Champion : public Carte {
 
-    int defense;
+    int vie;
     bool garde; // Si vrai, le champion doit être attaqué avant les autres champions ou le joueur
+    bool mobilise;
     std::vector<Effet> effetsActiver;
 
 public:
 
     // Constructeur
-    Champion(const std::string& nom, int cout, Faction f, int combat, bool garde);
+    Champion(const std::string& nom, int cout, Faction f, bool garde,int vie);
 
     // Getters & setters
     std::vector<Effet> getEffetsActiver() const {return effetsActiver;}
     Carte* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); return this; }
+    bool estGarde() const { return garde; }
+    void setGarde(bool g) { garde = g; }
+    bool estMobilise() const { return mobilise; }
+    void setMobilise(bool m) { mobilise = m; }
+    int getVie() const { return vie; }
+    void setVie(int v) { vie = v; }
 
     // Méthodes
     void lorsDeJeu(Joueur& j, Partie& p) override;
+    void mobiliser(Joueur& j, Partie& p);
 };

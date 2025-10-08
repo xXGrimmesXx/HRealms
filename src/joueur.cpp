@@ -1,8 +1,8 @@
 #include "Joueur.h"
 
-Joueur(std::string nom="") : nom(nom), pv(50), deck(), defausse(), main(), champions() {}
+Joueur::Joueur(std::string nom="") : nom(nom), pv(50), deck(), defausse(), main(), champions() {}
 
-void piocher(int n){
+void Joueur::piocher(int n){
     for (int i = 0; i < n; ++i) {
         if (deck.estVide()) {
             // Mélanger la défausse dans le deck
@@ -18,7 +18,7 @@ void piocher(int n){
         }
     }
 }
-void jouerCarte(int idx){
+void Joueur::jouerCarte(int idx){
     if (idx < 0 || idx >= main.taille()) {
         throw std::out_of_range("Index de carte invalide");
     }
@@ -28,9 +28,9 @@ void jouerCarte(int idx){
         defausse.ajouter(c);
     }
 }
-void acheterDepuisMarche(int slot);
-void acheterGemmeFeu();
-void resoudreDegats(int reserve, Attaquable* cible);
-void finTour();
-bool aGardeMobilise();
-void soigner(int montant);
+void Joueur::acheterDepuisMarche(int slot){}
+void Joueur::acheterGemmeFeu(){}
+void Joueur::resoudreDegats(int reserve, Attaquable* cible){}
+void Joueur::finTour(){}
+bool Joueur::aGardeMobilise(){ return false; }
+void Joueur::soigner(int montant){}

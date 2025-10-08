@@ -26,6 +26,9 @@ public:
     void finTour();
     bool aGardeMobilise() const;
     void soigner(int montant);
+    void defausser(int n);
+    void assomerChampions();
+    void assomerChampion(Champion* c);
 
     // interface Attaquable
     void prendreDegats(int m) override;

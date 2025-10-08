@@ -1,20 +1,21 @@
 #include "effet.h"
 
 
-Effet::Effet(TypeEffet t, int m, TypeCible c){
+Effet::Effet(TypeEffet t, int m1,int m2=0, TypeCible c){
     type = t;
-    montant = m;
+    montant1 = m1;
+    montant2 =m2;
     cible = c;
 }
 
-void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
+void Effet::appliquer(Joueur* source, void* target, Partie& partie,int bonus) const {
     switch (type) {
         case TypeEffet::AJOUT_OR:
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr && dynamic_cast<Joueur*>(joueurTgt)) {
                     // Assuming Joueur has a method to add gold
-                    partie.getTourCourant()->ajouterOr(montant);
+                    partie.getTourCourant()->ajouterOr(montant1+bonus);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -31,7 +32,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
                     // Assuming Joueur has a method to add combat points
-                    partie.getTourCourant()->ajouterDegats(montant);
+                    partie.getTourCourant()->ajouterDegats(montant1+bonus);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -44,7 +45,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    joueurTgt->soigner(montant);
+                    joueurTgt->soigner(montant1+bonus);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -58,7 +59,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::SOI || cible == TypeCible::ADVERSAIRE) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    joueurTgt->piocher(montant);
+                    joueurTgt->piocher(montant1+bonus);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -72,7 +73,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::ADVERSAIRE|| cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    joueurTgt->defausser(montant);
+                    joueurTgt->defausser(montant1+bonus);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -86,7 +87,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::CHAMPION) {
                 Champion* championTgt = static_cast<Champion*>(target);
                 if (championTgt != nullptr) {
-                    championTgt->assommer();
+                    joueur->assommerChampion(championTgt);
                 } else {
                     throw std::invalid_argument("Target is not a valid Champion pointer");
                 }
@@ -131,10 +132,19 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
+                    std::cout << "1 : " << montant1 << " degats " << std::endl;
+                    std::cout << "2 : " << montant2 << " vie " << std::endl;
+                    std::cout << "Choisissez une option (1 ou 2) : ";
+                    int choix;
+                    std::cin >> choix;
+                    while (choix != 1 && choix != 2) {
+                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
+                        std::cin >> choix;
+                    }
                     if (choix == 1) {
-                        partie.getTourCourant()->ajouterDegats(montant);
+                        partie.getTourCourant()->ajouterDegats(montant1+bonus);
                     } else if (choix == 2) {
-                        joueurTgt->soigner(montant);
+                        joueurTgt->soigner(montant2+bonus);
                     } else {
                         throw std::invalid_argument("Invalid choice for COMBAT_Ou_VIE effect");
                     }
@@ -152,10 +162,19 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
+                    std::cout << "1 : " << montant1 << " Or " << std::endl;
+                    std::cout << "2 : " << montant2 << " Soin " << std::endl;
+                    std::cout << "Choisissez une option (1 ou 2) : ";
+                    int choix;
+                    std::cin >> choix;
+                    while (choix != 1 && choix != 2) {
+                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
+                        std::cin >> choix;
+                    }
                     if (choix == 1) {
-                        partie.getTourCourant()->ajouterOr(montant);
+                        partie.getTourCourant()->ajouterOr(montant1+bonus);
                     } else if (choix == 2) {
-                        joueurTgt->soigner(montant);
+                        joueurTgt->soigner(montant2+bonus);
                     } else {
                         throw std::invalid_argument("Invalid choice for OR_OU_VIE effect");
                     }
@@ -172,10 +191,19 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int choix=0){
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
+                    std::cout << "1 : " << montant1 << " Or " << std::endl;
+                    std::cout << "2 : " << montant2 << " Degat(s) " << std::endl;
+                    std::cout << "Choisissez une option (1 ou 2) : ";
+                    int choix;
+                    std::cin >> choix;
+                    while (choix != 1 && choix != 2) {
+                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
+                        std::cin >> choix;
+                    }
                     if (choix == 1) {
-                        partie.getTourCourant()->ajouterOr(montant);
+                        partie.getTourCourant()->ajouterOr(montant1+bonus);
                     } else if (choix == 2) {
-                        partie.getTourCourant()->ajouterDegats(montant);
+                        partie.getTourCourant()->ajouterDegats(montant2+bonus);
                     } else {
                         throw std::invalid_argument("Invalid choice for OR_OU_COMBAT effect");
                     }
