@@ -1,15 +1,17 @@
 CXX=g++
-CXXFLAGS=-std=c++17 -Wall -Wextra -I.
+CXXFLAGS=-Wall -Wextra -Werror
 
-SRC=$(wildcard *.cpp)
-OBJ=$(SRC:.cpp=.o)
-EXEC=jeu
+# Trouver automatiquement tous les fichiers .cpp
+SOURCES = $(wildcard *.cpp)
+# Générer la liste des .o correspondants
+OBJECTS = $(SOURCES:.cpp=.o)
 
-all: $(EXEC)
-
-$(EXEC): $(OBJ)
-	$(CXX) $(OBJ) -o $@
-
-clean:
-	rm -f $(OBJ) $(EXEC)
-	
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) $< -c -o $@
+Hrealms : $(OBJECTS)
+	$(CXX) $^ -o $@
+.PHONY : run clean
+run : Hrealms
+	./$<
+clean :
+	rm -f *.o *~ *.core Hrealms
