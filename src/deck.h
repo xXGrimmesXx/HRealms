@@ -1,8 +1,7 @@
 #pragma once
 #include <deque>
 #include "Carte.h"
-
-class Pile;
+#include "pile.h"
 
 class Deck {
 private:

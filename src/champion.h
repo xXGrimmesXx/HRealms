@@ -7,6 +7,10 @@
 #include <vector>
 #include <string>
 
+class Carte;
+class Effet;
+class Joueur;
+
 class Champion : public Carte {
 
     int vie;

@@ -1,6 +1,6 @@
 #pragma once
 
-class Joueur;
+#include "joueur.h"
 
 class Attaquable {
 public:

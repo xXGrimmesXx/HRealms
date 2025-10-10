@@ -2,6 +2,8 @@
 #include <vector>
 #include "Carte.h"
 
+class Carte;
+
 class Main{
 private:
     std::vector<Carte*> cartes;

@@ -5,6 +5,8 @@
 #include "Tour.h"
 #include "GodMode.h"
 
+class Joueur;
+
 class Partie {
 private:
     std::vector<Joueur> joueurs;

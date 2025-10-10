@@ -7,9 +7,6 @@
 #include <iostream>
 #include <stdexcept>
 
-class Joueur;
-class Partie;
-
 class Effet {
 private:
     TypeEffet type;

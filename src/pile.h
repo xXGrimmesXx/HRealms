@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "Carte.h"
+#include "carte.h"
+
+class Carte;
 
 class Pile {
 private:

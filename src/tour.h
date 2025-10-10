@@ -1,6 +1,8 @@
 #pragma once
 #include "Joueur.h"
 
+class Joueur;
+
 class Tour {
 private:
     Joueur* joueur;

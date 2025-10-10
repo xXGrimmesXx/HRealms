@@ -7,6 +7,8 @@
 #include "Champion.h"
 #include "Attaquable.h"
 
+class Deck;
+
 class Joueur : public Attaquable {
 private:
     std::string nom;

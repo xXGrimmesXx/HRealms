@@ -3,13 +3,17 @@
 #include "Deck.h"
 #include "Pile.h"
 #include "Carte.h"
+#include "joueur.h"
+#include "partie.h"
 
+class Deck;
+class Carte;
 class Joueur;
 class Partie;
 
 class Marche {
 private:
-    Deck deckMarche;
+    Deck* deckMarche;
     std::vector<Carte*> ligne;
     Pile pileGemmesFeu;
     Pile zoneSacrifice;
