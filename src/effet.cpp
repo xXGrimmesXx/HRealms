@@ -21,7 +21,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int bonus) co
         case TypeEffet::AJOUT_OR:
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr && dynamic_cast<Joueur*>(joueurTgt)) {
+                if (joueurTgt != nullptr) {
                     // Assuming Joueur has a method to add gold
                     partie.getTourCourant()->ajouterOr(montant1+bonus);
                 } else {
@@ -105,22 +105,7 @@ void Effet::appliquer(Joueur* source, void* target, Partie& partie,int bonus) co
                 throw std::invalid_argument("Invalid target type for ASSOMMER_CHAMPION effect");
             }
             break;
-        case TypeEffet::ASSOMMER_TOUS_CHAMPIONS:
-            if (cible == TypeCible::ADVERSAIRE) {
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr) {
-                    for (Champion* champ : joueurTgt->getChampions()) {
-                        champ->assommer();
-                    }
-                } else {
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
-                }
-            }
-            else{
-                // Invalid target type for this effect
-                throw std::invalid_argument("Invalid target type for ASSOMMER_TOUS_CHAMPIONS effect");
-            }
-            break;
+            
         case TypeEffet::SACRIFIER:
             if (cible == TypeCible::CHAMPION) {
                 Champion* championTgt = static_cast<Champion*>(target);

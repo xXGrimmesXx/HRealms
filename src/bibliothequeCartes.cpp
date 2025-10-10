@@ -47,7 +47,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
        (new Champion("Darian, War Mage", 4, Faction::IMPERIALE, 5, false))
             // may gain 3 combat or 4 health -> TODO choice
-            ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_OU_VIE, /*3 ou 4*/, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_OU_VIE, 3,4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
