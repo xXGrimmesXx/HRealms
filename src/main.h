@@ -2,12 +2,18 @@
 #include <vector>
 #include "Carte.h"
 
-class Pile {
+class Main{
 private:
     std::vector<Carte*> cartes;
 public:
+    // Constructeur & destructeur
+    Main()=default;
+    ~Main();
+
+    // Méthodes
     void ajouter(Carte* c);
-    Carte* prendreDessus();
-    int taille() const;
-    void melanger();
+    void defausser(int idx);
+    void viderMain();
+    void jouerCarte(int idx);
+    void toString() const;
 };
