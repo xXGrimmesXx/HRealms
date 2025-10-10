@@ -8,7 +8,7 @@ void Joueur::piocher(int n){
             // Mélanger la défausse dans le deck
             while (defausse.taille() > 0) {
                 Carte* c = defausse.prendreDessus();
-                deck.ajouterCarte(c);
+                deck.ajouterDessous(c);
             }
             deck.melanger();
         }
@@ -19,10 +19,10 @@ void Joueur::piocher(int n){
     }
 }
 void Joueur::jouerCarte(int idx){
-    if (idx < 0 || idx >= main.taille()) {
+    if (idx < 0 || idx >= main.getTaille()) {
         throw std::out_of_range("Index de carte invalide");
     }
-    Carte* c = main.prendreCarte(idx);
+    Carte* c = main.getCarte(idx);
     if (c != nullptr) {
         c->lorsDeJeu(*this, /* partie */); // Vous devez passer la partie actuelle ici
         defausse.ajouter(c);

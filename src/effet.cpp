@@ -235,8 +235,8 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                             nbAllie++;
                         }
                     }
-                    for (auto carte : joueurTgt->getMain()){
-                        if (carte.getFaction() == allie){
+                    for (auto carte : joueurTgt->getMain().getCartes()){
+                        if (carte->getFaction() == allie){
                             nbAllie++;
                         }
                     }

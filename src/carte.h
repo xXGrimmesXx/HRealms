@@ -18,6 +18,8 @@ protected:
     std::vector<Effet> effetsPrimaire;
     std::vector<Effet> effetsAllie;
     std::vector<Effet> effetsSacrifice;
+    bool effetPrimaireDeclenche=false;
+    bool effetAllieDeclenche=false;
 
 public:
     // Constructeur & destructeur
@@ -33,11 +35,15 @@ public:
     std::vector<Effet> getEffetsPrimaire() const {return effetsPrimaire;}
     std::vector<Effet> getEffetsAllie() const {return effetsAllie;}
     std::vector<Effet> getEffetsSacrifice() const {return effetsSacrifice;}
+    bool getEffetPrimaireDeclenche() const { return effetPrimaireDeclenche; }
+    bool getEffetAllieDeclenche() const { return effetAllieDeclenche; }
 
     // Setters
     Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); return this; }
     Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); return this; }
     Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); return this; }
+    bool setEffetPrimaireDeclenche(bool b) { return effetPrimaireDeclenche = b; }
+    bool setEffetAllieDeclenche(bool b) { return effetAllieDeclenche = b; }
 
     // Méthodes
     virtual void lorsDeJeu(Joueur& j, Partie& p) = 0;

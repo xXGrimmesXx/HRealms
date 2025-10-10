@@ -19,12 +19,11 @@ void Main::viderMain(){
     cartes.clear();
 }
 
-void Main::jouerCarte(int idx){
+Carte* Main::getCarte(int idx) const{
     if(idx < 0 || idx >= cartes.size()) {
         throw std::out_of_range("Index hors limites");
     }
-    Carte* c = cartes[idx];
-    cartes.erase(cartes.begin() + idx);
+    return cartes[idx];
 }
 
 void Main::toString() const{
