@@ -20,7 +20,7 @@ private:
 public:
     Effet(TypeEffet t, int m1, int m2, TypeCible c);
     Effet(TypeEffet t, int m1, TypeCible c);
-    void appliquer(Joueur* src, void* tgt, Partie& partie,int choix) const;
+    void appliquer(Carte* src, void* tgt, Partie& partie) const;
 
     TypeEffet getTypeEffet(){return type;}
     int getMontant1(){return montant1;}
