@@ -12,10 +12,14 @@ public:
     Main()=default;
     ~Main();
 
+    // Getters
+    Carte* getCarte(int idx) const;
+    const std::vector<Carte*>& getCartes() const { return cartes; }
+    int getTaille() const { return cartes.size(); }
+
     // Méthodes
     void ajouter(Carte* c);
     void defausser(int idx);
     void viderMain();
-    void jouerCarte(int idx);
     void toString() const;
 };
