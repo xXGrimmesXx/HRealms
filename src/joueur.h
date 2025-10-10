@@ -31,6 +31,11 @@ public:
     void assomerChampion(Champion* c);
     // TODO
     void sacrifier(int montant, Partie& p);
+    std::vector<Champion*> getGardes()const;
+    void choisirCarteDefausseAjouterDessusDeck(int montant);
+    void choisirChampionDefausseAjouterDessusDeck(int montant);
+    void prochainAchatActionDessusDeck();
+    void prochainAchatDansMain();
 
     // interface Attaquable
     void prendreDegats(int m) override;
