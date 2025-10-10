@@ -29,6 +29,8 @@ public:
     void defausser(int n);
     void assomerChampions();
     void assomerChampion(Champion* c);
+    // TODO
+    void sacrifier(int montant, Partie& p);
 
     // interface Attaquable
     void prendreDegats(int m) override;
