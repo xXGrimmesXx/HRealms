@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <random>
 
-Pile::Pile() {
-    cartes = std::vector<Carte*>();
-}
+
 
 Pile::~Pile() {
     for (Carte* c : cartes) {

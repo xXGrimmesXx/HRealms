@@ -6,7 +6,7 @@ class Pile {
 private:
     std::vector<Carte*> cartes;
 public:
-    Pile();
+    Pile()=default;
     ~Pile();
     void ajouter(Carte* c);
     Carte* prendreDessus();

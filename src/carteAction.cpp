@@ -8,6 +8,7 @@ void CarteAction::lorsDeJeu(Joueur& j, Partie& p) {
         effet.appliquer(&j, &j, p,0);
     }
     
+    // Scaling pour les cartes avec effets Allié dépendant du nombre d'alliés
     for (const Effet& effet : effetsAllie) {
         int nbAllies=0;
         for(Champion* c : j.getChampions()){
