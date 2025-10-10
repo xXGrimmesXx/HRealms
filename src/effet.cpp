@@ -8,10 +8,11 @@ Effet::Effet(TypeEffet t, int m1, TypeCible c){
     cible = c;
 }
 
+// Pour les effets qui ont deux options (comme COMBAT_OU_VIE)
 Effet::Effet(TypeEffet t, int m1,int m2, TypeCible c){
     type = t;
     montant1 = m1;
-    montant2 =m2;
+    montant2 = m2;
     cible = c;
 }
 
