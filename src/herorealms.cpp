@@ -1,4 +1,4 @@
-#include "Partie.h"
+#include "model/Partie.h"
 
 int main() {
     Partie partie;
