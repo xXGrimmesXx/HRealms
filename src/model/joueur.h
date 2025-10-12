@@ -46,7 +46,7 @@ public:
 
 
     // interface Attaquable
-    void prendreDegats(int m) override;
+    bool prendreDegats(int m) override;
     Joueur* proprietaire() override { return this; }
 
     // getters et setters

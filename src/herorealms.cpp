@@ -5,10 +5,10 @@
 int main() {
     try {
         // Créer la vue console
-        std::unique_ptr<ConsoleView> view = std::make_unique<ConsoleView>();
+        ConsoleView view = ConsoleView();
         
         // Créer le contrôleur avec la vue
-        GameController controller(view.get());
+        GameController controller(&view);
         
         // Lancer le jeu
         controller.lancerJeu();

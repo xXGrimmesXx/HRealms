@@ -20,4 +20,6 @@ public:
     bool acquerirGemmeFeu(Joueur& j, Partie& partie);
     bool acquerirDepuisDeck(int idx, Joueur& j, Partie& partie);
     void retournerGemmeFeuDansPile(Carte* g);
+
+    const std::vector<Carte*>& getLigne() const { return ligne; }
 };

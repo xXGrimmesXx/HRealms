@@ -6,19 +6,9 @@
 Partie::Partie() : joueurs(std::vector<Joueur>(0)),marche(new Marche()),tour_courant(nullptr), nb_tour(0), idx_joueur_actuel(0), godMode(GodMode()),cartesSacrifie(Pile()) {
 }
 
-void Partie::commencer() {
+void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     // Initialisation de la partie
-    std::cout << "Combien de jouers ? (2-4) ";
-    int n;
-    std::cin >> n;
-    while (n < 2 || n > 4) {
-        std::cout << "Nombre de joueurs invalide. Veuillez entrer un nombre entre 2 et 4: ";
-        std::cin >> n;
-    }
-    for (int i = 1; i <= n; ++i) {
-        std::string nom;
-        std::cout << "Nom du joueur " << i << " : ";
-        std::cin >> nom;
+    for (const auto& nom : nomsJoueurs) {
         joueurs.push_back(Joueur(nom));
     }
     marche = new Marche();
@@ -96,6 +86,15 @@ void Partie::GOD_mettreTousJoueurs1PV() {
 void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur& j) {
     tour_courant->ajouterOr(100); // Donner suffisamment d'or pour l'achat
     marche->acquerirDepuisDeck(idx, j, *this);
+}
+
+Joueur* Partie::getGagnant() {
+    for (int i = 0; i < (int)joueurs.size(); ++i) {
+        if (joueurs[i].getPv() <= 0) {
+            return &joueurs[(i - 1) % joueurs.size()]; // Le joueur suivant gagne
+        }
+    }
+    return nullptr;
 }
 
 std::string Partie::toString() const {

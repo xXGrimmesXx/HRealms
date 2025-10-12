@@ -9,7 +9,8 @@ BUILDDIR = build
 
 # Création automatique des listes de fichiers
 MODEL_SOURCES = $(wildcard $(MODELDIR)/*.cpp)
-VIEW_SOURCES = $(wildcard $(VIEWDIR)/*.cpp $(VIEWDIR)/*/*.cpp)
+VIEW_SOURCES = $(wildcard $(VIEWDIR)/*.cpp )
+VIEW_CONSOLE_SOURCES = $(wildcard $(VIEWDIR)/console/*.cpp) 
 CONTROLLER_SOURCES = $(wildcard $(CONTROLLERDIR)/*.cpp)
 MAIN_SOURCES = herorealms.cpp
 
@@ -25,6 +26,7 @@ ALL_OBJECTS = $(MODEL_OBJECTS) $(VIEW_OBJECTS) $(VIEW_CONSOLE_OBJECTS) $(CONTROL
 # Créer les répertoires de sortie
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
+
 
 # Règles de compilation
 $(BUILDDIR)/model_%.o : $(MODELDIR)/%.cpp | $(BUILDDIR)

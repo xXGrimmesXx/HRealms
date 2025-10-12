@@ -20,7 +20,7 @@ private:
 
 public:
     Partie();
-    void commencer();
+    void commencer(std::vector<std::string> nomsJoueurs);
     void jouerTour();
     void finTour();
     bool estTerminee() const;
@@ -35,12 +35,14 @@ public:
     Marche* getMarche() { return marche; }
     GodMode& getGodMode() { return godMode; }
     int getNbTour() const { return nb_tour; }
-    const std::vector<Joueur>& getJoueurs() const { return joueurs; }
+    std::vector<Joueur>& getJoueurs() { return joueurs; }
     void setIdxJoueurActuel(int idx) { idx_joueur_actuel = idx; }
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
     Pile getCartesSacrifie(){return cartesSacrifie;}
+
+    Joueur* getGagnant();
 
     std::string toString() const ;
     std::string toStringDetail() const;

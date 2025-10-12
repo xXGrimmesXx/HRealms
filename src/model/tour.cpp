@@ -32,3 +32,14 @@ void Tour::setJoueur(Joueur* j) {
     joueur = j;
 }
 
+void Tour::utiliserDegats(int m) {
+    if (m <= reserveDegats) {
+        reserveDegats -= m;
+    }
+}
+
+void Tour::utiliserOr(int m) {
+    if (m <= reserveOr) {
+        reserveOr -= m;
+    }
+}

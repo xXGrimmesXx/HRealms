@@ -1,21 +1,22 @@
 #pragma once
 #include "../gameView.h"
 #include "../../model/faction.h"
+#include "../../model/tour.h"
 
 class ConsoleView : public GameView {
 public:
     ConsoleView();
-    ~ConsoleView() override;
+    ~ConsoleView();
     
     // Implémentation des méthodes d'affichage
-    void afficherMessage(const std::string& message) override;
-    void afficherErreur(const std::string& erreur) override;
-    void afficherPartie(const Partie& partie) override;
-    void afficherJoueur(const Joueur& joueur) override;
-    void afficherMain(const Joueur& joueur) override;
-    void afficherMarche(const Marche& marche) override;
-    void afficherScores(const std::vector<Joueur>& joueurs) override;
-    void afficherGagnant(const Joueur& gagnant) override;
+    void afficherMessage(std::string& message)override;
+    void afficherErreur(std::string& erreur)override;
+    void afficherPartie(Partie& partie)override;
+    void afficherJoueur( Joueur& joueur)override;
+    void afficherMain( Joueur& joueur)override;
+    void afficherMarche( Marche& marche)override;
+    void afficherScores( std::vector<Joueur>& joueurs)override;
+    void afficherGagnant( Joueur& gagnant)override;
     
     // Implémentation des méthodes de saisie
     int demanderNombreJoueurs() override;
@@ -23,10 +24,10 @@ public:
     int demanderChoixAction() override;
     int demanderIndexCarte() override;
     int demanderSlotMarche() override;
-    bool confirmerAction(const std::string& action) override;
+    bool confirmerAction( std::string& action) override;
     void attendreEntree() override;
     void viderEcran() override;
 
 private:
-    std::string getFactionSymbol(Faction faction) const;
+    std::string getFactionSymbol(Faction faction) ;
 };

@@ -125,18 +125,14 @@ std::vector<Champion*> Joueur::getGardes()const{
     return res;
 }
 
-void Joueur::prendreDegats(int m){
-    std::vector<Champion*> g = getGardes();
-    for(auto c :g){
-        if (m>0){
-            assomerChampion(c);
-            m-= c->getVie();
-        }
-        else {
-            return;
-        }
+bool Joueur::prendreDegats(int m){
+    if (aGardeMobilise()){
+        throw std::runtime_error("Impossible d'attaquer le joueur tant qu'un garde est mobilisé");
+        return false;
     }
-    if (m>0){
-        pv -=m;
+    else{
+        pv-=m;
+        return true;
     }
+    
 }

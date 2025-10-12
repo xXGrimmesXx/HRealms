@@ -5,6 +5,6 @@
 class Attaquable {
 public:
     virtual ~Attaquable() = default;
-    virtual void prendreDegats(int m) = 0;
+    virtual bool prendreDegats(int m) = 0;
     virtual Joueur* proprietaire() = 0;
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "../model/partie.h"
 #include "../view/gameView.h"
+#include "../model/tour.h"
 #include <memory>
 
 class GameController {
@@ -36,5 +37,5 @@ public:
     
     // Utilitaires
     bool validerIndex(int index, int max, const std::string& type);
-    void gererErreur(const std::string& erreur);
+    void gererErreur(std::string& erreur);
 };

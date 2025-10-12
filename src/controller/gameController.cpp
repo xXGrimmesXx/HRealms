@@ -16,14 +16,16 @@ GameController::~GameController() {
 }
 
 void GameController::lancerJeu() {
-    view->afficherMessage("Bienvenue dans Hero Realms !");
+    std::string message = "Bienvenue dans Hero Realms !";
+    view->afficherMessage(message);
     
     try {
         initialiserPartie();
         boucleJeu();
         finirPartie();
     } catch (const std::exception& e) {
-        view->afficherErreur("Erreur fatale: " + std::string(e.what()));
+        std::string message = "Erreur fatale: " + std::string(e.what());
+        view->afficherErreur(message);
     }
 }
 
@@ -43,7 +45,8 @@ void GameController::initialiserPartie() {
     partie->commencer(nomsJoueurs);
     
     jeuEnCours = true;
-    view->afficherMessage("Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !");
+    std::string message = "Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !";
+    view->afficherMessage(message);
     view->attendreEntree();
 }
 
@@ -78,7 +81,8 @@ void GameController::jouerTour() {
         }
         
     } catch (const std::exception& e) {
-        gererErreur("Erreur pendant le tour: " + std::string(e.what()));
+        std::string message = "Erreur pendant le tour: " + std::string(e.what());
+        gererErreur(message);
     }
 }
 
@@ -88,19 +92,22 @@ void GameController::gererActionJoueur() {
     switch (choix) {
         case 1: // Jouer une carte
             if (!jouerCarte()) {
-                view->afficherErreur("Impossible de jouer cette carte.");
+                std::string message = "Impossible de jouer cette carte.";
+                view->afficherErreur(message);
             }
             break;
             
         case 2: // Acheter une carte
             if (!acheterCarte()) {
-                view->afficherErreur("Impossible d'acheter cette carte.");
+                std::string message = "Impossible d'acheter cette carte.";
+                view->afficherErreur(message);
             }
             break;
             
         case 3: // Attaquer un joueur
             if (!attaquerJoueur()) {
-                view->afficherErreur("Impossible d'attaquer ce joueur.");
+                std::string message = "Impossible d'attaquer ce joueur.";
+                view->afficherErreur(message);
             }
             break;
             
@@ -117,7 +124,8 @@ void GameController::gererActionJoueur() {
             break;
             
         default:
-            view->afficherErreur("Choix invalide. Veuillez choisir entre 1 et 6.");
+            std::string message = "Choix invalide. Veuillez choisir entre 1 et 6.";
+            view->afficherErreur(message);
             break;
     }
 }
@@ -140,17 +148,19 @@ bool GameController::jouerCarte() {
     try {
         bool succes = joueurActuel.jouerCarte(index, *partie);
         if (succes) {
-            view->afficherMessage("Carte jouée avec succès !");
+            std::string message = "Carte jouée avec succès !";
+            view->afficherMessage(message);
         }
         return succes;
     } catch (const std::exception& e) {
-        view->afficherErreur("Erreur lors du jeu de carte: " + std::string(e.what()));
+        std::string message = "Erreur lors du jeu de carte: " + std::string(e.what());
+        view->afficherErreur(message);
         return false;
     }
 }
 
 bool GameController::acheterCarte() {
-    const Marche* marche = partie->getMarche();
+    Marche* marche = partie->getMarche();
     
     // Afficher le marché
     view->afficherMarche(*marche);
@@ -167,21 +177,24 @@ bool GameController::acheterCarte() {
     try {
         bool succes = partie->getJoueurActuel().acheterDepuisMarche(slot, *partie);
         if (succes) {
-            view->afficherMessage("Carte achetée avec succès !");
+            std::string message = "Carte achetée avec succès !";
+            view->afficherMessage(message);
         }
         return succes;
     } catch (const std::exception& e) {
-        view->afficherErreur("Erreur lors de l'achat: " + std::string(e.what()));
+        std::string message = "Erreur lors de l'achat: " + std::string(e.what());
+        view->afficherErreur(message);
         return false;
     }
 }
 
 bool GameController::attaquerJoueur() {
-    const std::vector<Joueur>& joueurs = partie->getJoueurs();
+    std::vector<Joueur>& joueurs = partie->getJoueurs();
     const Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Afficher les joueurs disponibles
-    view->afficherMessage("Joueurs disponibles pour l'attaque:");
+    std::string message = "Joueurs disponibles pour l'attaque:";
+    view->afficherMessage(message);
     for (size_t i = 0; i < joueurs.size(); ++i) {
         if (joueurs[i].getNom() != joueurActuel.getNom()) {
             view->afficherJoueur(joueurs[i]);
@@ -198,26 +211,42 @@ bool GameController::attaquerJoueur() {
     
     // Confirmer l'attaque
     std::string nomCible = joueurs[index].getNom();
-    if (!view->confirmerAction("Attaquer " + nomCible)) {
+    message = "Confirmez-vous l'attaque contre " + nomCible + " ?";
+    if (!view->confirmerAction(message)) {
         return false;
     }
     
     // Essayer d'attaquer
     try {
-        bool succes = partie->attaquerJoueur(index);
+        Joueur& cible = partie->getJoueurs()[index];
+        if (cible.aGardeMobilise()) {
+            std::string message = nomCible + " a un garde mobilisé. Attaque annulée.";
+            view->afficherErreur(message);
+            return false;
+        }
+        int degats = partie->getTourCourant()->getDegats();
+        if (degats > cible.getPv()) {
+            degats = cible.getPv(); // Ne pas infliger plus de dégâts que les PV restants
+        }
+        bool succes = cible.prendreDegats(degats);
         if (succes) {
-            view->afficherMessage("Attaque réussie contre " + nomCible + " !");
+            partie->getTourCourant()->utiliserDegats(degats); // Réinitialiser les dégâts après l'attaque
+            message = "Attaque réussie contre " + nomCible + " !";
+            view->afficherMessage(message);
         }
         return succes;
     } catch (const std::exception& e) {
-        view->afficherErreur("Erreur lors de l'attaque: " + std::string(e.what()));
+        std::string message = "Erreur lors de l'attaque: " + std::string(e.what());
+        view->afficherErreur(message);
         return false;
     }
 }
 
 void GameController::finirTour() {
-    if (view->confirmerAction("Êtes-vous sûr de vouloir finir votre tour")) {
-        view->afficherMessage("Tour terminé.");
+    std::string message = "Êtes-vous sûr de vouloir finir votre tour ?";
+    if (view->confirmerAction(message)) {
+        std::string message = "Tour terminé.";
+        view->afficherMessage(message);
         // La logique de fin de tour sera gérée dans la boucle principale
     }
 }
@@ -228,36 +257,48 @@ void GameController::afficherEtatJeu() {
 }
 
 void GameController::afficherMain() {
-    const Joueur& joueurActuel = partie->getJoueurActuel();
+    Joueur& joueurActuel = partie->getJoueurActuel();
     view->afficherMain(joueurActuel);
     view->attendreEntree();
 }
 
 void GameController::afficherMarche() {
-    const Marche& marche = partie->getMarche();
-    view->afficherMarche(marche);
+    Marche* marche = partie->getMarche();
+    view->afficherMarche(*marche);
     view->attendreEntree();
 }
 
 void GameController::finirPartie() {
     if (partie && partie->estTerminee()) {
-        const Joueur& gagnant = partie->getGagnant();
-        view->afficherGagnant(gagnant);
+        Joueur* gagnant = partie->getGagnant();
+        if(gagnant!=nullptr){
+            view->afficherGagnant(*gagnant);
+            std::string message = "Merci d'avoir joué à Hero Realms !";
+            view->afficherMessage(message);
+            jeuEnCours = false;
+        }
+        else{
+            std::string message = "La partie s'est terminée sans gagnant clair.";
+            view->afficherMessage(message);
+            jeuEnCours = false;
+        }
+
+        
     }
     
-    view->afficherMessage("Merci d'avoir joué à Hero Realms !");
-    jeuEnCours = false;
+    
 }
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {
     if (index < 0 || index >= max) {
-        view->afficherErreur("Index de " + type + " invalide. Doit être entre 1 et " + std::to_string(max) + ".");
+        std::string message = "Index de " + type + " invalide. Doit être entre 1 et " + std::to_string(max) + ".";
+        view->afficherErreur(message);
         return false;
     }
     return true;
 }
 
-void GameController::gererErreur(const std::string& erreur) {
+void GameController::gererErreur(std::string& erreur) {
     view->afficherErreur(erreur);
     view->attendreEntree();
 }

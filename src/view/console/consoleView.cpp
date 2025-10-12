@@ -8,44 +8,42 @@
 #include <limits>
 
 ConsoleView::ConsoleView() {
-    // Constructeur
+    std::cout << "ConsoleView initialisée." << std::endl;
 }
 
 ConsoleView::~ConsoleView() {
-    // Destructeur
+    std::cout << "ConsoleView détruite." << std::endl;
 }
 
-void ConsoleView::afficherMessage(const std::string& message) {
+void ConsoleView::afficherMessage( std::string& message) {
     std::cout << "📢 " << message << std::endl;
 }
 
-void ConsoleView::afficherErreur(const std::string& erreur) {
+void ConsoleView::afficherErreur( std::string& erreur) {
     std::cout << "❌ ERREUR: " << erreur << std::endl;
 }
 
-void ConsoleView::afficherPartie(const Partie& partie) {
+void ConsoleView::afficherPartie(Partie& partie) {
     viderEcran();
     std::cout << "═══════════════════════════════════════" << std::endl;
-    std::cout << "🏰 HERO REALMS - Tour " << partie.getTourActuel() << std::endl;
+    std::cout << "🏰 HERO REALMS - Tour " << partie.getNbTour() << std::endl;
     std::cout << "═══════════════════════════════════════" << std::endl;
     
     // Afficher le joueur actuel
-    const Joueur& joueurActuel = partie.getJoueurActuel();
+     Joueur& joueurActuel = partie.getJoueurActuel();
     std::cout << "🎮 Joueur actuel: " << joueurActuel.getNom() << std::endl;
-    std::cout << "❤️  Vie: " << joueurActuel.getVie() << " | ";
-    std::cout << "💰 Or: " << joueurActuel.getOr() << " | ";
-    std::cout << "⚔️  Combat: " << joueurActuel.getCombat() << std::endl;
+    std::cout << "❤️  Vie: " << joueurActuel.getPv() << " | ";
+    std::cout << "💰 Or: " << partie.getTourCourant()->getOr() << " | ";
+    std::cout << "⚔️  Combat: " << partie.getTourCourant()->getDegats() << std::endl;
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherJoueur(const Joueur& joueur) {
+void ConsoleView::afficherJoueur( Joueur& joueur) {
     std::cout << "👤 " << joueur.getNom() << " - ";
-    std::cout << "❤️ " << joueur.getVie() << " | ";
-    std::cout << "💰 " << joueur.getOr() << " | ";
-    std::cout << "⚔️ " << joueur.getCombat() << std::endl;
+    std::cout << "❤️ " << joueur.getPv() << " | ";
 }
 
-void ConsoleView::afficherMain(const Joueur& joueur) {
+void ConsoleView::afficherMain(Joueur& joueur) {
     std::cout << "🎴 Main de " << joueur.getNom() << ":" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
     
@@ -57,44 +55,44 @@ void ConsoleView::afficherMain(const Joueur& joueur) {
     //     std::cout << " - " << getFactionSymbol(main[i]->getFaction()) << std::endl;
     // }
     
-    std::cout << "🎴 Cartes en main: " << joueur.getNombreCartesEnMain() << std::endl;
+    std::cout << "🎴 Cartes en main: " << joueur.getMain().getTaille() << std::endl;
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherMarche(const Marche& marche) {
+void ConsoleView::afficherMarche( Marche& marche) {
     std::cout << "🏪 MARCHÉ:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
-    
-    // Note: Vous devrez adapter selon votre implémentation de Marche
-    // const auto& cartes = marche.getCartesDisponibles();
-    // for (size_t i = 0; i < cartes.size(); ++i) {
-    //     if (cartes[i] != nullptr) {
-    //         std::cout << "[" << i + 1 << "] " << cartes[i]->getNom();
-    //         std::cout << " (Coût: " << cartes[i]->getCout() << ")";
-    //         std::cout << " - " << getFactionSymbol(cartes[i]->getFaction()) << std::endl;
-    //     } else {
-    //         std::cout << "[" << i + 1 << "] Slot vide" << std::endl;
-    //     }
-    // }
+
+    // Afficher les cartes disponibles dans le marché
+    const auto& cartes = marche.getLigne();
+    for (size_t i = 0; i < cartes.size(); ++i) {
+        if (cartes[i] != nullptr) {
+            std::cout << "[" << i + 1 << "] " << cartes[i]->getNom();
+            std::cout << " (Coût: " << cartes[i]->getCout() << ")";
+            std::cout << " - " << getFactionSymbol(cartes[i]->getFaction()) << std::endl;
+        } else {
+            std::cout << "[" << i + 1 << "] Slot vide" << std::endl;
+        }
+    }
     
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherScores(const std::vector<Joueur>& joueurs) {
+void ConsoleView::afficherScores( std::vector<Joueur>& joueurs) {
     std::cout << "🏆 SCORES ACTUELS:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
     
     for (const auto& joueur : joueurs) {
-        std::cout << joueur.getNom() << ": " << joueur.getVie() << " PV" << std::endl;
+        std::cout << joueur.getNom() << ": " << joueur.getPv() << " PV" << std::endl;
     }
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherGagnant(const Joueur& gagnant) {
+void ConsoleView::afficherGagnant( Joueur& gagnant) {
     std::cout << "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" << std::endl;
     std::cout << "🏆 VICTOIRE DE " << gagnant.getNom() << " ! 🏆" << std::endl;
     std::cout << "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" << std::endl;
-    std::cout << "Score final: " << gagnant.getVie() << " points de vie" << std::endl;
+    std::cout << "Score final: " << gagnant.getPv() << " points de vie" << std::endl;
 }
 
 int ConsoleView::demanderNombreJoueurs() {
@@ -106,7 +104,8 @@ int ConsoleView::demanderNombreJoueurs() {
         if (std::cin.fail() || nombre < 2 || nombre > 4) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            afficherErreur("Veuillez entrer un nombre entre 2 et 4.");
+            std::string err = "Veuillez entrer un nombre entre 2 et 4.";
+            afficherErreur(err);
         }
     } while (nombre < 2 || nombre > 4);
     
@@ -120,7 +119,8 @@ std::string ConsoleView::demanderNomJoueur(int numero) {
     std::getline(std::cin, nom);
     
     while (nom.empty()) {
-        afficherErreur("Le nom ne peut pas être vide.");
+        std::string err = "Le nom ne peut pas être vide.";
+        afficherErreur(err);
         std::cout << "👤 Nom du joueur " << numero << ": ";
         std::getline(std::cin, nom);
     }
@@ -178,7 +178,7 @@ int ConsoleView::demanderSlotMarche() {
     return slot - 1; // Convertir en index 0-based
 }
 
-bool ConsoleView::confirmerAction(const std::string& action) {
+bool ConsoleView::confirmerAction( std::string& action) {
     char reponse;
     std::cout << "❓ " << action << " (o/n): ";
     std::cin >> reponse;
@@ -200,7 +200,7 @@ void ConsoleView::viderEcran() {
 #endif
 }
 
-std::string ConsoleView::getFactionSymbol(Faction faction) const {
+std::string ConsoleView::getFactionSymbol(Faction faction)  {
     switch (faction) {
         case Faction::IMPERIALE: return "🛡️ Impériale";
         case Faction::SAUVAGE: return "🐺 Sauvage";
