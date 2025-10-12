@@ -259,8 +259,6 @@ int ConsoleView::demanderChoixAction() {
     std::cout << "[2] Acheter une carte" << std::endl;
     std::cout << "[3] Attaquer un joueur" << std::endl;
     std::cout << "[4] Finir le tour" << std::endl;
-    std::cout << "[5] Afficher ma main" << std::endl;
-    std::cout << "[6] Afficher le marché" << std::endl;
     std::cout << "Votre choix: ";
     
     

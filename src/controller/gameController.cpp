@@ -126,14 +126,6 @@ void GameController::gererActionJoueur() {
             finirTour();
             break;
             
-        case 5: // Afficher ma main
-            afficherMain();
-            break;
-            
-        case 6: // Afficher le marché
-            afficherMarche();
-            break;
-            
         default:
             std::string message = "Choix invalide. Veuillez choisir entre 1 et 6.";
             view->afficherErreur(message);
@@ -265,18 +257,18 @@ void GameController::finirTour() {
 void GameController::afficherEtatJeu() {
     view->afficherPartie(*partie);
     view->afficherScores(partie->getJoueurs());
+    afficherMarche();
+    afficherMain();
 }
 
 void GameController::afficherMain() {
     Joueur& joueurActuel = partie->getJoueurActuel();
     view->afficherMain(joueurActuel);
-    view->attendreEntree();
 }
 
 void GameController::afficherMarche() {
     Marche* marche = partie->getMarche();
     view->afficherMarche(*marche);
-    view->attendreEntree();
 }
 
 void GameController::finirPartie() {
