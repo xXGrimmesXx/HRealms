@@ -2,8 +2,8 @@
 #define CARTE_H
 #include <string>
 #include <vector>
+#include "effet.h"
 #include "Faction.h"
-#include "Effet.h"
 
 class Joueur;
 class Partie;
@@ -46,9 +46,9 @@ public:
     bool setEffetAllieDeclenche(bool b) { return effetAllieDeclenche = b; }
 
     // Méthodes
-    virtual void lorsDeJeu(Joueur& j, Partie& p) = 0;
+    virtual void lorsDeJeu(Partie& p,void* target);
     bool peutDeclencherAllie(Joueur& j);
-    virtual void activer(Joueur& j, Partie& p);
+    virtual void activer(Partie& p,Joueur& joueurSource,void* target);
     virtual void sacrifier(Joueur& j, Partie& p);
 };
 

@@ -1,5 +1,8 @@
 #include "effet.h"
 
+#include "joueur.h"
+#include "partie.h"
+#include "tour.h"
 
 Effet::Effet(TypeEffet t, int m1, TypeCible c){
     type = t;
@@ -49,6 +52,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                 // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for AJOUT_COMBAT effect");
             }
+            break;
         case TypeEffet::AJOUT_VIE:
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);

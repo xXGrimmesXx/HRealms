@@ -7,5 +7,4 @@ public:
     CarteAction(std::string nom, int cout, Faction f);
 
     // Méthode
-    void lorsDeJeu(Joueur& j, Partie& p) override;
 };

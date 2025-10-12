@@ -6,6 +6,7 @@
 #include "Main.h"
 #include "Champion.h"
 #include "Attaquable.h"
+#include "partie.h"
 
 class Deck;
 
@@ -17,14 +18,15 @@ private:
     Pile defausse;
     Main main;
     std::vector<Champion*> champions;
+    bool prochainAchatActionDessusDeck;
+    bool prochainAchatDansMain;
 
 public:
     Joueur(std::string nom="");
     void piocher(int n);
-    void jouerCarte(int idx);
-    void acheterDepuisMarche(int slot);
-    void acheterGemmeFeu();
-    void resoudreDegats(int reserve, Attaquable* cible);
+    void jouerCarte(int idx,Partie& p);
+    void acheterDepuisMarche(int slot, Partie& p);
+    void acheterGemmeFeu(Partie& p);
     void finTour();
     bool aGardeMobilise() const;
     void soigner(int montant);
@@ -36,8 +38,8 @@ public:
     std::vector<Champion*> getGardes()const;
     void choisirCarteDefausseAjouterDessusDeck(int montant);
     void choisirChampionDefausseAjouterDessusDeck(int montant);
-    void prochainAchatActionDessusDeck();
-    void prochainAchatDansMain();
+    void activerProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=true;}
+    void activerProchainAchatDansMain(){prochainAchatDansMain=true;}
 
     // interface Attaquable
     void prendreDegats(int m) override;

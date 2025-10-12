@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "carte.h"
+
 
 class Carte;
 
@@ -14,4 +14,5 @@ public:
     Carte* prendreDessus();
     int taille() const;
     void melanger();
+    std::vector<Carte*> getCartes();
 };

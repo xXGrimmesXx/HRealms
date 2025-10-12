@@ -1,8 +1,9 @@
 #include "carteObjet.h"
+#include "joueur.h"
 
 void CarteObjet::lorsDeJeu(Joueur& j, Partie& p) {
     for (const Effet& effet : effetsPrimaire) {
-        effet.appliquer(&j, &j, p,0);
+        effet.appliquer(this, &j, p);
     }
     
     for (const Effet& effet : effetsAllie) {
@@ -17,6 +18,6 @@ void CarteObjet::lorsDeJeu(Joueur& j, Partie& p) {
                 nbAllies++;
             }
         }
-        effet.appliquer(&j, &j, p,nbAllies*bonusParAllie);
+        effet.appliquer(this, &j, p);
     }
 }

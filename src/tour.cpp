@@ -1,5 +1,7 @@
 #include "tour.h"
 
+#include "Joueur.h"
+
 Tour::Tour(Joueur* j) : joueur(j), reserveOr(0), reserveDegats(0) {}
 void Tour::ajouterOr(int m) {
     reserveOr += m;

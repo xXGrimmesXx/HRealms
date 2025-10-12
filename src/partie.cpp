@@ -1,7 +1,10 @@
 #include "Partie.h"
 #include <iostream>
 
-Partie::Partie() : nb_tour(0), idx_joueur_actuel(0), tour_courant(nullptr) {}
+#include "Tour.h"
+
+Partie::Partie() : joueurs(std::vector<Joueur>(0)),marche(Marche()),tour_courant(nullptr), nb_tour(0), idx_joueur_actuel(0), godMode(GodMode()),cartesSacrifie(Pile()) {
+}
 
 void Partie::commencer() {
     // Initialisation de la partie
@@ -43,14 +46,14 @@ void Partie::jouerTour() {
             int idx;
             std::cout << "Index de la carte à jouer (0-" << joueurActuel.getMain().getTaille()-1 << "): ";
             std::cin >> idx;
-            joueurActuel.jouerCarte(idx);
+            joueurActuel.jouerCarte(idx,*this);
         } else if (choix == 2) {
             int slot;
             std::cout << "Slot du marché à acheter (0-4): ";
             std::cin >> slot;
-            joueurActuel.acheterDepuisMarche(slot);
+            joueurActuel.acheterDepuisMarche(slot,*this);
         } else if (choix == 3) {
-            joueurActuel.acheterGemmeFeu();
+            joueurActuel.acheterGemmeFeu(*this);
         } else if (choix == 4) {
             break;
         } else {

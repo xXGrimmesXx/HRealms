@@ -1,11 +1,14 @@
 #pragma once
 #include "TypeEffet.h"
 #include "TypeCible.h"
-#include "joueur.h"
-#include "partie.h"
+
 
 #include <iostream>
 #include <stdexcept>
+
+class Joueur;
+class Partie;
+class Carte;
 
 class Effet {
 private:
@@ -19,10 +22,10 @@ public:
     Effet(TypeEffet t, int m1, TypeCible c);
     void appliquer(Carte* src, void* tgt, Partie& partie) const;
 
-    TypeEffet getTypeEffet(){return type;}
-    int getMontant1(){return montant1;}
-    int getMontant2(){return montant2;}
-    TypeCible getTypeCible(){return cible;}
+    TypeEffet getTypeEffet()const{return type;}
+    int getMontant1()const{return montant1;}
+    int getMontant2()const{return montant2;}
+    TypeCible getTypeCible()const{return cible;}
 
     void setTypeEffet(TypeEffet t){type = t;}
     void setMontant1(int m){montant1 = m;}

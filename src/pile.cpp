@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <random>
 
+#include "carte.h"
+
 
 
 Pile::~Pile() {
@@ -28,4 +30,8 @@ void Pile::melanger() {
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(cartes.begin(), cartes.end(), g);
+}
+
+std::vector<Carte*> Pile::getCartes(){
+    return cartes;
 }

@@ -2,10 +2,10 @@
 #include <vector>
 #include "Joueur.h"
 #include "Marche.h"
-#include "Tour.h"
+
 #include "GodMode.h"
 
-class Joueur;
+class Tour;
 
 class Partie {
 private:
@@ -15,6 +15,7 @@ private:
     int nb_tour;
     int idx_joueur_actuel;
     GodMode godMode;
+    Pile cartesSacrifie;
 
 public:
     Partie();
@@ -29,6 +30,7 @@ public:
     //getters setters
     Tour* getTourCourant() const { return tour_courant; }
     Joueur& getJoueurActuel() { return joueurs[idx_joueur_actuel];}
+    int getIdxJoueurActuel(){return idx_joueur_actuel;}
     Marche& getMarche() { return marche; }
     GodMode& getGodMode() { return godMode; }
     int getNbTour() const { return nb_tour; }
@@ -37,5 +39,6 @@ public:
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
+    Pile getCartesSacrifie(){return cartesSacrifie;}
 
 };

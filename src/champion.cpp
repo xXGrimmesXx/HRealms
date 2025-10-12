@@ -1,33 +1,13 @@
 #include "champion.h"
+#include "joueur.h"
+#include "partie.h"
 
-Champion::~Champion() {}
-
-void Champion::lorsDeJeu(Joueur& j, Partie& p) {
-    for (const Effet& effet : effetsPrimaire) {
-        effet.appliquer(&j, &j, p,0);
-    }
-    
-    for (const Effet& effet : effetsAllie) {
-        int nbAllies=0;
-        for(Champion* c : j.getChampions()){
-            if(c->getFaction() == this->getFaction()){
-                nbAllies++;
-            }
-        }
-        for (Carte* c : j.getMain().getCartes()) {
-            if (c->getFaction() == this->getFaction() && c != this) {
-                nbAllies++;
-            }
-        }
-        effet.appliquer(&j, &j, p,nbAllies*bonusParAllie);
-    }
-}
 
 void Champion::mobiliser(Joueur& j, Partie& p) {
     if (!mobilise) {
         mobilise = true;
         for (const Effet& effet : effetsActiver) {
-            effet.appliquer(&j, &j, p,0);
+            effet.appliquer(this, &j, p);
         }
     } else {
         throw std::runtime_error("Champion already mobilized");

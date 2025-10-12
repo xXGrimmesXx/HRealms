@@ -2,14 +2,12 @@
 #include "Carte.h"
 #include "effet.h"
 #include "faction.h"
-#include "joueur.h"
-#include "partie.h"
 #include <vector>
 #include <string>
 
-class Carte;
-class Effet;
+
 class Joueur;
+class Partie;
 
 class Champion : public Carte {
 
@@ -34,6 +32,5 @@ public:
     void setVie(int v) { vie = v; }
 
     // Méthodes
-    void lorsDeJeu(Joueur& j, Partie& p) override;
     void mobiliser(Joueur& j, Partie& p);
 };

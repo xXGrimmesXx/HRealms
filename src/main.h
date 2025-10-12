@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
-#include "Carte.h"
+#include "faction.h"
 
+class Joueur;
 class Carte;
 
 class Main{
@@ -20,6 +21,8 @@ public:
     // Méthodes
     void ajouter(Carte* c);
     void defausser(int idx);
-    void viderMain();
+    void viderMain(Joueur* j);
     void toString() const;
+    bool contientCarteDeFaction(Faction f);
+    void sacrifier(Carte* c);
 };
