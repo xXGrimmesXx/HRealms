@@ -33,13 +33,16 @@ public:
     void defausser(int n);
     void assomerChampions();
     void assomerChampion(Champion* c);
-    // TODO
-    void sacrifier(int montant, Partie& p);
-    std::vector<Champion*> getGardes()const;
-    void choisirCarteDefausseAjouterDessusDeck(int montant);
-    void choisirChampionDefausseAjouterDessusDeck(int montant);
     void activerProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=true;}
     void activerProchainAchatDansMain(){prochainAchatDansMain=true;}
+    void sacrifier(int montant, Partie& p);
+    std::vector<Champion*> getGardes()const;
+    // TODO
+    
+    
+    void choisirCarteDefausseAjouterDessusDeck(int montant);
+    void choisirChampionDefausseAjouterDessusDeck(int montant);
+
 
     // interface Attaquable
     void prendreDegats(int m) override;

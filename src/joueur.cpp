@@ -81,3 +81,43 @@ void Joueur::assomerChampion(Champion* c){
         }
     }
 }
+
+void Joueur::choisirCarteDefausseAjouterDessusDeck(int montant){
+    for(int i=0 ; i<montant; i++){
+
+    }
+}
+void Joueur::choisirChampionDefausseAjouterDessusDeck(int montant){
+    for (int i=0; i<montant; i++){
+
+    }
+
+}
+
+void Joueur::sacrifier(int montant, Partie& p){
+    for(int i=0; i<montant; i++){
+        std::cout << "choisissez une carte à sacrifier"<<std::endl;
+        for (int j =0; j<(int)main.getCartes().size();j++){
+            std::cout<<i<<")   ";
+        }
+        std::cout <<std::endl;
+        int choix;
+        std::cin >>choix;
+        while(choix<0 || choix >=(int)main.getCartes().size()){
+            std::cout<<"choisissez un indice valide"<<std::endl;
+            std::cin >> choix;
+        }
+        Carte* c = main.getCarte(choix);
+        main.sacrifier(c);
+        p.getCartesSacrifie().ajouter(c);
+    }
+}
+std::vector<Champion*> Joueur::getGardes()const{
+    std::vector<Champion*> res;
+    for (auto c : champions){
+        if (c->estGarde()){
+            res.push_back(c);
+        }
+    }
+    return res;
+}
