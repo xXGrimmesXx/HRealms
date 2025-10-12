@@ -6,6 +6,16 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <string>
+
+// helper pour lire les lignes avec getline en évitant les retours à la ligne
+static std::string trimString(const std::string& s) {
+    size_t start = 0;
+    while (start < s.size() && (s[start] == ' ' || s[start] == '\t' || s[start] == '\r' || s[start] == '\n')) ++start;
+    size_t end = s.size();
+    while (end > start && (s[end-1] == ' ' || s[end-1] == '\t' || s[end-1] == '\r' || s[end-1] == '\n')) --end;
+    return s.substr(start, end - start);
+}
 
 ConsoleView::ConsoleView() {
     std::cout << "ConsoleView initialisée." << std::endl;
@@ -15,11 +25,11 @@ ConsoleView::~ConsoleView() {
     std::cout << "ConsoleView détruite." << std::endl;
 }
 
-void ConsoleView::afficherMessage( std::string& message) {
+void ConsoleView::afficherMessage(std::string& message) {
     std::cout << "📢 " << message << std::endl;
 }
 
-void ConsoleView::afficherErreur( std::string& erreur) {
+void ConsoleView::afficherErreur(std::string& erreur) {
     std::cout << "❌ ERREUR: " << erreur << std::endl;
 }
 
@@ -43,19 +53,123 @@ void ConsoleView::afficherJoueur( Joueur& joueur) {
     std::cout << "❤️ " << joueur.getPv() << " | ";
 }
 
-void ConsoleView::afficherMain(Joueur& joueur) {
+void ConsoleView::afficherMain( Joueur& joueur) {
     std::cout << "🎴 Main de " << joueur.getNom() << ":" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
     
-    // Note: Vous devrez adapter selon votre implémentation de Joueur
-    // const auto& main = joueur.getMain();
-    // for (size_t i = 0; i < main.size(); ++i) {
-    //     std::cout << "[" << i + 1 << "] " << main[i]->getNom();
-    //     std::cout << " (Coût: " << main[i]->getCout() << ")";
-    //     std::cout << " - " << getFactionSymbol(main[i]->getFaction()) << std::endl;
-    // }
-    
-    std::cout << "🎴 Cartes en main: " << joueur.getMain().getTaille() << std::endl;
+    int taille = joueur.getMain().getTaille();
+    std::cout << "🎴 Cartes en main: " << taille << std::endl;
+    const auto& main = joueur.getMain();
+
+    // On convertit les enums en string pour un affichage lisible
+    auto typeEffetToString = [](TypeEffet t) -> std::string {
+        switch (t) {
+            case TypeEffet::AJOUT_OR: return "Ajout Or";
+            case TypeEffet::AJOUT_COMBAT: return "Ajout Combat";
+            case TypeEffet::AJOUT_VIE: return "Ajout Vie";
+            case TypeEffet::PIOCHER: return "Piocher";
+            case TypeEffet::DEFAUSSER: return "Défausser";
+            case TypeEffet::SACRIFIER: return "Sacrifier";
+            case TypeEffet::ASSOMMER_CHAMPION: return "Assommer Champion";
+            case TypeEffet::PREPARE_CHAMPION: return "Prépare Champion";
+            case TypeEffet::COMBAT_OU_VIE: return "Combat ou Vie";
+            case TypeEffet::OR_OU_COMBAT: return "Or ou Combat";
+            case TypeEffet::COMBAT_PAR_CHAMPION: return "Combat par Champion";
+            case TypeEffet::COMBAT_PAR_GARDE: return "Combat par Garde";
+            case TypeEffet::COMBAT_PAR_ALLIE: return "Combat par Allié";
+            case TypeEffet::VIE_PAR_CHAMPION: return "Vie par Champion";
+            case TypeEffet::OR_OU_VIE_PAR_CHAMPION: return "Or ou Vie par Champion";
+            case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK: return "Défausse au dessus du deck";
+            case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK: return "Champion défausse au dessus deck";
+            case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK: return "Prochain achat action dessus deck";
+            case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN: return "Prochain achat dans main";
+            case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT: return "Sacrifier si oui -> Ajout Combat";
+            case TypeEffet::PIOCHE_SIOUI_DEFAUSSE: return "Piocher si oui -> Défausse";
+            default: return "Effet inconnu";
+        }
+    };
+
+    auto typeCibleToString = [](TypeCible c) -> std::string {
+        switch (c) {
+            case TypeCible::SOI: return "Soi";
+            case TypeCible::ADVERSAIRE: return "Adversaire";
+            case TypeCible::CHAMPION: return "Champion";
+            case TypeCible::TOUS_CHAMPIONS: return "Tous champions";
+            case TypeCible::CARTE: return "Carte";
+            case TypeCible::NIMPORTE: return "N'importe";
+            case TypeCible::AUCUNE: return "Aucune";
+            default: return "Cible inconnue";
+        }
+    };
+
+    // Pour chaque carte, afficher ses détails
+    for (int i = 0; i < taille; ++i) {
+        Carte* c = main.getCarte(i);
+        if (!c) {
+            std::cout << "[" << i + 1 << "] <vide>" << std::endl;
+            continue;
+        }
+
+        // Type de carte
+        std::string typeStr = "Inconnu";
+        if (dynamic_cast<Champion*>(c)) typeStr = "Champion";
+        else if (dynamic_cast<CarteObjet*>(c)) typeStr = "Objet";
+        else if (dynamic_cast<CarteAction*>(c)) typeStr = "Action";
+
+        // Son indice, nom, et faction
+        std::cout << "[" << i + 1 << "] " << typeStr << " - " << c->getNom();
+        std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
+
+        // Effets primaires
+        const auto prim = c->getEffetsPrimaire();
+        if (!prim.empty()) {
+            std::cout << "   Effets primaires:" << std::endl;
+            for (const auto& e : prim) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Effets alliés
+        const auto alli = c->getEffetsAllie();
+        if (!alli.empty()) {
+            std::cout << "   Effets alliés:" << std::endl;
+            for (const auto& e : alli) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Effets sacrifice
+        const auto sac = c->getEffetsSacrifice();
+        if (!sac.empty()) {
+            std::cout << "   Effets de sacrifice:" << std::endl;
+            for (const auto& e : sac) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Si champion, afficher ses effets d'activation
+        if (Champion* ch = dynamic_cast<Champion*>(c)) {
+            const auto act = ch->getEffetsActiver();
+            if (!act.empty()) {
+                std::cout << "   Effets d'activation:" << std::endl;
+                for (const auto& e : act) {
+                    std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                              << " (" << e.getMontant1();
+                    if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                    std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                }
+            }
+        }
+    }
     std::cout << std::endl;
 }
 
@@ -78,7 +192,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherScores( std::vector<Joueur>& joueurs) {
+void ConsoleView::afficherScores(std::vector<Joueur>& joueurs) {
     std::cout << "🏆 SCORES ACTUELS:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
     
@@ -96,35 +210,45 @@ void ConsoleView::afficherGagnant( Joueur& gagnant) {
 }
 
 int ConsoleView::demanderNombreJoueurs() {
-    int nombre;
+    int nombre = 0;
+    std::string line;
     do {
         std::cout << "👥 Combien de joueurs ? (2-4): ";
-        std::cin >> nombre;
-        
-        if (std::cin.fail() || nombre < 2 || nombre > 4) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::string err = "Veuillez entrer un nombre entre 2 et 4.";
-            afficherErreur(err);
+        std::getline(std::cin, line);
+        line = trimString(line);
+        if (line.empty()) {
+            std::string msg = "Veuillez entrer un nombre entre 2 et 4.";
+            afficherErreur(msg);
+            continue;
+        }
+        try {
+            nombre = std::stoi(line);
+        } catch (...) {
+            std::string msg = "Entrée invalide. Veuillez entrer un nombre entre 2 et 4.";
+            afficherErreur(msg);
+            nombre = 0;
+            continue;
+        }
+        if (nombre < 2 || nombre > 4) {
+            std::string msg = "Veuillez entrer un nombre entre 2 et 4.";
+            afficherErreur(msg);
+            nombre = 0;
         }
     } while (nombre < 2 || nombre > 4);
-    
     return nombre;
 }
 
 std::string ConsoleView::demanderNomJoueur(int numero) {
     std::string nom;
-    std::cout << "👤 Nom du joueur " << numero << ": ";
-    std::cin.ignore(); // Ignorer le retour à la ligne restant
-    std::getline(std::cin, nom);
-    
-    while (nom.empty()) {
-        std::string err = "Le nom ne peut pas être vide.";
-        afficherErreur(err);
+    do {
         std::cout << "👤 Nom du joueur " << numero << ": ";
         std::getline(std::cin, nom);
-    }
-    
+        nom = trimString(nom);
+        if (nom.empty()) {
+            std::string msg = "Le nom ne peut pas être vide.";
+            afficherErreur(msg);
+        }
+    } while (nom.empty());
     return nom;
 }
 
@@ -139,13 +263,14 @@ int ConsoleView::demanderChoixAction() {
     std::cout << "[6] Afficher le marché" << std::endl;
     std::cout << "Votre choix: ";
     
-    std::cin >> choix;
     
-    if (std::cin.fail()) {
+    if (!(std::cin >> choix)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
+    // retirer le reste de la ligne (y compris '\n') pour que getline() suivant fonctionne
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     return choix;
 }
@@ -155,12 +280,12 @@ int ConsoleView::demanderIndexCarte() {
     std::cout << "🎴 Numéro de la carte: ";
     std::cin >> index;
     
-    if (std::cin.fail()) {
+    if (!(std::cin >> index)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
-    
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return index - 1; // Convertir en index 0-based
 }
 
@@ -188,8 +313,14 @@ bool ConsoleView::confirmerAction( std::string& action) {
 
 void ConsoleView::attendreEntree() {
     std::cout << "Appuyez sur Entrée pour continuer...";
-    std::cin.ignore();
-    std::cin.get();
+    // Si des caractères sont déjà disponibles dans le buffer, on les consomme
+    // sans bloquer (pour éviter de consommer l'entrée qu'on attend).
+    if (std::cin.rdbuf()->in_avail() > 0) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    // Puis attendre une nouvelle ligne (bloque jusqu'à Enter)
+    std::string dummy;
+    std::getline(std::cin, dummy);
 }
 
 void ConsoleView::viderEcran() {

@@ -26,33 +26,7 @@ void Partie::jouerTour() {
         }
         tour_courant = new Tour(&joueurActuel);
     }
-    std::cout << "Tour " << nb_tour << " - Joueur: " << joueurActuel.getNom() << std::endl;
     joueurActuel.piocher(5);
-    while(joueurActuel.getMain().getTaille() > 0) {
-        std::cout << "Cartes en main: " << joueurActuel.getMain().getTaille() << std::endl;
-        std::cout << "Or disponible: " << tour_courant->getOr() << ", Points de combat disponibles: " << tour_courant->getDegats() << std::endl;
-        std::cout << "Que voulez-vous faire ? (1: Jouer une carte, 2: Acheter une carte du marché, 3: Acheter une gemme de feu, 4: Finir le tour) ";
-        int choix;
-        std::cin >> choix;
-        if (choix == 1) {
-            int idx;
-            std::cout << "Index de la carte à jouer (0-" << joueurActuel.getMain().getTaille()-1 << "): ";
-            std::cin >> idx;
-            joueurActuel.jouerCarte(idx,*this);
-        } else if (choix == 2) {
-            int slot;
-            std::cout << "Slot du marché à acheter (0-4): ";
-            std::cin >> slot;
-            joueurActuel.acheterDepuisMarche(slot,*this);
-        } else if (choix == 3) {
-            joueurActuel.acheterGemmeFeu(*this);
-        } else if (choix == 4) {
-            break;
-        } else {
-            std::cout << "Choix invalide, veuillez réessayer." << std::endl;
-        }
-    }
-    finTour();
 }
 
 void Partie::finTour() {

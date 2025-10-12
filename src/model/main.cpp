@@ -11,13 +11,11 @@ void Main::defausser(int idx){
     if(idx < 0 || idx >= (int)cartes.size()) {
         throw std::out_of_range("Index hors limites");
     }
-    delete cartes[idx];
     cartes.erase(cartes.begin() + idx);
 }
 
 void Main::viderMain(Joueur* j){
     for(Carte* c : cartes) {
-        delete c;
         j->getDefausse().ajouter(c);
 
     }
@@ -32,7 +30,7 @@ Carte* Main::getCarte(int idx) const{
 }
 
 void Main::toString() const{
-    std::cout << "Main: \n";
+    std::cout << "toString appelé" << std::endl;
     int i=1;
     for(const Carte* c : cartes) {
         std::cout <<  i << ") " << c->getNom() << " ";

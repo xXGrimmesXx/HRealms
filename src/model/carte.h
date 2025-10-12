@@ -25,7 +25,7 @@ public:
     // Constructeur & destructeur
     // On a préféré rajouter les effets avec les setters, pour une meilleure lisibilté lors de la construction de BibliothequeCartes
     Carte(std::string nom, int cout, Faction f);
-    ~Carte() = default;
+    virtual ~Carte() = default;
 
     // Getters
     int getId() const { return id; }

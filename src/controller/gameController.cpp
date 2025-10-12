@@ -2,6 +2,7 @@
 #include "../model/joueur.h"
 #include "../model/marche.h"
 #include "../model/carte.h"
+#include <algorithm>
 #include <stdexcept>
 
 GameController::GameController(GameView* gameView) 
@@ -33,10 +34,20 @@ void GameController::initialiserPartie() {
     // Demander le nombre de joueurs
     int nombreJoueurs = view->demanderNombreJoueurs();
     
-    // Demander les noms des joueurs
+    // Demander les noms des joueurs (vérifier unicité)
     std::vector<std::string> nomsJoueurs;
     for (int i = 1; i <= nombreJoueurs; ++i) {
-        std::string nom = view->demanderNomJoueur(i);
+        std::string nom;
+        do {
+            nom = view->demanderNomJoueur(i);
+            // Vérifier si ce nom est déjà utilisé
+            auto it = std::find(nomsJoueurs.begin(), nomsJoueurs.end(), nom);
+            if (it != nomsJoueurs.end()) {
+                std::string msg = "Ce nom de joueur est déjà pris. Veuillez en choisir un autre.";
+                view->afficherErreur(msg);
+                nom.clear();
+            }
+        } while (nom.empty());
         nomsJoueurs.push_back(nom);
     }
     

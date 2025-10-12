@@ -5,13 +5,13 @@ Deck BibliothequeCartes::creerDeckDepart() {
 
     // Cartes or/rubis
     for(int i = 0; i < 7; ++i){
-        deck.ajouterDessous(CarteObjet("Or", 0, Faction::AUCUNE).ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_OR, 1, 0, TypeCible::SOI)));
+        deck.ajouterDessous((new CarteObjet("Or", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_OR, 1, 0, TypeCible::SOI)));
     }
-    deck.ajouterDessous(CarteObjet("Rubis", 0, Faction::AUCUNE).ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_OR, 2, 0, TypeCible::SOI)));
+    deck.ajouterDessous((new CarteObjet("Rubis", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_OR, 2, 0, TypeCible::SOI)));
 
     // Cartes épée courte/dague
-    deck.ajouterDessous(CarteObjet("Épée courte", 0, Faction::AUCUNE).ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 2, 0, TypeCible::SOI)));
-    deck.ajouterDessous(CarteObjet("Dague", 0, Faction::AUCUNE).ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 1, 0, TypeCible::SOI)));
+    deck.ajouterDessous((new CarteObjet("Épée courte", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 2, 0, TypeCible::SOI)));
+    deck.ajouterDessous((new CarteObjet("Dague", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 1, 0, TypeCible::SOI)));
 
     // Mélange et retour du deck
     deck.melanger();
