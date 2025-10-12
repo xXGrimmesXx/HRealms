@@ -16,8 +16,8 @@ private:
 
 public:
     void remplirLigne();
-    void acquerirDepuisLigne(int slot, Joueur& j, Partie& partie);
-    void acquerirGemmeFeu(Joueur& j, Partie& partie);
-    void acquerirDepuisDeck(int idx, Joueur& j, Partie& partie);
+    bool acquerirDepuisLigne(int slot, Joueur& j, Partie& partie);
+    bool acquerirGemmeFeu(Joueur& j, Partie& partie);
+    bool acquerirDepuisDeck(int idx, Joueur& j, Partie& partie);
     void retournerGemmeFeuDansPile(Carte* g);
 };

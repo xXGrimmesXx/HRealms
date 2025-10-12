@@ -18,18 +18,21 @@ void Joueur::piocher(int n){
         }
     }
 }
-void Joueur::jouerCarte(int idx,Partie &p){
+bool Joueur::jouerCarte(int idx,Partie &p){
     if (idx < 0 || idx >= main.getTaille()) {
         throw std::out_of_range("Index de carte invalide");
+        return false;
     }
     Carte* c = main.getCarte(idx);
     if (c != nullptr) {
         c->lorsDeJeu(p,nullptr); // Vous devez passer la partie actuelle ici
         defausse.ajouter(c);
+        return true;
     }
+    return false;
 }
-void Joueur::acheterDepuisMarche(int slot,Partie& p){
-    p.getMarche()->acquerirDepuisLigne(slot,*this,p);
+bool Joueur::acheterDepuisMarche(int slot,Partie& p){
+    return p.getMarche()->acquerirDepuisLigne(slot,*this,p);
 }
 
 void Joueur::acheterGemmeFeu(Partie& p){

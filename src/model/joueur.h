@@ -25,8 +25,8 @@ private:
 public:
     Joueur(std::string nom="");
     void piocher(int n);
-    void jouerCarte(int idx,Partie& p);
-    void acheterDepuisMarche(int slot, Partie& p);
+    bool jouerCarte(int idx,Partie& p);
+    bool acheterDepuisMarche(int slot, Partie& p);
     void acheterGemmeFeu(Partie& p);
     void finTour();
     bool aGardeMobilise() const;

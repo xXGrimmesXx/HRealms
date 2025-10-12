@@ -1,14 +1,17 @@
 #include "marche.h"
 
 void Marche::remplirLigne(){}
-void Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
+bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
     std::cout <<slot<<j<<partie;
+    return true;
 }
-void Marche::acquerirGemmeFeu(Joueur& j, Partie& partie){
+bool Marche::acquerirGemmeFeu(Joueur& j, Partie& partie){
     std::cout <<j<<partie;
+    return true;
 }
-void Marche::acquerirDepuisDeck(int idx, Joueur& j, Partie& partie){
+bool Marche::acquerirDepuisDeck(int idx, Joueur& j, Partie& partie){
     std::cout<<idx<<j<<partie;
+    return true;
 }
 void Marche::retournerGemmeFeuDansPile(Carte* g){
     std::cout<<g;

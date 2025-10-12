@@ -5,7 +5,7 @@ CXXFLAGS=-Wall -Wextra -Werror -std=c++17
 MODELDIR = model
 VIEWDIR = view
 CONTROLLERDIR = controller
-OBJDIR = obj
+BUILDDIR = build
 
 # Création automatique des listes de fichiers
 MODEL_SOURCES = $(wildcard $(MODELDIR)/*.cpp)
@@ -14,28 +14,32 @@ CONTROLLER_SOURCES = $(wildcard $(CONTROLLERDIR)/*.cpp)
 MAIN_SOURCES = herorealms.cpp
 
 # Génération des objets avec chemins préservés
-MODEL_OBJECTS = $(MODEL_SOURCES:$(MODELDIR)/%.cpp=$(OBJDIR)/model_%.o)
-VIEW_OBJECTS = $(VIEW_SOURCES:%.cpp=$(OBJDIR)/%.o)
-CONTROLLER_OBJECTS = $(CONTROLLER_SOURCES:$(CONTROLLERDIR)/%.cpp=$(OBJDIR)/controller_%.o)
-MAIN_OBJECTS = $(MAIN_SOURCES:%.cpp=$(OBJDIR)/%.o)
+MODEL_OBJECTS = $(MODEL_SOURCES:$(MODELDIR)/%.cpp=$(BUILDDIR)/model_%.o)
+VIEW_OBJECTS = $(patsubst $(VIEWDIR)/%.cpp,$(BUILDDIR)/view_%.o,$(filter $(VIEWDIR)/%.cpp,$(VIEW_SOURCES)))
+VIEW_CONSOLE_OBJECTS = $(patsubst $(VIEWDIR)/console/%.cpp,$(BUILDDIR)/view_console_%.o,$(filter $(VIEWDIR)/console/%.cpp,$(VIEW_SOURCES)))
+CONTROLLER_OBJECTS = $(CONTROLLER_SOURCES:$(CONTROLLERDIR)/%.cpp=$(BUILDDIR)/controller_%.o)
+MAIN_OBJECTS = $(MAIN_SOURCES:%.cpp=$(BUILDDIR)/%.o)
 
-ALL_OBJECTS = $(MODEL_OBJECTS) $(VIEW_OBJECTS) $(CONTROLLER_OBJECTS) $(MAIN_OBJECTS)
+ALL_OBJECTS = $(MODEL_OBJECTS) $(VIEW_OBJECTS) $(VIEW_CONSOLE_OBJECTS) $(CONTROLLER_OBJECTS) $(MAIN_OBJECTS)
 
 # Créer les répertoires de sortie
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
 
 # Règles de compilation
-$(OBJDIR)/model_%.o : $(MODELDIR)/%.cpp | $(OBJDIR)
+$(BUILDDIR)/model_%.o : $(MODELDIR)/%.cpp | $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -I. $< -c -o $@
 
-$(OBJDIR)/view_%.o : $(VIEWDIR)/%.cpp | $(OBJDIR)
+$(BUILDDIR)/view_%.o : $(VIEWDIR)/%.cpp | $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -I. $< -c -o $@
 
-$(OBJDIR)/controller_%.o : $(CONTROLLERDIR)/%.cpp | $(OBJDIR)
+$(BUILDDIR)/view_console_%.o : $(VIEWDIR)/console/%.cpp | $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -I. $< -c -o $@
 
-$(OBJDIR)/%.o : %.cpp | $(OBJDIR)
+$(BUILDDIR)/controller_%.o : $(CONTROLLERDIR)/%.cpp | $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -I. $< -c -o $@
+
+$(BUILDDIR)/%.o : %.cpp | $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -I. $< -c -o $@
 
 # Compilation de l'exécutable
@@ -48,4 +52,8 @@ run : Hrealms
 	./Hrealms
 
 clean :
-	rm -rf $(OBJDIR) Hrealms
+	rm -rf $(BUILDDIR) Hrealms
+
+# Aide pour déboguer
+print-% :
+	@echo '$*=$($*)'
