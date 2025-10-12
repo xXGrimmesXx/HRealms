@@ -25,7 +25,7 @@ public:
     // Constructeur & destructeur
     // On a préféré rajouter les effets avec les setters, pour une meilleure lisibilté lors de la construction de BibliothequeCartes
     Carte(std::string nom, int cout, Faction f);
-    virtual ~Carte() = default;
+    ~Carte() = default;
 
     // Getters
     int getId() const { return id; }
@@ -46,10 +46,10 @@ public:
     bool setEffetAllieDeclenche(bool b) { return effetAllieDeclenche = b; }
 
     // Méthodes
-    virtual void lorsDeJeu(Partie& p,void* target);
+    void lorsDeJeu(Partie& p,void* target);
     bool peutDeclencherAllie(Joueur& j);
-    virtual void activer(Partie& p,Joueur& joueurSource,void* target);
-    virtual void sacrifier(Joueur& j, Partie& p);
+    void activer(Partie& p,Joueur& joueurSource,void* target);
+    void sacrifier(Joueur& j, Partie& p);
 };
 
 #endif

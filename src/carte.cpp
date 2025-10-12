@@ -43,9 +43,8 @@ void Carte::activer(Partie& p,Joueur& joueurSource,void* target){
     effetAllieDeclenche=true;
 }
 
-void Carte::lorsDeJeu(Partie& p,void* target){
+void Carte::lorsDeJeu(Partie& p, void* target) {
     for (const Effet& effet : effetsPrimaire) {
-        effet.appliquer(this,target,p);
-    
+        effet.appliquer(this, target, p);
     }
 }

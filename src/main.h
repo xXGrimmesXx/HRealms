@@ -11,7 +11,7 @@ private:
 public:
     // Constructeur & destructeur
     Main()=default;
-    ~Main();
+    ~Main()=default;
 
     // Getters
     Carte* getCarte(int idx) const;

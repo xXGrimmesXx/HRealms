@@ -6,11 +6,12 @@
 #include "GodMode.h"
 
 class Tour;
+class Marche;
 
 class Partie {
 private:
     std::vector<Joueur> joueurs;
-    Marche marche;
+    Marche* marche;
     Tour* tour_courant;
     int nb_tour;
     int idx_joueur_actuel;
@@ -31,7 +32,7 @@ public:
     Tour* getTourCourant() const { return tour_courant; }
     Joueur& getJoueurActuel() { return joueurs[idx_joueur_actuel];}
     int getIdxJoueurActuel(){return idx_joueur_actuel;}
-    Marche& getMarche() { return marche; }
+    Marche* getMarche() { return marche; }
     GodMode& getGodMode() { return godMode; }
     int getNbTour() const { return nb_tour; }
     const std::vector<Joueur>& getJoueurs() const { return joueurs; }
@@ -40,5 +41,9 @@ public:
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
     Pile getCartesSacrifie(){return cartesSacrifie;}
+
+    std::string toString() const ;
+    std::string toStringDetail() const;
+    friend std::ostream& operator<<(std::ostream& os, const Partie& p);
 
 };

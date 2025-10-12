@@ -3,7 +3,7 @@
 
 #include "Tour.h"
 
-Partie::Partie() : joueurs(std::vector<Joueur>(0)),marche(Marche()),tour_courant(nullptr), nb_tour(0), idx_joueur_actuel(0), godMode(GodMode()),cartesSacrifie(Pile()) {
+Partie::Partie() : joueurs(std::vector<Joueur>(0)),marche(new Marche()),tour_courant(nullptr), nb_tour(0), idx_joueur_actuel(0), godMode(GodMode()),cartesSacrifie(Pile()) {
 }
 
 void Partie::commencer() {
@@ -21,9 +21,11 @@ void Partie::commencer() {
         std::cin >> nom;
         joueurs.push_back(Joueur(nom));
     }
-    marche = Marche();
+    marche = new Marche();
     nb_tour = 1;
     idx_joueur_actuel = 0;
+    tour_courant = new Tour(&joueurs[0]);
+    std::cout << "La partie commence !" << std::endl;
 }
 
 void Partie::jouerTour() {
@@ -93,5 +95,28 @@ void Partie::GOD_mettreTousJoueurs1PV() {
 
 void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur& j) {
     tour_courant->ajouterOr(100); // Donner suffisamment d'or pour l'achat
-    marche.acquerirDepuisDeck(idx, j, *this);
+    marche->acquerirDepuisDeck(idx, j, *this);
+}
+
+std::string Partie::toString() const {
+    std::string res = "Partie avec " + std::to_string(joueurs.size()) + " joueurs, tour " + std::to_string(nb_tour) + "\n";
+    for (const auto& j : joueurs) {
+        res += j.toString() + "\n";
+    }
+    return res;
+}
+
+std::string Partie::toStringDetail() const {
+    std::string res = "Partie avec " + std::to_string(joueurs.size()) + " joueurs, tour " + std::to_string(nb_tour) + "\n";
+    for (auto j : joueurs) {
+        res += j.toString() + "\n";
+        res += "  Defausse: " + std::to_string(j.getDefausse().taille()) + " cartes\n";
+        res += "  Main: " + std::to_string(j.getMain().getTaille()) + " cartes\n";
+        res += "  Champions: " + std::to_string(j.getChampions().size()) + " champions\n";
+    }
+    return res;
+}
+std::ostream& operator<<(std::ostream& os, const Partie& p) {
+    os << p.toString();
+    return os;
 }

@@ -344,7 +344,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
-                    joueurTgt->prochainAchatActionDessusDeck();
+                    joueurTgt->activerProchainAchatActionDessusDeck();
                 }
                 else{
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
@@ -361,7 +361,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
-                    joueurTgt->prochainAchatDansMain();
+                    joueurTgt->activerProchainAchatDansMain();
                 }
                 else{
                     throw std::invalid_argument("Target is not a valid Joueur pointer");

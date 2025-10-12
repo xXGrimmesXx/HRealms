@@ -7,6 +7,7 @@
 #include "Champion.h"
 #include "Attaquable.h"
 #include "partie.h"
+#include "bibliothequeCartes.h"
 
 class Deck;
 
@@ -57,4 +58,12 @@ public:
     const std::vector<Champion*>& getChampions() const { return champions; }
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }
+
+    std::string toString() const {
+        return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.taille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Joueur& j) {
+        os << j.toString();
+        return os;
+    }
 };

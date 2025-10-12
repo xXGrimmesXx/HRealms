@@ -6,10 +6,6 @@
 #include "joueur.h"
 #include "partie.h"
 
-class Deck;
-class Carte;
-class Joueur;
-class Partie;
 
 class Marche {
 private:

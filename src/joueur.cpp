@@ -1,6 +1,6 @@
 #include "Joueur.h"
 
-Joueur::Joueur(std::string nom) : nom(nom), pv(50), deck(), defausse(), main(), champions() {}
+Joueur::Joueur(std::string nom) : nom(nom), pv(50), deck(BibliothequeCartes::creerDeckDepart()), defausse(), main(), champions() {}
 
 void Joueur::piocher(int n){
     for (int i = 0; i < n; ++i) {
@@ -29,11 +29,11 @@ void Joueur::jouerCarte(int idx,Partie &p){
     }
 }
 void Joueur::acheterDepuisMarche(int slot,Partie& p){
-    p.getMarche().acquerirDepuisLigne(slot,*this,p);
+    p.getMarche()->acquerirDepuisLigne(slot,*this,p);
 }
 
 void Joueur::acheterGemmeFeu(Partie& p){
-    p.getMarche().acquerirGemmeFeu(*this,p);
+    p.getMarche()->acquerirGemmeFeu(*this,p);
 }
 
 void Joueur::finTour(){
@@ -120,4 +120,20 @@ std::vector<Champion*> Joueur::getGardes()const{
         }
     }
     return res;
+}
+
+void Joueur::prendreDegats(int m){
+    std::vector<Champion*> g = getGardes();
+    for(auto c :g){
+        if (m>0){
+            assomerChampion(c);
+            m-= c->getVie();
+        }
+        else {
+            return;
+        }
+    }
+    if (m>0){
+        pv -=m;
+    }
 }
