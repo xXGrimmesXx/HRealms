@@ -71,7 +71,7 @@ void ConsoleView::afficherMain( Joueur& joueur) {
             case TypeEffet::DEFAUSSER: return "Défausser";
             case TypeEffet::SACRIFIER: return "Sacrifier";
             case TypeEffet::ASSOMMER_CHAMPION: return "Assommer Champion";
-            case TypeEffet::PREPARE_CHAMPION: return "Prépare Champion";
+            case TypeEffet::PREPARE_CHAMPION: return "Préparer Champion";
             case TypeEffet::COMBAT_OU_VIE: return "Combat ou Vie";
             case TypeEffet::OR_OU_COMBAT: return "Or ou Combat";
             case TypeEffet::COMBAT_PAR_CHAMPION: return "Combat par Champion";
@@ -83,8 +83,8 @@ void ConsoleView::afficherMain( Joueur& joueur) {
             case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK: return "Champion défausse au dessus deck";
             case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK: return "Prochain achat action dessus deck";
             case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN: return "Prochain achat dans main";
-            case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT: return "Sacrifier si oui -> Ajout Combat";
-            case TypeEffet::PIOCHE_SIOUI_DEFAUSSE: return "Piocher si oui -> Défausse";
+            case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT: return "Sacrifier, si oui -> Ajout Combat";
+            case TypeEffet::PIOCHE_SIOUI_DEFAUSSE: return "Piocher, si oui -> Défausse";
             default: return "Effet inconnu";
         }
     };
@@ -276,13 +276,12 @@ int ConsoleView::demanderChoixAction() {
 int ConsoleView::demanderIndexCarte() {
     int index;
     std::cout << "🎴 Numéro de la carte: ";
-    std::cin >> index;
-    
     if (!(std::cin >> index)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
+    // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return index - 1; // Convertir en index 0-based
 }
@@ -290,14 +289,13 @@ int ConsoleView::demanderIndexCarte() {
 int ConsoleView::demanderSlotMarche() {
     int slot;
     std::cout << "🏪 Numéro du slot dans le marché: ";
-    std::cin >> slot;
-    
-    if (std::cin.fail()) {
+    if (!(std::cin >> slot)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
-    
+    // retirer le reste de la ligne
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return slot - 1; // Convertir en index 0-based
 }
 
