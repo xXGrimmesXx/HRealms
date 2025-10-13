@@ -131,13 +131,12 @@ void GameController::gererActionJoueur() {
             view->afficherErreur(message);
             break;
     }
+
+    afficherEtatJeu();
 }
 
 bool GameController::jouerCarte() {
     Joueur& joueurActuel = partie->getJoueurActuel();
-    
-    // Afficher la main
-    view->afficherMain(joueurActuel);
     
     // Demander quelle carte jouer
     int index = view->demanderIndexCarte();
@@ -240,11 +239,7 @@ std::vector<void*> GameController::choisirCible(Carte* carte) {
 }
 
 bool GameController::acheterCarte() {
-    Marche* marche = partie->getMarche();
-    
-    // Afficher le marché
-    view->afficherMarche(*marche);
-    
+
     // Demander quelle carte acheter
     int slot = view->demanderSlotMarche();
     
@@ -328,6 +323,7 @@ void GameController::finirTour() {
 }
 
 void GameController::afficherEtatJeu() {
+    view->viderEcran();
     view->afficherPartie(*partie);
     view->afficherScores(partie->getJoueurs());
     afficherMarche();
