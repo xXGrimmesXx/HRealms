@@ -73,7 +73,12 @@ void GameController::jouerTour() {
         partie->jouerTour();
         
         // Afficher l'état du jeu
+
+        std::cout << "avant etat" << std::endl;
+
         afficherEtatJeu();
+
+        std::cout << "état affiche" << std::endl;
         
         // Gérer les actions du joueur
         bool tourTermine = false;
@@ -81,14 +86,8 @@ void GameController::jouerTour() {
             gererActionJoueur();
             
             if (partie->getTourCourant()==nullptr) {
-                partie->setTourCourant( new Tour(&partie->getJoueurs()[partie->getIdxJoueurActuel()]) );
                 tourTermine = true;
             }
-        }
-        
-        // Finir le tour
-        if (!partie->estTerminee()) {
-            partie->finTour();
         }
         
     } catch (const std::exception& e) {
@@ -177,21 +176,21 @@ std::vector<void*> GameController::choisirCible(Carte* carte) {
                 // Demander quel joueur attaquer
                 {
                 int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                targets.push_back(&partie->getJoueurs()[index]);
+                targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
 
             case TypeCible::CHAMPION_ALLIE:
                 {
                 int index = view->demanderIndexChampion(partie->getJoueurActuel()); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurActuel().getChampions()[index]);
+                targets.push_back(partie->getJoueurActuel().getChampions().at(index));
                 }
                 break;
 
             case TypeCible::CHAMPION_ENNEMI:
                 {
                 int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs()[ indexJoueur ];
+                Joueur j = partie->getJoueurs().at( indexJoueur );
                 int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
                 targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
                 }
@@ -223,7 +222,7 @@ std::vector<void*> GameController::choisirCible(Carte* carte) {
             case TypeCible::CHAMPION:
                 {
                 int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs()[ indexJoueur ];
+                Joueur j = partie->getJoueurs().at( indexJoueur );
                 int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
                 targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
                 }
@@ -276,7 +275,7 @@ bool GameController::attaquerJoueur() {
     }
     
     // Confirmer l'attaque
-    std::string nomCible = joueurs[index].getNom();
+    std::string nomCible = joueurs.at(index).getNom();
     std::string message = "Confirmez-vous l'attaque contre " + nomCible + " ?";
     if (!view->confirmerAction(message)) {
         return false;
@@ -284,7 +283,7 @@ bool GameController::attaquerJoueur() {
     
     // Essayer d'attaquer
     try {
-        Joueur& cible = partie->getJoueurs()[index];
+        Joueur& cible = partie->getJoueurs().at(index);
         if (cible.aGardeMobilise()) {
             std::string message = nomCible + " a un garde mobilisé. Attaque annulée.";
             view->afficherErreur(message);
@@ -314,16 +313,12 @@ void GameController::finirTour() {
         std::string message = "Tour terminé.";
         view->afficherMessage(message);
         // La logique de fin de tour sera gérée dans la boucle principale
-        partie->setTourCourant(nullptr); // Réinitialiser les ressources du tour
-        partie->setIdxJoueurActuel((partie->getIdxJoueurActuel() + 1) % partie->getJoueurs().size());
-        if(partie->getIdxJoueurActuel()==0){
-            partie->setNbTour(partie->getNbTour()+1);
-        }
+        partie->finTour();
     }
 }
 
 void GameController::afficherEtatJeu() {
-    view->viderEcran();
+    //view->viderEcran();
     view->afficherPartie(*partie);
     view->afficherScores(partie->getJoueurs());
     afficherMarche();
@@ -363,7 +358,7 @@ void GameController::finirPartie() {
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {
     if (index < 0 || index >= max) {
-        std::string message = "Index de " + type + " invalide. Doit être entre 1 et " + std::to_string(max) + ".";
+        std::string message = "Index de " + type + " invalide. Doit être entre 0 et " + std::to_string(max) + ".";
         view->afficherErreur(message);
         return false;
     }

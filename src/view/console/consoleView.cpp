@@ -34,7 +34,7 @@ void ConsoleView::afficherErreur(std::string& erreur) {
 }
 
 void ConsoleView::afficherPartie(Partie& partie) {
-    viderEcran();
+    //viderEcran();
     std::cout << "═══════════════════════════════════════" << std::endl;
     std::cout << "🏰 HERO REALMS - Tour " << partie.getNbTour() << std::endl;
     std::cout << "═══════════════════════════════════════" << std::endl;
@@ -178,6 +178,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
     std::cout << "───────────────────────────────────────" << std::endl;
     int taille = marche.getLigne().size();
     std::vector<Carte*> ligne = marche.getLigne();
+
     // On convertit les enums en string pour un affichage lisible
     auto typeEffetToString = [](TypeEffet t) -> std::string {
         switch (t) {
@@ -206,19 +207,6 @@ void ConsoleView::afficherMarche( Marche& marche) {
         }
     };
 
-    auto typeCibleToString = [](TypeCible c) -> std::string {
-        switch (c) {
-            case TypeCible::SOI: return "Soi";
-            case TypeCible::ADVERSAIRE: return "Adversaire";
-            case TypeCible::CHAMPION: return "Champion";
-            case TypeCible::TOUS_CHAMPIONS: return "Tous champions";
-            case TypeCible::CARTE: return "Carte";
-            case TypeCible::NIMPORTE: return "N'importe";
-            case TypeCible::AUCUNE: return "Aucune";
-            default: return "Cible inconnue";
-        }
-    };
-
     // Pour chaque carte, afficher ses détails
     for (int i = 0; i < taille; ++i) {
         Carte* c = ligne.at(i);
@@ -236,6 +224,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
         // Son indice, nom, et faction
         std::cout << "[" << i + 1 << "] " << typeStr << " - " << c->getNom();
         std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
+        std::cout << "   Coût: " << c->getCout() << " Or" << std::endl;
 
         // Effets primaires
         const auto prim = c->getEffetsPrimaire();
@@ -245,7 +234,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
                 std::cout << "     - " << typeEffetToString(e.getTypeEffet())
                           << " (" << e.getMontant1();
                 if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
-                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                std::cout << ")" << std::endl;
             }
         }
 
@@ -257,7 +246,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
                 std::cout << "     - " << typeEffetToString(e.getTypeEffet())
                           << " (" << e.getMontant1();
                 if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
-                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                std::cout << ")" << std::endl;
             }
         }
 
@@ -269,7 +258,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
                 std::cout << "     - " << typeEffetToString(e.getTypeEffet())
                           << " (" << e.getMontant1();
                 if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
-                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                std::cout << ")" << std::endl;
             }
         }
 
@@ -282,7 +271,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
                     std::cout << "     - " << typeEffetToString(e.getTypeEffet())
                               << " (" << e.getMontant1();
                     if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
-                    std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                    std::cout << ")" << std::endl;
                 }
             }
         }
@@ -293,11 +282,12 @@ void ConsoleView::afficherMarche( Marche& marche) {
 void ConsoleView::afficherScores(std::vector<Joueur>& joueurs) {
     std::cout << "🏆 SCORES ACTUELS:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
-    
-    for (const auto& joueur : joueurs) {
-        std::cout << joueur.getNom() << ": " << joueur.getPv() << " PV" << std::endl;
+
+    for (size_t i = 0; i < joueurs.size(); ++i) {
+        afficherJoueur(joueurs.at(i));
     }
-    std::cout << std::endl;
+
+    std::cout << "\n" << std::endl;
 }
 
 void ConsoleView::afficherGagnant( Joueur& gagnant) {

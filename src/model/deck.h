@@ -9,6 +9,7 @@
 class Deck {
 private:
     std::deque<Carte*> cartes;
+    std::default_random_engine rng ;
 public:
     Deck();
     ~Deck();

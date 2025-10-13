@@ -537,7 +537,6 @@ Deck BibliothequeCartes::creerDeckMarche() {
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_ALLIE, 1, TypeCible::SOI))
     );
 
-    deck.melanger();
     return deck;
 }
 

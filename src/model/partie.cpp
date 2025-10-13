@@ -3,37 +3,44 @@
 
 #include "Tour.h"
 
-Partie::Partie() : joueurs(std::vector<Joueur>(0)),marche(new Marche()),tour_courant(nullptr), nb_tour(0), idx_joueur_actuel(0), godMode(GodMode()),cartesSacrifie(Pile()) {
+Partie::Partie(){
+    joueurs = std::vector<Joueur>();
+    marche = new Marche();
+    tour_courant = nullptr;
+    nb_tour = 0;
+    idx_joueur_actuel = 0;
+    godMode = GodMode();
+    cartesSacrifie = Pile();
 }
 
 void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     // Initialisation de la partie
-    for (const auto& nom : nomsJoueurs) {
-        joueurs.push_back(Joueur(nom));
+    for (size_t i = 0; i < nomsJoueurs.size(); i++) {
+        Joueur j(nomsJoueurs.at(i));
+        joueurs.push_back(j);
     }
-    marche = new Marche();
     marche->remplirLigne();
     nb_tour = 1;
     idx_joueur_actuel = 0;
     tour_courant = new Tour(&joueurs[0]);
-    std::cout << "La partie commence !" << std::endl;
 }
 
 void Partie::jouerTour() {
     Joueur& joueurActuel = joueurs[idx_joueur_actuel];
+    tour_courant = new Tour(&joueurActuel);
     if (tour_courant == nullptr || tour_courant->getJoueur() != &joueurActuel) {
         if (tour_courant != nullptr) {
-            delete tour_courant; // Libérer la mémoire de l'ancien tour
+            tour_courant = nullptr;
         }
         tour_courant = new Tour(&joueurActuel);
     }
-    joueurActuel.piocher(5);
+    std::cout << "Nouveau tour pour " << joueurActuel.getNom() << " (Tour " << nb_tour << ")" << std::endl;
 }
 
 void Partie::finTour() {
     Joueur& joueurActuel = joueurs[idx_joueur_actuel];
     joueurActuel.finTour();
-    tour_courant->reinitialiser();
+    joueurActuel.piocher(5);
     idx_joueur_actuel = (idx_joueur_actuel + 1) % joueurs.size();
     if (idx_joueur_actuel == 0) {
         nb_tour++;
@@ -43,7 +50,6 @@ void Partie::finTour() {
 bool Partie::estTerminee() const {
     for (const auto& j : joueurs) {
         if (j.getPv() <= 0) {
-            std::cout << "Le joueur " << j.getNom() << " a perdu !" << std::endl;
             return true;
         }
     }

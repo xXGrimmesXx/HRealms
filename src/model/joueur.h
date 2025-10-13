@@ -24,6 +24,7 @@ private:
 
 public:
     Joueur(std::string nom="");
+    ~Joueur() = default;
     void piocher(int n);
     bool jouerCarte(int idx,Partie& p,std::vector<void*> target);
     bool acheterDepuisMarche(int slot, Partie& p);

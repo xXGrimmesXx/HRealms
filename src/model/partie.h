@@ -30,13 +30,13 @@ public:
 
     //getters setters
     Tour* getTourCourant() const { return tour_courant; }
-    Joueur& getJoueurActuel() { return joueurs[idx_joueur_actuel];}
+    Joueur& getJoueurActuel() { return joueurs.at(idx_joueur_actuel);}
     int getIdxJoueurActuel(){return idx_joueur_actuel;}
     Marche* getMarche() { return marche; }
     GodMode& getGodMode() { return godMode; }
     int getNbTour() const { return nb_tour; }
     std::vector<Joueur>& getJoueurs() { return joueurs; }
-    void setIdxJoueurActuel(int idx) { idx_joueur_actuel = idx; }
+    void setIdxJoueurActuel(int idx) { idx_joueur_actuel = idx; };
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }

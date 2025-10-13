@@ -5,16 +5,19 @@
 #include "Carte.h"
 #include "joueur.h"
 #include "partie.h"
+#include "bibliothequeCartes.h"
+#include "tour.h"
 
 
 class Marche {
 private:
-    Deck* deckMarche;
+    Deck deckMarche;
     std::vector<Carte*> ligne;
     Pile pileGemmesFeu;
     Pile zoneSacrifice;
 
 public:
+    Marche();
     void remplirLigne();
     bool acquerirDepuisLigne(int slot, Joueur& j, Partie& partie);
     bool acquerirGemmeFeu(Joueur& j, Partie& partie);

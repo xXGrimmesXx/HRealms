@@ -1,6 +1,17 @@
 #include "Joueur.h"
 
-Joueur::Joueur(std::string nom) : nom(nom), pv(50), deck(BibliothequeCartes::creerDeckDepart()), defausse(), main(), champions() {}
+Joueur::Joueur(std::string nom) {
+    this->nom = nom;
+    pv = 50;
+    deck = BibliothequeCartes::creerDeckDepart();
+    deck.melanger();
+    prochainAchatActionDessusDeck = false;
+    prochainAchatDansMain = false;
+    main = Main();
+    defausse = Pile();
+    champions = std::vector<Champion*>();
+    piocher(5); // Piocher 5 cartes au début
+}
 
 void Joueur::piocher(int n){
     for (int i = 0; i < n; ++i) {
