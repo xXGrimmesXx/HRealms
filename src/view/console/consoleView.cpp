@@ -176,19 +176,117 @@ void ConsoleView::afficherMain( Joueur& joueur) {
 void ConsoleView::afficherMarche( Marche& marche) {
     std::cout << "🏪 MARCHÉ:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
+    int taille = marche.getLigne().size();
+    std::vector<Carte*> ligne = marche.getLigne();
+    // On convertit les enums en string pour un affichage lisible
+    auto typeEffetToString = [](TypeEffet t) -> std::string {
+        switch (t) {
+            case TypeEffet::AJOUT_OR: return "Ajout Or";
+            case TypeEffet::AJOUT_COMBAT: return "Ajout Combat";
+            case TypeEffet::AJOUT_VIE: return "Ajout Vie";
+            case TypeEffet::PIOCHER: return "Piocher";
+            case TypeEffet::DEFAUSSER: return "Défausser";
+            case TypeEffet::SACRIFIER: return "Sacrifier";
+            case TypeEffet::ASSOMMER_CHAMPION: return "Assommer Champion";
+            case TypeEffet::PREPARE_CHAMPION: return "Préparer Champion";
+            case TypeEffet::COMBAT_OU_VIE: return "Combat ou Vie";
+            case TypeEffet::OR_OU_COMBAT: return "Or ou Combat";
+            case TypeEffet::COMBAT_PAR_CHAMPION: return "Combat par Champion";
+            case TypeEffet::COMBAT_PAR_GARDE: return "Combat par Garde";
+            case TypeEffet::COMBAT_PAR_ALLIE: return "Combat par Allié";
+            case TypeEffet::VIE_PAR_CHAMPION: return "Vie par Champion";
+            case TypeEffet::OR_OU_VIE_PAR_CHAMPION: return "Or ou Vie par Champion";
+            case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK: return "Défausse au dessus du deck";
+            case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK: return "Champion défausse au dessus deck";
+            case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK: return "Prochain achat action dessus deck";
+            case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN: return "Prochain achat dans main";
+            case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT: return "Sacrifier, si oui -> Ajout Combat";
+            case TypeEffet::PIOCHE_SIOUI_DEFAUSSE: return "Piocher, si oui -> Défausse";
+            default: return "Effet inconnu";
+        }
+    };
 
-    // Afficher les cartes disponibles dans le marché
-    const auto& cartes = marche.getLigne();
-    for (size_t i = 0; i < cartes.size(); ++i) {
-        if (cartes[i] != nullptr) {
-            std::cout << "[" << i + 1 << "] " << cartes[i]->getNom();
-            std::cout << " (Coût: " << cartes[i]->getCout() << ")";
-            std::cout << " - " << getFactionSymbol(cartes[i]->getFaction()) << std::endl;
-        } else {
-            std::cout << "[" << i + 1 << "] Slot vide" << std::endl;
+    auto typeCibleToString = [](TypeCible c) -> std::string {
+        switch (c) {
+            case TypeCible::SOI: return "Soi";
+            case TypeCible::ADVERSAIRE: return "Adversaire";
+            case TypeCible::CHAMPION: return "Champion";
+            case TypeCible::TOUS_CHAMPIONS: return "Tous champions";
+            case TypeCible::CARTE: return "Carte";
+            case TypeCible::NIMPORTE: return "N'importe";
+            case TypeCible::AUCUNE: return "Aucune";
+            default: return "Cible inconnue";
+        }
+    };
+
+    // Pour chaque carte, afficher ses détails
+    for (int i = 0; i < taille; ++i) {
+        Carte* c = ligne.at(i);
+        if (!c) {
+            std::cout << "[" << i + 1 << "] <vide>" << std::endl;
+            continue;
+        }
+
+        // Type de carte
+        std::string typeStr = "Inconnu";
+        if (dynamic_cast<Champion*>(c)) typeStr = "Champion";
+        else if (dynamic_cast<CarteObjet*>(c)) typeStr = "Objet";
+        else if (dynamic_cast<CarteAction*>(c)) typeStr = "Action";
+
+        // Son indice, nom, et faction
+        std::cout << "[" << i + 1 << "] " << typeStr << " - " << c->getNom();
+        std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
+
+        // Effets primaires
+        const auto prim = c->getEffetsPrimaire();
+        if (!prim.empty()) {
+            std::cout << "   Effets primaires:" << std::endl;
+            for (const auto& e : prim) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Effets alliés
+        const auto alli = c->getEffetsAllie();
+        if (!alli.empty()) {
+            std::cout << "   Effets alliés:" << std::endl;
+            for (const auto& e : alli) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Effets sacrifice
+        const auto sac = c->getEffetsSacrifice();
+        if (!sac.empty()) {
+            std::cout << "   Effets de sacrifice:" << std::endl;
+            for (const auto& e : sac) {
+                std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                          << " (" << e.getMontant1();
+                if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+            }
+        }
+
+        // Si champion, afficher ses effets d'activation
+        if (Champion* ch = dynamic_cast<Champion*>(c)) {
+            const auto act = ch->getEffetsActiver();
+            if (!act.empty()) {
+                std::cout << "   Effets d'activation:" << std::endl;
+                for (const auto& e : act) {
+                    std::cout << "     - " << typeEffetToString(e.getTypeEffet())
+                              << " (" << e.getMontant1();
+                    if (e.getMontant2() != 0) std::cout << ", " << e.getMontant2();
+                    std::cout << ") cible: " << typeCibleToString(e.getTypeCible()) << std::endl;
+                }
+            }
         }
     }
-    
     std::cout << std::endl;
 }
 
