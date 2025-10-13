@@ -12,6 +12,7 @@ void Partie::commencer(std::vector<std::string> nomsJoueurs) {
         joueurs.push_back(Joueur(nom));
     }
     marche = new Marche();
+    marche->remplirLigne();
     nb_tour = 1;
     idx_joueur_actuel = 0;
     tour_courant = new Tour(&joueurs[0]);
