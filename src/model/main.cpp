@@ -29,14 +29,14 @@ Carte* Main::getCarte(int idx) const{
     return cartes[idx];
 }
 
-void Main::toString() const{
-    std::cout << "toString appelé" << std::endl;
+std::string Main::toString() const{
+    std::string result = "Main: ";
     int i=1;
     for(const Carte* c : cartes) {
-        std::cout <<  i << ") " << c->getNom() << " ";
+        result += std::to_string(i) + ") " + c->getNom() + " ";
         ++i;
     }
-    std::cout << std::endl;
+    return result;
 }
 
 bool Main::contientCarteDeFaction(Faction f){
@@ -55,4 +55,6 @@ void Main::sacrifier(Carte* c){
         }
     }
 }
+
+
 

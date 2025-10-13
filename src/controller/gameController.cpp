@@ -80,10 +80,10 @@ void GameController::jouerTour() {
         while (!tourTermine && !partie->estTerminee()) {
             gererActionJoueur();
             
-            // Vérifier si le joueur veut finir son tour
-            // Cette logique dépendra de votre implémentation
-            // Pour l'instant, on suppose qu'une action termine le tour
-            tourTermine = true;
+            if (partie->getTourCourant()==nullptr) {
+                partie->setTourCourant( new Tour(&partie->getJoueurs()[partie->getIdxJoueurActuel()]) );
+                tourTermine = true;
+            }
         }
         
         // Finir le tour
@@ -141,15 +141,19 @@ bool GameController::jouerCarte() {
     
     // Demander quelle carte jouer
     int index = view->demanderIndexCarte();
-    
     // Valider l'index
     if (!validerIndex(index,joueurActuel.getMain().getTaille(), "carte")) {
         return false;
     }
+
+     // Pour l'instant, pas de cible spécifique
+    Carte* c = joueurActuel.getMain().getCarte(index);
+    std::vector<void*> cibles = choisirCible(c);
+    
     
     // Essayer de jouer la carte
     try {
-        bool succes = joueurActuel.jouerCarte(index, *partie);
+        bool succes = joueurActuel.jouerCarte(index, *partie, cibles);
         if (succes) {
             std::string message = "Carte jouée avec succès !";
             view->afficherMessage(message);
@@ -160,6 +164,79 @@ bool GameController::jouerCarte() {
         view->afficherErreur(message);
         return false;
     }
+}
+
+std::vector<void*> GameController::choisirCible(Carte* carte) {
+    std::vector<void*> targets;
+    for(size_t i=0;i<carte->getEffetsPrimaire().size();i++){
+        switch(carte->getEffetsPrimaire().at(i).getTypeCible()){
+            case TypeCible::SOI :
+                targets.push_back(&partie->getJoueurActuel());
+                break;
+
+            case TypeCible::ADVERSAIRE:
+                // Demander quel joueur attaquer
+                {
+                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                targets.push_back(&partie->getJoueurs()[index]);
+                }
+                break;
+
+            case TypeCible::CHAMPION_ALLIE:
+                {
+                int index = view->demanderIndexChampion(partie->getJoueurActuel()); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurActuel().getChampions()[index]);
+                }
+                break;
+
+            case TypeCible::CHAMPION_ENNEMI:
+                {
+                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                Joueur j = partie->getJoueurs()[ indexJoueur ];
+                int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                break;
+
+            case TypeCible::TOUS_CHAMPIONS:
+            {
+                for(auto j : partie->getJoueurs()){
+                    for(auto c : j.getChampions()){
+                        targets.push_back(c);
+                    }
+                }
+            }
+                break;
+
+            case TypeCible::CARTE:
+                // Pour l'instant, on ne gère pas les cartes sur le terrain
+                targets.push_back(nullptr);
+                break;
+
+            case TypeCible::NIMPORTE:
+                targets.push_back(nullptr); // Ou une autre logique pour "n'importe"
+                break;
+
+            case TypeCible::AUCUNE:
+                targets.push_back(nullptr);
+                break;
+
+            case TypeCible::CHAMPION:
+                {
+                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                Joueur j = partie->getJoueurs()[ indexJoueur ];
+                int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                break;
+
+            default:
+                targets.push_back(nullptr);
+                break;
+        }
+    }
+    return targets;
+
 }
 
 bool GameController::acheterCarte() {
@@ -193,19 +270,10 @@ bool GameController::acheterCarte() {
 
 bool GameController::attaquerJoueur() {
     std::vector<Joueur>& joueurs = partie->getJoueurs();
-    const Joueur& joueurActuel = partie->getJoueurActuel();
-    
-    // Afficher les joueurs disponibles
-    std::string message = "Joueurs disponibles pour l'attaque:";
-    view->afficherMessage(message);
-    for (size_t i = 0; i < joueurs.size(); ++i) {
-        if (joueurs[i].getNom() != joueurActuel.getNom()) {
-            view->afficherJoueur(joueurs[i]);
-        }
-    }
+    //const Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Demander quel joueur attaquer
-    int index = view->demanderIndexCarte(); // Réutiliser cette méthode
+    int index = view->demanderIndexJoueur(joueurs); // Réutiliser cette méthode
     
     // Valider l'index
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
@@ -214,7 +282,7 @@ bool GameController::attaquerJoueur() {
     
     // Confirmer l'attaque
     std::string nomCible = joueurs[index].getNom();
-    message = "Confirmez-vous l'attaque contre " + nomCible + " ?";
+    std::string message = "Confirmez-vous l'attaque contre " + nomCible + " ?";
     if (!view->confirmerAction(message)) {
         return false;
     }
@@ -251,6 +319,11 @@ void GameController::finirTour() {
         std::string message = "Tour terminé.";
         view->afficherMessage(message);
         // La logique de fin de tour sera gérée dans la boucle principale
+        partie->setTourCourant(nullptr); // Réinitialiser les ressources du tour
+        partie->setIdxJoueurActuel((partie->getIdxJoueurActuel() + 1) % partie->getJoueurs().size());
+        if(partie->getIdxJoueurActuel()==0){
+            partie->setNbTour(partie->getNbTour()+1);
+        }
     }
 }
 

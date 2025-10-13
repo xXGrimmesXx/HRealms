@@ -23,8 +23,10 @@ public:
     std::string demanderNomJoueur(int numero) override;
     int demanderChoixAction() override;
     int demanderIndexCarte() override;
+    int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
+    int demanderIndexChampion(Joueur& joueur) override;
     int demanderSlotMarche() override;
-        bool confirmerAction(std::string& action) override;
+    bool confirmerAction(std::string& action) override;
     void attendreEntree() override;
     void viderEcran() override;
 

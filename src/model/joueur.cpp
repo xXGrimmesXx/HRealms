@@ -18,15 +18,17 @@ void Joueur::piocher(int n){
         }
     }
 }
-bool Joueur::jouerCarte(int idx,Partie &p){
+bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target){
     if (idx < 0 || idx >= main.getTaille()) {
         throw std::out_of_range("Index de carte invalide");
         return false;
     }
     Carte* c = main.getCarte(idx);
     if (c != nullptr) {
-        c->lorsDeJeu(p,nullptr); // Vous devez passer la partie actuelle ici
+        c->lorsDeJeu(p,target);
+        main.defausser(idx);
         defausse.ajouter(c);
+        std::cout << main<<std::endl;
         return true;
     }
     return false;
@@ -54,21 +56,11 @@ void Joueur::soigner(int montant){
     pv+=montant;
 }
 
-void Joueur::defausser(int n){
-    for (int i=0; i<n ; i++){
-        std::cout << "choisissez une carte à défausser"<<std::endl;
-        for (int j =0; j<(int)main.getCartes().size();j++){
-            std::cout<<i<<")   ";
-        }
-        std::cout <<std::endl;
-        int choix;
-        std::cin >>choix;
-        while(choix<0 || choix >=(int)main.getCartes().size()){
-            std::cout<<"choisissez un indice valide"<<std::endl;
-            std::cin >> choix;
-        }
-        main.defausser(choix);
+void Joueur::defausser(int index){
+    if (index < 0 || index >= (int)main.getCartes().size()) {
+        throw std::out_of_range("Index de carte invalide");
     }
+    main.defausser(index);
 }
 void Joueur::assomerChampions(){
     for(auto c : champions){

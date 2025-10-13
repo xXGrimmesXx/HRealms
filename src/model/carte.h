@@ -46,7 +46,7 @@ public:
     bool setEffetAllieDeclenche(bool b) { return effetAllieDeclenche = b; }
 
     // Méthodes
-    void lorsDeJeu(Partie& p,void* target);
+    void lorsDeJeu(Partie& p,std::vector<void*> target);
     bool peutDeclencherAllie(Joueur& j);
     void activer(Partie& p,Joueur& joueurSource,void* target);
     void sacrifier(Joueur& j, Partie& p);

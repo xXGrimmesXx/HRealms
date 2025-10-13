@@ -43,8 +43,8 @@ void Carte::activer(Partie& p,Joueur& joueurSource,void* target){
     effetAllieDeclenche=true;
 }
 
-void Carte::lorsDeJeu(Partie& p, void* target) {
-    for (const Effet& effet : effetsPrimaire) {
-        effet.appliquer(this, target, p);
+void Carte::lorsDeJeu(Partie& p, std::vector<void*> target) {
+    for (size_t i = 0; i < effetsPrimaire.size(); ++i) {
+        effetsPrimaire.at(i).appliquer(this, target.at(i), p);
     }
 }

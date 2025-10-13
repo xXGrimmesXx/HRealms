@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "faction.h"
+#include <string>
+#include <iostream>
 
 class Joueur;
 class Carte;
@@ -22,7 +24,10 @@ public:
     void ajouter(Carte* c);
     void defausser(int idx);
     void viderMain(Joueur* j);
-    void toString() const;
+    
     bool contientCarteDeFaction(Faction f);
     void sacrifier(Carte* c);
+
+    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Main& m){os<<m.toString(); return os; }
 };
