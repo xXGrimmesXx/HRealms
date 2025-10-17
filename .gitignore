@@ -1,2 +1,2 @@
-*.o
-HRealms
+**/*.o
+**/HRealms
