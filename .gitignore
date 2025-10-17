@@ -1,2 +1,2 @@
-**/*.o
-**/HRealms
+src/HRealms
+src/**/.o
