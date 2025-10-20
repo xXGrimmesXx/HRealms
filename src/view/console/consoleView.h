@@ -55,6 +55,7 @@ public:
         void afficherScores(std::vector<Joueur>& joueurs)override;
         void afficherGagnant(Joueur& gagnant)override;
         void afficherPileGemmeDeFeu(const Pile& pile);
+        void afficherDefausse(const Joueur& joueur);
 
 
     // Implémentation des méthodes de saisie

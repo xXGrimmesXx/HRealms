@@ -16,6 +16,9 @@ bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
     if (c==nullptr){
         return false;
     }
+    if (partie.getTourCourant()->getOr() < c->getCout()) {
+        return false;
+    }
     ligne.erase(ligne.begin() + slot);
     j.getDefausse().ajouter(c);
     partie.getTourCourant()->utiliserOr(c->getCout());

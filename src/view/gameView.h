@@ -23,6 +23,7 @@ public:
         virtual void afficherScores(std::vector<Joueur>& joueurs) = 0;
         virtual void afficherGagnant(Joueur& gagnant) = 0;
         virtual void afficherPileGemmeDeFeu(const Pile& pile) = 0;
+        virtual void afficherDefausse(const Joueur& joueur) = 0;
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;

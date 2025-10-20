@@ -41,6 +41,8 @@ void ConsoleView::afficherPartie(Partie& partie) {
     std::cout << "❤️  Vie: " << joueurActuel.getPv() << " | ";
     std::cout << "💰 Or: " << partie.getTourCourant()->getOr() << " | ";
     std::cout << "⚔️  Combat: " << partie.getTourCourant()->getDegats() << std::endl;
+    std::cout << "📚 Pioche: " << joueurActuel.getDeck().getTaille() << " cartes | ";
+    std::cout << "🗂️  Défausse: " << joueurActuel.getDefausse().getTaille() << " cartes" << std::endl;
     std::cout << std::endl;
 }
 
@@ -308,6 +310,32 @@ void ConsoleView::afficherPileGemmeDeFeu(const Pile& pile) {
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
+void ConsoleView::afficherDefausse(const Joueur& joueur) {
+    std::cout << "🗂️ Défausse de " << joueur.getNom() << ":" << std::endl;
+    std::cout << "───────────────────────────────────────" << std::endl;
+    
+    const Pile& defausse = joueur.getDefausse();
+    int taille = defausse.getTaille();
+    
+    if (taille == 0) {
+        std::cout << "Défausse vide." << std::endl;
+        return;
+    }
+    
+    std::cout << "Nombre de cartes: " << taille << std::endl;
+    const auto& cartes = defausse.getCartes();
+    
+    for (int i = 0; i < taille; ++i) {
+        Carte* c = cartes[i];
+        if (c) {
+            std::cout << "[" << i + 1 << "] " << c->getNom();
+            std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
+        }
+    }
+    
+    std::cout << "───────────────────────────────────────" << std::endl;
+}
+
 int ConsoleView::demanderNombreJoueurs() {
     int nombre = 0;
     std::string line;
@@ -356,9 +384,10 @@ int ConsoleView::demanderChoixAction() {
     std::cout << "🎯 Choisissez votre action:" << std::endl;
     std::cout << "[1] Jouer une carte" << std::endl;
     std::cout << "[2] Acheter une carte" << std::endl;
-    std::cout << "[3] Acheter une Gemme de Feu" << std::endl;  // NOUVEAU
+    std::cout << "[3] Acheter une Gemme de Feu" << std::endl;
     std::cout << "[4] Attaquer un joueur" << std::endl;
-    std::cout << "[5] Finir le tour" << std::endl;
+    std::cout << "[5] Consulter sa défausse" << std::endl;
+    std::cout << "[6] Finir le tour" << std::endl;
     std::cout << "Votre choix: ";
     
     

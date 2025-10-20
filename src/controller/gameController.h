@@ -29,6 +29,7 @@ public:
     bool acheterCarte();
     bool acheterGemmeDeFeu();
     bool attaquerJoueur();
+    bool consulterDefausse();
     void finirTour();
     std::vector<void*> choisirCible(Carte* carte);
     std::vector<void*> choisirCibleAllie(Carte* carte);

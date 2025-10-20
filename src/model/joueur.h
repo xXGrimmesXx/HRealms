@@ -54,6 +54,7 @@ public:
     Main& getMain() { return main; }
     Deck& getDeck() { return deck; }
     Pile& getDefausse() { return defausse; }
+    const Pile& getDefausse() const { return defausse; }
     std::vector<Champion*>& getChampions() { return champions; }
     const std::vector<Champion*>& getChampions() const { return champions; }
     void setPv(int v) { pv = v; }

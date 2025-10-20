@@ -126,8 +126,15 @@ void GameController::gererActionJoueur() {
             }
             afficherEtatJeu();
             break;
-            
-        case 5: // Finir le tour
+
+        case 5: // Consulter sa défausse
+            if(!consulterDefausse()){
+                std::string message = "Impossible de consulter la défausse.";
+                view->afficherErreur(message);
+            }
+            afficherEtatJeu();
+            break;
+        case 6: // Finir le tour
             finirTour();
             break;
             
@@ -396,6 +403,20 @@ bool GameController::attaquerJoueur() {
         view->afficherErreur(message);
         return false;
     }
+}
+
+bool GameController::consulterDefausse() {
+    Joueur& joueurActuel = partie->getJoueurActuel();
+    
+    if (joueurActuel.getDefausse().getTaille() == 0) {
+        std::string message = "Votre défausse est vide.";
+        view->afficherMessage(message);
+        return false;
+    }
+    
+    view->afficherDefausse(joueurActuel);
+    view->attendreEntree();
+    return true;
 }
 
 void GameController::finirTour() {

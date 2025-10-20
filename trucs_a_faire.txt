@@ -1,7 +1,11 @@
 fonctionnement champion
 voir ses champions en main / et ceux des adversaires quand t'attaques
 sacrifier carte marche pas
+effet allie s'active toujours
+faire une fonction afficherCartes pour ne pas avoir à faire 3x la même chose dans consoleView ? (à voir car légérement différent entre marché/main je crois)
+
+FAIT : 
 gemme de feu + taille
+bug acheterMarche avec 0 or
 afficher taille pioche et défausse
 pouvoir consulter défausse ?
-effet allie s'active toujours

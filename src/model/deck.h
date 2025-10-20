@@ -11,11 +11,18 @@ private:
     std::deque<Carte*> cartes;
     std::default_random_engine rng ;
 public:
+    // Constructeur & destructeur
     Deck();
     ~Deck();
+
+    // Getters
+    int getTaille() const { return cartes.size(); }
+    
+    // Méthodes
     void melanger();
     Carte* piocher();
     void ajouterDessous(Carte* c);
     bool estVide() const;
     void rechargerDepuis(Pile& defausse);
+
 };
