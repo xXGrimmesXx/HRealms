@@ -83,7 +83,7 @@ std::string Partie::toStringDetail() const {
     std::string res = "Partie avec " + std::to_string(joueurs.size()) + " joueurs, tour " + std::to_string(nb_tour) + "\n";
     for (auto j : joueurs) {
         res += j.toString() + "\n";
-        res += "  Defausse: " + std::to_string(j.getDefausse().taille()) + " cartes\n";
+        res += "  Defausse: " + std::to_string(j.getDefausse().getTaille()) + " cartes\n";
         res += "  Main: " + std::to_string(j.getMain().getTaille()) + " cartes\n";
         res += "  Champions: " + std::to_string(j.getChampions().size()) + " champions\n";
     }

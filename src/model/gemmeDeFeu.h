@@ -1,0 +1,22 @@
+#pragma once
+#include "pile.h"
+
+class Joueur;
+class Partie;
+
+class GemmeDeFeu {
+private:
+    Pile pile;
+    static const int COUT = 2;
+
+public:
+    GemmeDeFeu();
+    ~GemmeDeFeu() = default;
+    
+    bool acheter(Joueur& joueur, Partie& partie);
+    bool estDisponible() const;
+    int getNombreDisponible() const;
+    int getCout() const { return COUT; }
+    
+    const Pile& getPile() const { return pile; }
+};

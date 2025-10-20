@@ -22,7 +22,7 @@ Carte* Pile::prendreDessus() {
     cartes.pop_back();
     return c;
 }
-int Pile::taille() const {
+int Pile::getTaille() const {
     return cartes.size();
 }
 
@@ -34,4 +34,8 @@ void Pile::melanger() {
 
 std::vector<Carte*> Pile::getCartes(){
     return cartes;
+}
+
+bool Pile::estVide() const {
+    return cartes.empty();
 }

@@ -2,6 +2,7 @@
 #include <vector>
 #include "Joueur.h"
 #include "Marche.h"
+#include "gemmeDeFeu.h"
 
 #include "GodMode.h"
 
@@ -17,6 +18,7 @@ private:
     int idx_joueur_actuel;
     GodMode godMode;
     Pile cartesSacrifie;
+    GemmeDeFeu gemmeDeFeu;
 
 public:
     Partie();
@@ -41,6 +43,7 @@ public:
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
     Pile getCartesSacrifie(){return cartesSacrifie;}
+    GemmeDeFeu& getGemmeDeFeu(){return gemmeDeFeu;}
 
     Joueur* getGagnant();
 

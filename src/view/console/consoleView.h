@@ -2,6 +2,8 @@
 #include "../gameView.h"
 #include "../../model/faction.h"
 #include "../../model/tour.h"
+#include "../../model/pile.h"
+
 
 #include <iostream>
 #include <iomanip>
@@ -52,6 +54,8 @@ public:
         void afficherMarche(Marche& marche)override;
         void afficherScores(std::vector<Joueur>& joueurs)override;
         void afficherGagnant(Joueur& gagnant)override;
+        void afficherPileGemmeDeFeu(const Pile& pile);
+
 
     // Implémentation des méthodes de saisie
     int demanderNombreJoueurs() override;

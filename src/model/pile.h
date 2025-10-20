@@ -10,9 +10,12 @@ private:
 public:
     Pile()=default;
     ~Pile();
+
+    // Méthodes
     void ajouter(Carte* c);
     Carte* prendreDessus();
-    int taille() const;
+    int getTaille() const;
     void melanger();
     std::vector<Carte*> getCartes();
+    bool estVide() const;
 };

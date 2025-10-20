@@ -28,7 +28,6 @@ public:
     void piocher(int n);
     bool jouerCarte(int idx,Partie& p,std::vector<void*> target,std::vector<void*> targetAllies);
     bool acheterDepuisMarche(int slot, Partie& p);
-    void acheterGemmeFeu(Partie& p);
     void finTour();
     bool aGardeMobilise() const;
     void soigner(int montant);
@@ -61,7 +60,7 @@ public:
     int getPv() const { return pv; }
 
     std::string toString() const {
-        return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.taille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";
+        return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.getTaille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";
     }
     friend std::ostream& operator<<(std::ostream& os, const Joueur& j) {
         os << j.toString();

@@ -27,6 +27,7 @@ public:
     // Actions spécifiques
     bool jouerCarte();
     bool acheterCarte();
+    bool acheterGemmeDeFeu();
     bool attaquerJoueur();
     void finirTour();
     std::vector<void*> choisirCible(Carte* carte);
@@ -36,6 +37,7 @@ public:
     void afficherEtatJeu();
     void afficherMain();
     void afficherMarche();
+    void afficherPileGemmeDeFeu();
     
     // Utilitaires
     bool validerIndex(int index, int max, const std::string& type);

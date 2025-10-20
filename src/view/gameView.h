@@ -7,6 +7,7 @@ class Partie;
 class Joueur;
 class Marche;
 class Carte;
+class Pile;
 
 class GameView {
 public:
@@ -21,6 +22,7 @@ public:
         virtual void afficherMarche(Marche& marche) = 0;
         virtual void afficherScores(std::vector<Joueur>& joueurs) = 0;
         virtual void afficherGagnant(Joueur& gagnant) = 0;
+        virtual void afficherPileGemmeDeFeu(const Pile& pile) = 0;
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
@@ -30,7 +32,7 @@ public:
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
     virtual int demanderIndexChampion(Joueur& joueur) = 0;
     virtual int demanderSlotMarche() = 0;
-        virtual bool confirmerAction(std::string& action) = 0;
+    virtual bool confirmerAction(std::string& action) = 0;
     virtual void attendreEntree() = 0;
     virtual void viderEcran() = 0;
 };

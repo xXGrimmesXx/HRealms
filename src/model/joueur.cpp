@@ -17,7 +17,7 @@ void Joueur::piocher(int n){
     for (int i = 0; i < n; ++i) {
         if (deck.estVide()) {
             // Mélanger la défausse dans le deck
-            while (defausse.taille() > 0) {
+            while (defausse.getTaille() > 0) {
                 Carte* c = defausse.prendreDessus();
                 deck.ajouterDessous(c);
             }
@@ -46,10 +46,6 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<
 }
 bool Joueur::acheterDepuisMarche(int slot,Partie& p){
     return p.getMarche()->acquerirDepuisLigne(slot,*this,p);
-}
-
-void Joueur::acheterGemmeFeu(Partie& p){
-    p.getMarche()->acquerirGemmeFeu(*this,p);
 }
 
 void Joueur::finTour(){

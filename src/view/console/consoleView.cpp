@@ -277,7 +277,7 @@ void ConsoleView::afficherMarche( Marche& marche) {
             }
         }
     }
-    std::cout << std::endl;
+    std::cout << "───────────────────────────────────────" << std::endl;
 }
 
 void ConsoleView::afficherScores(std::vector<Joueur>& joueurs) {
@@ -296,6 +296,16 @@ void ConsoleView::afficherGagnant( Joueur& gagnant) {
     std::cout << "🏆 VICTOIRE DE " << gagnant.getNom() << " ! 🏆" << std::endl;
     std::cout << "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" << std::endl;
     std::cout << "Score final: " << gagnant.getPv() << " points de vie" << std::endl;
+}
+
+void ConsoleView::afficherPileGemmeDeFeu(const Pile& pile) {
+    std::cout << "💎 GEMMES DE FEU disponibles: " << pile.getTaille() << std::endl;
+    if (!(pile.getTaille()==0)) {
+        std::cout << "   Coût: 2 Or - Effet: +2 Or | Sacrifice: +3 Combat" << std::endl;
+    } else {
+        std::cout << "   Épuisée !" << std::endl;
+    }
+    std::cout << "───────────────────────────────────────" << std::endl;
 }
 
 int ConsoleView::demanderNombreJoueurs() {
@@ -346,8 +356,9 @@ int ConsoleView::demanderChoixAction() {
     std::cout << "🎯 Choisissez votre action:" << std::endl;
     std::cout << "[1] Jouer une carte" << std::endl;
     std::cout << "[2] Acheter une carte" << std::endl;
-    std::cout << "[3] Attaquer un joueur" << std::endl;
-    std::cout << "[4] Finir le tour" << std::endl;
+    std::cout << "[3] Acheter une Gemme de Feu" << std::endl;  // NOUVEAU
+    std::cout << "[4] Attaquer un joueur" << std::endl;
+    std::cout << "[5] Finir le tour" << std::endl;
     std::cout << "Votre choix: ";
     
     

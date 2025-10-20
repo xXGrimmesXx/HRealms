@@ -112,8 +112,14 @@ void GameController::gererActionJoueur() {
             }
             afficherEtatJeu();
             break;
-            
-        case 3: // Attaquer un joueur
+        case 3: // Acheter une carte Gemme de feu
+            if(!acheterGemmeDeFeu()){
+                std::string message = "Impossible d'acheter cette carte.";
+                view->afficherErreur(message);
+            }
+            afficherEtatJeu();
+            break;
+        case 4: // Attaquer un joueur
             if (!attaquerJoueur()) {
                 std::string message = "Impossible d'attaquer ce joueur.";
                 view->afficherErreur(message);
@@ -121,7 +127,7 @@ void GameController::gererActionJoueur() {
             afficherEtatJeu();
             break;
             
-        case 4: // Finir le tour
+        case 5: // Finir le tour
             finirTour();
             break;
             
@@ -314,7 +320,7 @@ bool GameController::acheterCarte() {
     // Demander quelle carte acheter
     int slot = view->demanderSlotMarche();
     
-    // Valider le slot (supposons 5 slots dans le marché)
+    // Valider le slot
     if (!validerIndex(slot, 5, "slot du marché")) {
         return false;
     }
@@ -332,6 +338,19 @@ bool GameController::acheterCarte() {
         view->afficherErreur(message);
         return false;
     }
+}
+
+bool GameController::acheterGemmeDeFeu() {
+    Joueur& joueurActuel = partie->getJoueurActuel();
+    
+    bool succes = partie->getGemmeDeFeu().acheter(joueurActuel, *partie);
+    
+    if (succes) {
+        std::string message = "Gemme de Feu achetée avec succès !";
+        view->afficherMessage(message);
+    }
+    
+    return succes;
 }
 
 bool GameController::attaquerJoueur() {
@@ -393,6 +412,7 @@ void GameController::afficherEtatJeu() {
     view->afficherPartie(*partie);
     view->afficherScores(partie->getJoueurs());
     afficherMarche();
+    afficherPileGemmeDeFeu();
     afficherMain();
 }
 
@@ -404,6 +424,11 @@ void GameController::afficherMain() {
 void GameController::afficherMarche() {
     Marche* marche = partie->getMarche();
     view->afficherMarche(*marche);
+}
+
+void GameController::afficherPileGemmeDeFeu() {
+    const Pile& pileGemmes = partie->getGemmeDeFeu().getPile();
+    view->afficherPileGemmeDeFeu(pileGemmes);
 }
 
 void GameController::finirPartie() {
