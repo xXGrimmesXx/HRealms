@@ -3,10 +3,7 @@
 #include "../../model/joueur.h"
 #include "../../model/marche.h"
 #include "../../model/carte.h"
-#include <iostream>
-#include <iomanip>
-#include <limits>
-#include <string>
+
 
 // helper pour lire les lignes avec getline en évitant les retours à la ligne
 static std::string trimString(const std::string& s) {
@@ -18,7 +15,6 @@ static std::string trimString(const std::string& s) {
 }
 
 ConsoleView::ConsoleView() {
-    std::cout << "ConsoleView initialisée." << std::endl;
 }
 
 ConsoleView::~ConsoleView() {
@@ -106,8 +102,12 @@ void ConsoleView::afficherMain( Joueur& joueur) {
     for (int i = 0; i < taille; ++i) {
         Carte* c = main.getCarte(i);
         if (!c) {
+            
             std::cout << "[" << i + 1 << "] <vide>" << std::endl;
             continue;
+        }
+        if (c->getEstJouee()) {
+                std::cout << RED; 
         }
 
         // Type de carte
@@ -169,6 +169,7 @@ void ConsoleView::afficherMain( Joueur& joueur) {
                 }
             }
         }
+        std::cout << RESET;
     }
     std::cout << std::endl;
 }
@@ -361,17 +362,24 @@ int ConsoleView::demanderChoixAction() {
     return choix;
 }
 
-int ConsoleView::demanderIndexCarte() {
-    int index;
-    std::cout << "🎴 Numéro de la carte: ";
-    if (!(std::cin >> index)) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return -1;
+std::vector<int> ConsoleView::demanderIndexCarte() {
+    std::vector<int> indices;
+    char * line;
+    std::string input;
+    std::cout << "🎴 Numéro de la carte (séparer les numeros pas des espaces): ";
+    std::getline(std::cin, input, '\n');
+    if (!input.empty()) {
+        line = trimString(input).data();
+        char * p;
+        p = strtok(line, " " ); 
+        while (p !=  NULL ) {
+            std::cout << "Indice lu: " << p << std::endl;
+            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            p = strtok( NULL , " " );
+        }
     }
-    // retirer le reste de la ligne
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return index - 1; // Convertir en index 0-based
+    return indices;
+    
 }
 
 int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs) {

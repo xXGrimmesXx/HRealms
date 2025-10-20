@@ -1,0 +1,4 @@
+fonctionnement champion
+voir ses champions en main
+réinitialiser or et combat à chaque tour
+sacrifier carte marche pas

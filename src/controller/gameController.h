@@ -30,6 +30,7 @@ public:
     bool attaquerJoueur();
     void finirTour();
     std::vector<void*> choisirCible(Carte* carte);
+    std::vector<void*> choisirCibleAllie(Carte* carte);
     
     // Actions d'affichage
     void afficherEtatJeu();

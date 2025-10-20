@@ -25,26 +25,15 @@ void Carte::sacrifier(Joueur& j, Partie& p) {
     p.getCartesSacrifie().ajouter(this);
 }
 
-void Carte::activer(Partie& p,Joueur& joueurSource,void* target){
-    for (const Effet& effet : effetsAllie) {
-        int nbAllies=0;
-        for(Champion* c : joueurSource.getChampions()){
-            if(c->getFaction() == this->getFaction()){
-                nbAllies++;
-            }
-        }
-        for (Carte* c : joueurSource.getMain().getCartes()) {
-            if (c->getFaction() == this->getFaction() && c != this) {
-                nbAllies++;
-            }
-        }
-        effet.appliquer(this,target, p);
-    }
-    effetAllieDeclenche=true;
-}
-
-void Carte::lorsDeJeu(Partie& p, std::vector<void*> target) {
+void Carte::lorsDeJeu(Partie& p, std::vector<void*> target, std::vector<void*> allies) {
     for (size_t i = 0; i < effetsPrimaire.size(); ++i) {
         effetsPrimaire.at(i).appliquer(this, target.at(i), p);
     }
+    for (size_t i = 0; i < effetsAllie.size(); ++i) {
+        if (peutDeclencherAllie(p.getJoueurActuel())) {
+            effetsAllie.at(i).appliquer(this, allies.at(i), p);
+            
+        }
+    }
+    setEstJouee(true);
 }

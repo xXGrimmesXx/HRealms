@@ -18,8 +18,7 @@ protected:
     std::vector<Effet> effetsPrimaire;
     std::vector<Effet> effetsAllie;
     std::vector<Effet> effetsSacrifice;
-    bool effetPrimaireDeclenche=false;
-    bool effetAllieDeclenche=false;
+    bool estJouee;
 
 public:
     // Constructeur & destructeur
@@ -35,18 +34,16 @@ public:
     std::vector<Effet> getEffetsPrimaire() const {return effetsPrimaire;}
     std::vector<Effet> getEffetsAllie() const {return effetsAllie;}
     std::vector<Effet> getEffetsSacrifice() const {return effetsSacrifice;}
-    bool getEffetPrimaireDeclenche() const { return effetPrimaireDeclenche; }
-    bool getEffetAllieDeclenche() const { return effetAllieDeclenche; }
+    bool getEstJouee() const { return estJouee; }
 
     // Setters
     Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); return this; }
     Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); return this; }
     Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); return this; }
-    bool setEffetPrimaireDeclenche(bool b) { return effetPrimaireDeclenche = b; }
-    bool setEffetAllieDeclenche(bool b) { return effetAllieDeclenche = b; }
+    bool setEstJouee(bool b) { return estJouee = b; }
 
     // Méthodes
-    void lorsDeJeu(Partie& p,std::vector<void*> target);
+    void lorsDeJeu(Partie& p,std::vector<void*> target, std::vector<void*> allies);
     bool peutDeclencherAllie(Joueur& j);
     void activer(Partie& p,Joueur& joueurSource,void* target);
     void sacrifier(Joueur& j, Partie& p);

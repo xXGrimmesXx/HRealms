@@ -33,6 +33,7 @@ Carte* Deck::piocher(){
     }
 }
 void Deck::ajouterDessous(Carte* c){
+    c->setEstJouee(false);
     cartes.push_front(c);
 }
 bool Deck::estVide() const{
@@ -40,6 +41,7 @@ bool Deck::estVide() const{
 }
 void Deck::rechargerDepuis(Pile& defausse){
     for (auto c : defausse.getCartes()){
+        c->setEstJouee(false);
         cartes.push_front(c);
     }
 }

@@ -26,7 +26,7 @@ public:
     virtual int demanderNombreJoueurs() = 0;
     virtual std::string demanderNomJoueur(int numero) = 0;
     virtual int demanderChoixAction() = 0;
-    virtual int demanderIndexCarte() = 0;
+    virtual std::vector<int> demanderIndexCarte() = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
     virtual int demanderIndexChampion(Joueur& joueur) = 0;
     virtual int demanderSlotMarche() = 0;

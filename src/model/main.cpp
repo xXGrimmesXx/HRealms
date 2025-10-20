@@ -11,11 +11,13 @@ void Main::defausser(int idx){
     if(idx < 0 || idx >= (int)cartes.size()) {
         throw std::out_of_range("Index hors limites");
     }
+    cartes.at(idx)->setEstJouee(false);
     cartes.erase(cartes.begin() + idx);
 }
 
 void Main::viderMain(Joueur* j){
     for(Carte* c : cartes) {
+        c->setEstJouee(false);
         j->getDefausse().ajouter(c);
 
     }
@@ -51,6 +53,7 @@ void Main::sacrifier(Carte* c){
     for (int i=0; i<(int)cartes.size(); i++){
         if (cartes.at(i)==c){
             //itérateur pointant sur la carte à supprimer
+            cartes.at(i)->setEstJouee(false);
             cartes.erase(std::next(cartes.begin(),i));
         }
     }

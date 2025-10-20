@@ -138,30 +138,43 @@ bool GameController::jouerCarte() {
     Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Demander quelle carte jouer
-    int index = view->demanderIndexCarte();
-    // Valider l'index
-    if (!validerIndex(index,joueurActuel.getMain().getTaille(), "carte")) {
-        return false;
+    std::vector<int> index = view->demanderIndexCarte();
+    std::cout << "Indices reçus: ";
+    for (int i : index) {
+        std::cout << i << " ";
     }
+    // Valider l'index
+    
 
      // Pour l'instant, pas de cible spécifique
-    Carte* c = joueurActuel.getMain().getCarte(index);
-    std::vector<void*> cibles = choisirCible(c);
-    
-    
-    // Essayer de jouer la carte
-    try {
-        bool succes = joueurActuel.jouerCarte(index, *partie, cibles);
-        if (succes) {
-            std::string message = "Carte jouée avec succès !";
-            view->afficherMessage(message);
+     for (int ind : index) {
+        std::cout << "Index de la carte à jouer: " << ind << std::endl;
+        if (!validerIndex(ind,joueurActuel.getMain().getTaille(), "carte")) {
+            return false;
         }
-        return succes;
-    } catch (const std::exception& e) {
-        std::string message = "Erreur lors du jeu de carte: " + std::string(e.what());
-        view->afficherErreur(message);
-        return false;
+        Carte* c = joueurActuel.getMain().getCarte(ind);
+        std::vector<void*> cibles = choisirCible(c);
+        std::vector<void*> ciblesAllies = choisirCibleAllie(c);    
+    
+        // Essayer de jouer la carte
+        try {
+            bool succes = joueurActuel.jouerCarte(ind, *partie, cibles, ciblesAllies);
+            if (succes) {
+                std::string message = "Carte jouée avec succès !";
+                view->afficherMessage(message);
+            }
+            else {
+                std::string message = "Échec du jeu de la carte.";
+                view->afficherErreur(message);
+                return false;
+            }
+        } catch (const std::exception& e) {
+            std::string message = "Erreur lors du jeu de carte: " + std::string(e.what());
+            view->afficherErreur(message);
+            return false;
+        }
     }
+    return true;
 }
 
 std::vector<void*> GameController::choisirCible(Carte* carte) {
@@ -235,6 +248,74 @@ std::vector<void*> GameController::choisirCible(Carte* carte) {
     }
     return targets;
 
+}
+
+std::vector<void*> GameController::choisirCibleAllie(Carte* carte) {
+    std::vector<void*> targets;
+    for(size_t i=0;i<carte->getEffetsAllie().size();i++){
+        switch(carte->getEffetsAllie().at(i).getTypeCible()){
+            case TypeCible::SOI :
+                targets.push_back(&partie->getJoueurActuel());
+                break;
+
+            case TypeCible::ADVERSAIRE:
+                // Demander quel joueur attaquer
+                {
+                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                targets.push_back(&partie->getJoueurs().at( index ));
+                }
+                break;
+
+            case TypeCible::CHAMPION_ALLIE:
+                {
+                int index = view->demanderIndexChampion(partie->getJoueurActuel()); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurActuel().getChampions().at(index));
+                }
+                break;
+
+            case TypeCible::CHAMPION_ENNEMI:
+                {
+                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                Joueur j = partie->getJoueurs().at( indexJoueur );
+                int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                break;
+
+            case TypeCible::TOUS_CHAMPIONS:
+            {
+                for(auto j : partie->getJoueurs()){
+                    for(auto c : j.getChampions()){
+                        targets.push_back(c);
+                    }
+                }
+            }
+                break;
+
+            case TypeCible::CARTE:
+                // Pour l'instant, on ne gère pas les cartes sur le terrain
+                targets.push_back(nullptr);
+                break;
+
+            case TypeCible::NIMPORTE:
+                targets.push_back(nullptr); // Ou une autre logique pour "n'importe"
+                break;
+
+            case TypeCible::AUCUNE:
+                targets.push_back(nullptr);
+                break;
+
+            case TypeCible::CHAMPION:
+                {
+                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs());
+                Joueur j = partie->getJoueurs().at( indexJoueur );
+                int index = view->demanderIndexChampion(j); // Réutiliser cette méthode
+                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                break;
+                }
+            }
+        }
+    return targets;
 }
 
 bool GameController::acheterCarte() {

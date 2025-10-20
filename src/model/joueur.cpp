@@ -29,16 +29,19 @@ void Joueur::piocher(int n){
         }
     }
 }
-bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target){
+bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<void*> targetAllies){
     if (idx < 0 || idx >= main.getTaille()) {
         throw std::out_of_range("Index de carte invalide");
         return false;
     }
     Carte* c = main.getCarte(idx);
     if (c != nullptr) {
-        c->lorsDeJeu(p,target);
-        main.defausser(idx);
-        defausse.ajouter(c);
+        if (c->getEstJouee()) {
+            return false;
+        }
+        c->lorsDeJeu(p,target,targetAllies);
+        //main.defausser(idx);
+        //defausse.ajouter(c);
         std::cout << main<<std::endl;
         return true;
     }
