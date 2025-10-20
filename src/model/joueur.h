@@ -27,6 +27,7 @@ public:
     ~Joueur() = default;
     void piocher(int n);
     bool jouerCarte(int idx,Partie& p,std::vector<void*> target,std::vector<void*> targetAllies);
+    bool mobiliserChampion(int idx, Partie& p,std::vector<void*> target);
     bool acheterDepuisMarche(int slot, Partie& p);
     void finTour();
     bool aGardeMobilise() const;

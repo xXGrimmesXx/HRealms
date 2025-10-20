@@ -32,5 +32,6 @@ public:
     void setVie(int v) { vie = v; }
 
     // Méthodes
-    void mobiliser(Joueur& j, Partie& p);
+    void mobiliser(Partie& p,std::vector<void*> target);
+    void demobiliser();
 };

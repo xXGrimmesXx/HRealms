@@ -26,19 +26,22 @@ public:
     
     // Actions spécifiques
     bool jouerCarte();
+    bool mobiliserChampion();
     bool acheterCarte();
     bool acheterGemmeDeFeu();
     bool attaquerJoueur();
     bool consulterDefausse();
     void finirTour();
-    std::vector<void*> choisirCible(Carte* carte);
+    std::vector<void*> choisirCiblePrimaires(Carte* carte);
     std::vector<void*> choisirCibleAllie(Carte* carte);
+    std::vector<void*> choisirCibleMobiliser(Champion* champion);
     
     // Actions d'affichage
     void afficherEtatJeu();
     void afficherMain();
     void afficherMarche();
     void afficherPileGemmeDeFeu();
+    void afficherChampions();
     
     // Utilitaires
     bool validerIndex(int index, int max, const std::string& type);

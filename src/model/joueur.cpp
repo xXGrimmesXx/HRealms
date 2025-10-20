@@ -40,10 +40,31 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<
             return false;
         }
         c->lorsDeJeu(p,target,targetAllies);
+        if (dynamic_cast<Champion*>(c)) {
+            champions.push_back(dynamic_cast<Champion*>(c));
+            main.defausser(idx); // Retirer de la main sans aller dans la défausse
+            champions.back()->setEstJouee(true);
+        }
         return true;
     }
     return false;
 }
+bool Joueur::mobiliserChampion(int idx,Partie &p,std::vector<void*> target){
+    if (idx < 0 || idx >= (int)champions.size()) {
+        throw std::out_of_range("Index de champion invalide");
+        return false;
+    }
+    Champion* c = champions.at(idx);
+    if (c != nullptr) {
+        if (c->estMobilise()) {
+            return false;
+        }
+        c->mobiliser(p,target);
+        return true;
+    }
+    return false;
+}
+
 bool Joueur::acheterDepuisMarche(int slot,Partie& p){
     return p.getMarche()->acquerirDepuisLigne(slot,*this,p);
 }

@@ -2,12 +2,14 @@
 #include <string>
 #include <vector>
 
+
 // Forward declarations
 class Partie;
 class Joueur;
 class Marche;
 class Carte;
 class Pile;
+class Champion;
 
 class GameView {
 public:
@@ -23,6 +25,7 @@ public:
         virtual void afficherScores(std::vector<Joueur>& joueurs) = 0;
         virtual void afficherGagnant(Joueur& gagnant) = 0;
         virtual void afficherPileGemmeDeFeu(const Pile& pile) = 0;
+        virtual void afficherChampions(const std::vector<Champion*>& champions) = 0;
         virtual void afficherDefausse(const Joueur& joueur) = 0;
 
     // Interface pour les saisies utilisateur
@@ -31,7 +34,7 @@ public:
     virtual int demanderChoixAction() = 0;
     virtual std::vector<int> demanderIndexCarte() = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
-    virtual int demanderIndexChampion(Joueur& joueur) = 0;
+    virtual std::vector<int> demanderIndexChampion(Joueur& joueur) = 0;
     virtual int demanderSlotMarche() = 0;
     virtual bool confirmerAction(std::string& action) = 0;
     virtual void attendreEntree() = 0;
