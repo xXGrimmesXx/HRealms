@@ -25,26 +25,19 @@ void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     tour_courant = new Tour(&joueurs[0]);
 }
 
-void Partie::jouerTour() {
+void Partie::commencerTour() {
     Joueur& joueurActuel = joueurs[idx_joueur_actuel];
     tour_courant = new Tour(&joueurActuel);
-    if (tour_courant == nullptr || tour_courant->getJoueur() != &joueurActuel) {
-        if (tour_courant != nullptr) {
-            tour_courant = nullptr;
-        }
-        tour_courant = new Tour(&joueurActuel);
-    }
-    std::cout << "Nouveau tour pour " << joueurActuel.getNom() << " (Tour " << nb_tour << ")" << std::endl;
 }
 
 void Partie::finTour() {
     Joueur& joueurActuel = joueurs[idx_joueur_actuel];
     joueurActuel.finTour();
-    joueurActuel.piocher(5);
     idx_joueur_actuel = (idx_joueur_actuel + 1) % joueurs.size();
     if (idx_joueur_actuel == 0) {
         nb_tour++;
     }
+    tour_courant = nullptr;
 }
 
 bool Partie::estTerminee() const {

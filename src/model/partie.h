@@ -21,7 +21,7 @@ private:
 public:
     Partie();
     void commencer(std::vector<std::string> nomsJoueurs);
-    void jouerTour();
+    void commencerTour();
     void finTour();
     bool estTerminee() const;
     void toggleGodMode();

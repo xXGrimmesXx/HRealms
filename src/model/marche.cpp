@@ -22,13 +22,15 @@ bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
     return true;
 }
 bool Marche::acquerirGemmeFeu(Joueur& j, Partie& partie){
-    std::cout <<j<<partie;
-    return true;
+    std::cout << "Acquisition de gemme de feu non implémentée." << std::endl;
+    std::cout << j << " " << partie << std::endl;
+    return false;
 }
 bool Marche::acquerirDepuisDeck(int idx, Joueur& j, Partie& partie){
-    std::cout<<idx<<j<<partie;
+    std::cout << "Acquisition depuis le deck du marché non implémentée." << std::endl;
+    std::cout << idx << " " << j << " " << partie << std::endl;
     return true;
 }
 void Marche::retournerGemmeFeuDansPile(Carte* g){
-    std::cout<<g;
+    pileGemmesFeu.ajouter(g);
 }

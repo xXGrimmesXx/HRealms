@@ -9,9 +9,7 @@ Deck::Deck():cartes(std::deque<Carte*>()){
 Deck::~Deck(){}
 
 void Deck::melanger(){
-    std::cout<<"shuffling deck"<<std::endl;
     if (cartes.empty()) {
-        std::cout<<"deck empty, cannot shuffle"<<std::endl;
         return;
     }
     for (size_t i = cartes.size() - 1; i > 0; --i) {

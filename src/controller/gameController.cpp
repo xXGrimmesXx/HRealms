@@ -63,23 +63,20 @@ void GameController::initialiserPartie() {
 
 void GameController::boucleJeu() {
     while (jeuEnCours && !partie->estTerminee()) {
+
         jouerTour();
+ 
     }
 }
 
 void GameController::jouerTour() {
     try {
         // Commencer le tour
-        partie->jouerTour();
+        partie->commencerTour();
         
         // Afficher l'état du jeu
-
-        std::cout << "avant etat" << std::endl;
-
         afficherEtatJeu();
 
-        std::cout << "état affiche" << std::endl;
-        
         // Gérer les actions du joueur
         bool tourTermine = false;
         while (!tourTermine && !partie->estTerminee()) {
@@ -105,6 +102,7 @@ void GameController::gererActionJoueur() {
                 std::string message = "Impossible de jouer cette carte.";
                 view->afficherErreur(message);
             }
+            afficherEtatJeu();
             break;
             
         case 2: // Acheter une carte
@@ -112,6 +110,7 @@ void GameController::gererActionJoueur() {
                 std::string message = "Impossible d'acheter cette carte.";
                 view->afficherErreur(message);
             }
+            afficherEtatJeu();
             break;
             
         case 3: // Attaquer un joueur
@@ -119,6 +118,7 @@ void GameController::gererActionJoueur() {
                 std::string message = "Impossible d'attaquer ce joueur.";
                 view->afficherErreur(message);
             }
+            afficherEtatJeu();
             break;
             
         case 4: // Finir le tour
@@ -131,7 +131,6 @@ void GameController::gererActionJoueur() {
             break;
     }
 
-    afficherEtatJeu();
 }
 
 bool GameController::jouerCarte() {
@@ -139,16 +138,8 @@ bool GameController::jouerCarte() {
     
     // Demander quelle carte jouer
     std::vector<int> index = view->demanderIndexCarte();
-    std::cout << "Indices reçus: ";
-    for (int i : index) {
-        std::cout << i << " ";
-    }
-    // Valider l'index
-    
 
-     // Pour l'instant, pas de cible spécifique
-     for (int ind : index) {
-        std::cout << "Index de la carte à jouer: " << ind << std::endl;
+    for (int ind : index) {
         if (!validerIndex(ind,joueurActuel.getMain().getTaille(), "carte")) {
             return false;
         }
@@ -393,7 +384,6 @@ void GameController::finirTour() {
     if (view->confirmerAction(message)) {
         std::string message = "Tour terminé.";
         view->afficherMessage(message);
-        // La logique de fin de tour sera gérée dans la boucle principale
         partie->finTour();
     }
 }

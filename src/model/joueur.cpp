@@ -40,9 +40,6 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<
             return false;
         }
         c->lorsDeJeu(p,target,targetAllies);
-        //main.defausser(idx);
-        //defausse.ajouter(c);
-        std::cout << main<<std::endl;
         return true;
     }
     return false;
@@ -57,6 +54,7 @@ void Joueur::acheterGemmeFeu(Partie& p){
 
 void Joueur::finTour(){
     main.viderMain(this);
+    piocher(5);
 }
 bool Joueur::aGardeMobilise()const {
     for (auto c : champions){
@@ -107,7 +105,7 @@ void Joueur::sacrifier(int montant, Partie& p){
     for(int i=0; i<montant; i++){
         std::cout << "choisissez une carte à sacrifier"<<std::endl;
         for (int j =0; j<(int)main.getCartes().size();j++){
-            std::cout<<i<<")   ";
+            std::cout<<j<<")   ";
         }
         std::cout <<std::endl;
         int choix;
