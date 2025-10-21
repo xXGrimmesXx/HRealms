@@ -560,9 +560,14 @@ void GameController::finirTour() {
 
 void GameController::toggleGodMode() {
     if (partie->getGodMode().actif) {
-        partie->toggleGodMode();
-        std::string message = "🔧 GodMode DÉSACTIVÉ";
-        view->afficherMessage(message);
+        int choixGod = view->demanderChoixGodMode();
+        if (choixGod == 3) {
+            partie->toggleGodMode();
+            std::string message = "🔧 GodMode DÉSACTIVÉ";
+            view->afficherMessage(message);
+        } else {
+            executerActionGodMode(choixGod);
+        }
     } else {
         std::string motDePasse = view->demanderMotDePasseGodMode();
         
@@ -572,7 +577,9 @@ void GameController::toggleGodMode() {
             view->afficherMessage(message);
             
             int choixGod = view->demanderChoixGodMode();
-            executerActionGodMode(choixGod);
+            if (choixGod != 3) {
+                executerActionGodMode(choixGod);
+            }
         } else {
             std::string message = "❌ Mot de passe incorrect.";
             view->afficherErreur(message);
@@ -582,20 +589,34 @@ void GameController::toggleGodMode() {
 
 void GameController::executerActionGodMode(int choix) {
     switch (choix) {
-        case 1:
+        case 1: // Mettre tous à 1 PV
+            partie->GOD_mettreTousJoueurs1PV();
             {
-                partie->GOD_mettreTousJoueurs1PV();
                 std::string message = "Tous les joueurs ont maintenant 1 PV.";
                 view->afficherMessage(message);
             }
             break;
-        case 2:
+        case 2: // Acheter depuis deck
             {
-                int idx = view->demanderIndexDeck(partie->getMarche()->getDeckMarche());
-                partie->GOD_acheterDepuisDeckMarche(idx, partie->getJoueurActuel());
-                std::string message = "Carte achetée depuis le deck.";
-                view->afficherMessage(message);
+                Deck& deckMarche = partie->getMarche()->getDeckMarche();
+                if (deckMarche.getTaille() == 0) {
+                    std::string message = "Le deck du marché est vide.";
+                    view->afficherErreur(message);
+                    break;
+                }
+                
+                int idx = view->demanderIndexDeck(deckMarche);
+                if (idx >= 0 && idx < deckMarche.getTaille()) {
+                    partie->GOD_acheterDepuisDeckMarche(idx, partie->getJoueurActuel());
+                    std::string message = "Carte achetée depuis le deck.";
+                    view->afficherMessage(message);
+                } else {
+                    std::string message = "Index invalide.";
+                    view->afficherErreur(message);
+                }
             }
+            break;
+        case 3: // Ne rien faire, c'est géré dans toggleGodMode()
             break;
     }
 }

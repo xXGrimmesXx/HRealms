@@ -1,20 +1,28 @@
-voir champ adversaires quand t'attaques
-sacrifier carte indice décalé
-renderCard pour gemmeDeFeu + consulter defausse
-acheter plusieurs cartes en mm temps
-afficherEffet pour les longs textes
-PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
-DEFAUSSE FAIRE CHOISIR LA CARTE AU JOUEUR
-GEMME DE FEU PAS AFFICHEE (du moins ds défausse)
-SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
+1) GodMode :
+- Acheter une carte : ne se retire pas du deck et ne s'ajoute pas à la main
+- Retirer les 1000 gold ajouté au joueur si on désactive le GodMode
 
-CODER GODMOD (commencé mais à finir)
-QUAND ON JOUE UNE CARTE QUI FAIT ENLEVER UNE AUTRE ON ENL7VE 1 A TOUTERS LES INDICES APRES LINDICE DE LA CARTE SUPPRIMER
-si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
+2) Fonctions importantes :
+- voir champ adversaires quand t'attaques
+- sacrifier carte indice décalé
+- effets complexes, comme PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
+(attention yen a peut être d'autres)
+- QUAND ON JOUE UNE CARTE QUI FAIT ENLEVER UNE AUTRE ON ENL7VE 1 A TOUTERS LES INDICES APRES LINDICE DE LA CARTE SUPPRIMER
+- si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
+--> Pour les 2 précédents, trier par ordre décroissant et appliquer dans cet ordre
+- DEFAUSSE (adversaire) FAIRE CHOISIR LA CARTE AU JOUEUR
 
+3) Affichage/utilitaire :
+- renderCard pour gemmeDeFeu + consulter defausse
+- acheter plusieurs cartes en mm temps
+- afficherEffet pour les longs textes
+- GEMME DE FEU PAS AFFICHEE (du moins ds défausse et dans main aussi je crois)
+- SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
+--> Plus globalement, ne proposer les options que si elle sont possibles
+Cad, changer le switch de gererActionJoueur en une suite de ifs
 
 Normalement c bon mais à tester :
-ELVEN GIFT ON PIOCHE UNE CARTE ET DEFAUSSE 0
+
 
 
 FAIT : 
@@ -29,5 +37,5 @@ afficher taille pioche et défausse
 pouvoir consulter défausse ?
 voir ses champions en main
 faire une fonction afficherCartes pour ne pas avoir à faire 3x la même chose dans consoleView ? (à voir car légérement différent entre marché/main je crois)
-
+ELVEN GIFT ON PIOCHE UNE CARTE ET DEFAUSSE 0
 

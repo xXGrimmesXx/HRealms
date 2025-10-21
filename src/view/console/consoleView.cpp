@@ -361,15 +361,17 @@ int ConsoleView::demanderChoixGodMode() {
     std::cout << "🔧 GOD MODE:" << std::endl;
     std::cout << "[1] Mettre tous à 1 PV" << std::endl;
     std::cout << "[2] Acheter depuis deck" << std::endl;
+    std::cout << "[3] Désactiver GodMode" << std::endl;
     std::cout << "Choix: ";
 
     int choix;
     std::cin >> choix;
-    while (choix < 1 || choix > 2) {
-        std::string msg = "Choix invalide. Veuillez choisir 1 ou 2.";
+    while (choix < 1 || choix > 3) {
+        std::string msg = "Choix invalide. Veuillez choisir 1, 2 ou 3.";
         afficherErreur(msg);
         std::cin >> choix;
     }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return choix;
 }
 
