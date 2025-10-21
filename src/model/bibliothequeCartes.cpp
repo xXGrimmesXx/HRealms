@@ -10,7 +10,7 @@ Deck BibliothequeCartes::creerDeckDepart() {
     deck.ajouterDessous((new CarteObjet("Rubis", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_OR, 2, 0, TypeCible::SOI)));
 
     // Cartes épée courte/dague
-    deck.ajouterDessous((new CarteObjet("Épée courte", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 2, 0, TypeCible::SOI)));
+    deck.ajouterDessous((new CarteObjet("Epee courte", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 2, 0, TypeCible::SOI)));
     deck.ajouterDessous((new CarteObjet("Dague", 0, Faction::AUCUNE))->ajouterEffetPrimaire( Effet(TypeEffet::AJOUT_COMBAT, 1, 0, TypeCible::SOI)));
 
     // Mélange et retour du deck

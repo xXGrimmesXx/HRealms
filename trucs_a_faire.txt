@@ -1,11 +1,29 @@
 fonctionnement champion
-voir ses champions en main / et ceux des adversaires quand t'attaques
-sacrifier carte marche pas
+voir champ adversaires quand t'attaques
+sacrifier carte indice décalé
+renderCard pour gemmeDeFeu + consulter defausse
+acheter plusieurs cartes en mm temps
+demander confirmation fintour seulement si toutes cartes et champions non joués
+enemever possibilité s'attaquer sois meme
+afficherEffet pour les longs textes
+PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
 effet allie s'active toujours
-faire une fonction afficherCartes pour ne pas avoir à faire 3x la même chose dans consoleView ? (à voir car légérement différent entre marché/main je crois)
+ELVEN GIFT ON PIOCHE UNE CARTE ET DEFAUSSE 0
+DEFAUSSE FAIRE CHOISIR LA CARTE AU JOUEUR
+GEMME DE FEU PAS AFFICHEE (du moins ds défausse)
+SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
+SI ERREUR
+APR7S MOBICHAMPION FAIRE afficherEtatJeu
+
+si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
+
 
 FAIT : 
 gemme de feu + taille
 bug acheterMarche avec 0 or
 afficher taille pioche et défausse
 pouvoir consulter défausse ?
+voir ses champions en main
+faire une fonction afficherCartes pour ne pas avoir à faire 3x la même chose dans consoleView ? (à voir car légérement différent entre marché/main je crois)
+
+

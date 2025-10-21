@@ -25,7 +25,7 @@ public:
     static constexpr const char* BOLD = "\033[1m";
     static constexpr const char* NORMAL = "\033[22m";
     
-    static std::vector<std::string> renderCard(const Carte* carte, int index = -1, bool isPlayed = false);
+    static std::vector<std::string> renderCard(const Carte* carte, int index = -1);
     static std::vector<std::string> renderEmptySlot(int index);
     static void printCardsRow(const std::vector<std::vector<std::string>>& cards);
     

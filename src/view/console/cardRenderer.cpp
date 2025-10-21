@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <algorithm>
 
-std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index, bool isPlayed) {
+std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index) {
     std::vector<std::string> lines(CARD_HEIGHT);
     
     if (!carte) {
@@ -12,41 +12,46 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index,
     
     std::string color = getFactionColor(carte->getFaction());
     std::string typeSymbol = getTypeSymbol(carte);
-    std::string grayOut = isPlayed ? GRAY : "";
+    std::string grayOut = carte->getEstJouee() ? RED : color;
+    if (const Champion* champion = dynamic_cast<const Champion*>(carte)) {
+        grayOut = champion->estMobilise() ? RED : color;
+    }
+
+
     
     // Ligne 0: Bordure supérieure
-    lines[0] = grayOut + color + "┌" + std::string(CARD_WIDTH-2, '-') + "┐" + RESET;
+    lines[0] = grayOut + "┌" + std::string(CARD_WIDTH-2, '-') + "┐" + RESET;
     
     // Ligne 1: Index et coût
     std::string indexStr = (index >= 0) ? "[" + std::to_string(index + 1) + "]" : "";
     std::string costemoji = "💰 ";
     std::string costStr = costemoji + BOLD + std::to_string(carte->getCout()) + NORMAL;
     std::string line1Content = indexStr + std::string(CARD_WIDTH +7 - indexStr.length() - costStr.length(), ' ') + costStr;
-    lines[1] = grayOut + color + "│ " + line1Content + " │" + RESET;
+    lines[1] = grayOut + "│ " + line1Content + " │" + RESET;
     
     // Ligne 2: Nom de la carte
     std::string nom = truncateText(carte->getNom(), CARD_WIDTH - 4);
-    lines[2] = grayOut + color + "│ " + BOLD + centerText(nom, CARD_WIDTH - 4) + RESET + grayOut + color + " │" + RESET;
+    lines[2] = grayOut + "│ " + BOLD + centerText(nom, CARD_WIDTH - 4) + RESET + grayOut + " │" + RESET;
     
     // Ligne 3: Type et faction
     std::string typeInfo = typeSymbol + " " + getFactionSymbol(carte->getFaction());
     //ajustement a cause des emojis plus larges
     if (carte->getFaction() == Faction::GUILDE) {
-        lines[3] = grayOut + color + "│ " + centerText(typeInfo, CARD_WIDTH+2) + " │" + RESET;
+        lines[3] = grayOut + "│ " + centerText(typeInfo, CARD_WIDTH+2) + " │" + RESET;
     }
     else if (carte->getFaction() == Faction::IMPERIALE) {
-        lines[3] = grayOut + color + "│ " + centerText(typeInfo, CARD_WIDTH+3) + " │" + RESET;
+        lines[3] = grayOut + "│ " + centerText(typeInfo, CARD_WIDTH+3) + " │" + RESET;
     }
     else if (carte->getFaction() == Faction::AUCUNE) {
-        lines[3] = grayOut + color + "│ " + centerText(typeInfo, CARD_WIDTH+1) + " │" + RESET;
+        lines[3] = grayOut + "│ " + centerText(typeInfo, CARD_WIDTH+1) + " │" + RESET;
     }
     else {
-        lines[3] = grayOut + color + "│ " + centerText(typeInfo, CARD_WIDTH) + " │" + RESET;
+        lines[3] = grayOut + "│ " + centerText(typeInfo, CARD_WIDTH) + " │" + RESET;
     }
     
     
     // Ligne 4: Séparateur
-    lines[4] = grayOut + color + "├" + std::string(CARD_WIDTH-2, '-') + "┤" + RESET;
+    lines[4] = grayOut + "├" + std::string(CARD_WIDTH-2, '-') + "┤" + RESET;
     
     // Lignes 5-10: Effets
     std::vector<std::string> effects;
@@ -61,7 +66,7 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index,
 
     // Effets alliés
     if (!carte->getEffetsAllie().empty()) {
-        effects.push_back("Effets alliés");
+        effects.push_back("Effets allies");
         for (const auto& effet : carte->getEffetsAllie()) {
             effects.push_back("   " + formatEffect(effet));
         }
@@ -86,17 +91,17 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index,
         // Afficher garde et mobilisation
         if (champion->estGarde()) {
             if (champion->estMobilise()) {
-                lines[ CARD_HEIGHT - 2] = grayOut + color + "│  🛡️ Garde (Mobilisé)" + std::string(CARD_WIDTH -21, ' ') + "│" + RESET;
+                lines[ CARD_HEIGHT - 2] = grayOut + "│  🛡️ Garde (Mobilise)" + std::string(CARD_WIDTH -21, ' ') + "│" + RESET;
             } else {
-                lines[ CARD_HEIGHT - 2] = grayOut + color + "│ 🛡️ Garde" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
+                lines[ CARD_HEIGHT - 2] = grayOut + "│ 🛡️ Garde" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
             }
         } else if (champion->estMobilise()) {
-            lines[ CARD_HEIGHT - 2] = grayOut + color + "│ " + "Mobilisé" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
+            lines[ CARD_HEIGHT - 2] = grayOut + "│ " + "Mobilise" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
         }
     }
     else {
         // Si pas champion, ligne vide avant la bordure inférieure
-        lines[ CARD_HEIGHT - 2] = grayOut + color + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
+        lines[ CARD_HEIGHT - 2] = grayOut + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
     }
     
     // Remplir les lignes d'effets
@@ -105,14 +110,14 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index,
         if (effectIndex < (int)effects.size()) {
             std::string effect = truncateText(effects[effectIndex], CARD_WIDTH - 4);
             
-            lines[i] = grayOut + color + "│ " + effect + std::string(CARD_WIDTH - effect.length(), ' ') + "│" + RESET;
+            lines[i] = grayOut + "│ " + effect + std::string(CARD_WIDTH - 3 - effect.length(), ' ') + "│" + RESET;
         } else {
-            lines[i] = grayOut + color + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
+            lines[i] = grayOut + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
         }
     }
     
     // DERNIèRE LIGNE: Bordure inférieure
-    lines[CARD_HEIGHT - 1] = grayOut + color + "└" + std::string(CARD_WIDTH-2, '-') + "┘" + RESET;
+    lines[CARD_HEIGHT - 1] = grayOut + "└" + std::string(CARD_WIDTH-2, '-') + "┘" + RESET;
     
     return lines;
 }
@@ -196,7 +201,7 @@ std::string CardRenderer::formatEffect(const Effet& effet) {
             result = "Piocher " + std::to_string(effet.getMontant1());
             break;
         case TypeEffet::DEFAUSSER:
-            result = "Défausser " + std::to_string(effet.getMontant1());
+            result = "Defausser " + std::to_string(effet.getMontant1());
             break;
         case TypeEffet::SACRIFIER:
             result = "Sacrifier";
@@ -205,7 +210,7 @@ std::string CardRenderer::formatEffect(const Effet& effet) {
             result = "Assommer un champion";
             break;
         case TypeEffet::PREPARE_CHAMPION:
-            result = "Préparer un champion";
+            result = "Preparer un champion";
             break;
         case TypeEffet::COMBAT_OU_VIE:
             result = "+" + std::to_string(effet.getMontant1()) + " combat ou "+ std::to_string(effet.getMontant2()) + " vie";
@@ -229,10 +234,10 @@ std::string CardRenderer::formatEffect(const Effet& effet) {
             result = "+" + std::to_string(effet.getMontant1()) + " or ou " + std::to_string(effet.getMontant2()) + " vie par champion";
             break;
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:
-            result = "Défausse au dessus du deck";
+            result = "Defausse au dessus du deck";
             break;
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
-            result = "Champion défausse au dessus du deck";
+            result = "Champion defausse au dessus du deck";
             break;
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
             result = "Prochain achat: action au dessus du deck";
@@ -244,11 +249,11 @@ std::string CardRenderer::formatEffect(const Effet& effet) {
             result = "Sacrifier, si oui -> +" + std::to_string(effet.getMontant1()) + " combat";
             break;
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:
-            result = "Piocher, si oui -> défausse " + std::to_string(effet.getMontant1());;
+            result = "Piocher, si oui -> defausse " + std::to_string(effet.getMontant1());;
             break;
 
         default:
-            result = "Effet spécial";
+            result = "Effet special";
             break;
     }
     

@@ -330,6 +330,7 @@ void ConsoleView::afficherMain( Joueur& joueur) {
     
     if (taille == 0) {
         std::cout << "Main vide." << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
         return;
     }
 
@@ -343,8 +344,7 @@ void ConsoleView::afficherMain( Joueur& joueur) {
             int cardIndex = row * CARDS_PER_ROW + i;
             if (cardIndex < taille) {
                 Carte* carte = main.getCarte(cardIndex);
-                bool isPlayed = carte ? carte->getEstJouee() : false;
-                cardsInRow.push_back(CardRenderer::renderCard(carte, cardIndex, isPlayed));
+                cardsInRow.push_back(CardRenderer::renderCard(carte, cardIndex));
             }
         }
         
@@ -379,17 +379,18 @@ void ConsoleView::afficherChampions(const std::vector<Champion*>& champions) {
     
     if (champions.empty()) {
         std::cout << "Aucun champion en jeu." << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
         return;
     }
-    
-    std::vector<std::vector<std::string>> cardsToRender;
-    
-    for (size_t i = 0; i < champions.size(); ++i) {
-        bool isMobilized = champions[i] ? champions[i]->estMobilise() : false;
-        cardsToRender.push_back(CardRenderer::renderCard(champions[i], i, isMobilized));
-    }
-    
-    CardRenderer::printCardsRow(cardsToRender);
-    std::cout << std::endl;
-    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    else{
+        std::vector<std::vector<std::string>> cardsToRender;
+        
+        for (size_t i = 0; i < champions.size(); ++i) {
+            cardsToRender.push_back(CardRenderer::renderCard(champions[i], i));
+        }
+        
+        CardRenderer::printCardsRow(cardsToRender);
+        std::cout << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    }  
 }
