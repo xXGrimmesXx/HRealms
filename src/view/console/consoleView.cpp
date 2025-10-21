@@ -269,6 +269,27 @@ int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs) {
     return index - 1; // Convertir en index 0-based
 }
 
+int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs,int joueurActuelIndex) {
+    int index;
+    std::cout << "👤 Numéro du joueur: ";
+    for(size_t i=0;i<joueurs.size();i++){
+        if((int)i==joueurActuelIndex) continue; // ne pas afficher le joueur actuel
+        std::cout << "[" << i+1 << "] " << joueurs.at(i).getNom() << std::endl;
+    }
+    if (!(std::cin >> index)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    if (index-1 == joueurActuelIndex) {
+        throw std::invalid_argument("Vous ne pouvez pas choisir vous-même comme cible.");
+    }
+    // retirer le reste de la ligne
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    return index - 1; // Convertir en index 0-based
+}
+
 int ConsoleView::demanderSlotMarche() {
     int slot;
     std::cout << "🏪 Numéro du slot dans le marché: ";

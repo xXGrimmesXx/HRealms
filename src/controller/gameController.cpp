@@ -234,7 +234,7 @@ std::vector<void*> GameController::choisirCiblePrimaires(Carte* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs(), partie->getIdxJoueurActuel()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -307,7 +307,7 @@ std::vector<void*> GameController::choisirCibleAllie(Carte* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs(),partie->getIdxJoueurActuel()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -375,7 +375,7 @@ std::vector<void*> GameController::choisirCibleMobiliser(Champion* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs(), partie->getIdxJoueurActuel()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -475,7 +475,7 @@ bool GameController::attaquerJoueur() {
     //const Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Demander quel joueur attaquer
-    int index = view->demanderIndexJoueur(joueurs); // Réutiliser cette méthode
+    int index = view->demanderIndexJoueur(joueurs, partie->getIdxJoueurActuel()); // Réutiliser cette méthode
     
     // Valider l'index
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {

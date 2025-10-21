@@ -2,11 +2,8 @@ voir champ adversaires quand t'attaques
 sacrifier carte indice décalé
 renderCard pour gemmeDeFeu + consulter defausse
 acheter plusieurs cartes en mm temps
-
-enemever possibilité s'attaquer sois meme
 afficherEffet pour les longs textes
 PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
-
 DEFAUSSE FAIRE CHOISIR LA CARTE AU JOUEUR
 GEMME DE FEU PAS AFFICHEE (du moins ds défausse)
 SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
@@ -21,6 +18,7 @@ ELVEN GIFT ON PIOCHE UNE CARTE ET DEFAUSSE 0
 
 
 FAIT : 
+eneLever possibilité s'attaquer sois meme
 demander confirmation fintour seulement si toutes cartes et champions non joués
 CHAMPION MOBILIS2 A LINFINI
 effet allie s'active toujours
