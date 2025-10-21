@@ -72,6 +72,9 @@ bool Joueur::acheterDepuisMarche(int slot,Partie& p){
 void Joueur::finTour(){
     main.viderMain(this);
     piocher(5);
+    for (auto c : champions){
+        c->demobiliser();
+    }
 }
 bool Joueur::aGardeMobilise()const {
     for (auto c : champions){
