@@ -43,6 +43,7 @@ public:
     int demanderChoixAction() override;
     std::vector<int> demanderIndexCarte() override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
+    int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) override;
     std::vector<int> demanderIndexChampion(Joueur& joueur) override;
     int demanderSlotMarche() override;
     bool confirmerAction(std::string& action) override;
