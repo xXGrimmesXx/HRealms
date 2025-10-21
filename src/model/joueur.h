@@ -39,6 +39,7 @@ public:
     void activerProchainAchatDansMain(){prochainAchatDansMain=true;}
     void sacrifier(int montant, Partie& p);
     std::vector<Champion*> getGardes()const;
+    bool possedeAllie(Carte& carte);
     // TODO
     
     

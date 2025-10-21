@@ -39,7 +39,7 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<
         if (c->getEstJouee()) {
             return false;
         }
-        c->lorsDeJeu(p,target,targetAllies);
+        c->lorsDeJeu(p,target,targetAllies,possedeAllie(*c));
         if (dynamic_cast<Champion*>(c)) {
             champions.push_back(dynamic_cast<Champion*>(c));
             main.defausser(idx); // Retirer de la main sans aller dans la défausse
@@ -156,4 +156,18 @@ bool Joueur::prendreDegats(int m){
         return true;
     }
     
+}
+
+bool Joueur::possedeAllie(Carte& carte) {
+    for (auto c:main.getCartes()) {
+        if (c->getFaction() == carte.getFaction() && c->getId() != carte.getId()) {
+            return true;
+        }
+    }
+    for (auto c:champions) {
+        if (c->getFaction() == carte.getFaction() && c->getId() != carte.getId()) {
+            return true;
+        }
+    }
+    return false;
 }

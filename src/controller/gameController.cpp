@@ -109,6 +109,7 @@ void GameController::gererActionJoueur() {
                 std::string message = "Impossible de mobiliser ce champion.";
                 view->afficherErreur(message);
             }
+            afficherEtatJeu();
             break;
             
         case 3: // Acheter une carte

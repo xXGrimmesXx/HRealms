@@ -1,4 +1,3 @@
-fonctionnement champion
 voir champ adversaires quand t'attaques
 sacrifier carte indice décalé
 renderCard pour gemmeDeFeu + consulter defausse
@@ -7,18 +6,23 @@ demander confirmation fintour seulement si toutes cartes et champions non joués
 enemever possibilité s'attaquer sois meme
 afficherEffet pour les longs textes
 PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
-effet allie s'active toujours
+
 ELVEN GIFT ON PIOCHE UNE CARTE ET DEFAUSSE 0
 DEFAUSSE FAIRE CHOISIR LA CARTE AU JOUEUR
 GEMME DE FEU PAS AFFICHEE (du moins ds défausse)
 SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
 SI ERREUR
-APR7S MOBICHAMPION FAIRE afficherEtatJeu
+CHAMPION MOBILIS2 A LINFINI
+CODER GODMOD
+
+coder godmode
 
 si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
 
 
 FAIT : 
+effet allie s'active toujours
+APR7S MOBICHAMPION FAIRE afficherEtatJeu
 gemme de feu + taille
 bug acheterMarche avec 0 or
 afficher taille pioche et défausse
