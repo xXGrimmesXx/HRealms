@@ -378,22 +378,21 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                     if (joueurTgt != nullptr){
-                        std::cout << "Voulez vous sacrifier "<<montant1<<" carte(s) et ensuite gagner "<<montant2 <<" combat(s) ?"<<std::endl;
+                        std::cout << "Voulez vous sacrifier 1 carte et ensuite gagner "<<montant2 <<" combats ?"<<std::endl;
                         std::cout << "1 : oui" << std::endl;
                         std::cout << "2 : non" << std::endl;
                         std::cout << "Choisissez une option (1 ou 2) : ";
                         int choix;
                         std::cin >> choix;
-                        while (choix != 1 && choix != 2) {
+                        while (choix !=1 && choix !=2) {
                             std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
                             std::cin >> choix;
                         }
                         if (choix == 1) {
-                            joueurTgt->sacrifier(montant1,partie);
-                            partie.getTourCourant()->ajouterDegats(montant2);
-
+                            return;
                         } else if (choix == 2) {
-                            break;
+                            joueurTgt->sacrifier(1,partie);
+                            partie.getTourCourant()->ajouterDegats(montant2);
                         } else {
                             throw std::invalid_argument("Invalid choice for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
                         }
@@ -411,21 +410,32 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                     if (joueurTgt != nullptr){
-                        std::cout << "Voulez vous piocher "<<montant1<<" carte(s) et ensuite defausser "<<montant2 <<" carte(s) ?"<<std::endl;
-                        std::cout << "1 : oui" << std::endl;
-                        std::cout << "2 : non" << std::endl;
-                        std::cout << "Choisissez une option (1 ou 2) : ";
+                        std::cout << "Voulez vous piocher "<<montant1<<" carte(s) et ensuite defausser "<<montant1 <<" carte(s) ?"<<std::endl;
+                        for (int i=0;i<=montant1;i++){
+                            std::cout << i+1 << ") Piocher " << i << " carte(s) et defausser " << i << " carte(s)" << std::endl;
+                        }
+                        std::cout << "Choisissez une option : ";
                         int choix;
                         std::cin >> choix;
-                        while (choix != 1 && choix != 2) {
-                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
+                        while (choix < 1 || choix > montant1+1) {
+                            std::cout << "Choix invalide. Veuillez choisir entre 1 et " << montant1+1 << " : ";
                             std::cin >> choix;
                         }
                         if (choix == 1) {
-                            joueurTgt->piocher(montant1);
-
-                        } else if (choix == 2) {
-                            joueurTgt->defausser(montant2);
+                            return;
+                        } else if (choix <= montant1+1) {
+                            int indexDefausse;
+                            joueurTgt->piocher(choix-1);
+                            std::cout <<joueurTgt->getMain().toString()<<std::endl;
+                            for (int i=0;i<choix-1;i++){
+                                std::cout << " Quelle carte voulez vous defausser ? (1-" << joueurTgt->getMain().getTaille() << ") : ";
+                                std::cin >> indexDefausse;
+                                while (indexDefausse < 1 || indexDefausse > joueurTgt->getMain().getTaille()) {
+                                    std::cout << "Choix invalide. Veuillez choisir entre 1 et " << joueurTgt->getMain().getTaille() << " : ";
+                                    std::cin >> indexDefausse;
+                                }
+                                joueurTgt->defausser(indexDefausse -1);
+                            }
                         } else {
                             throw std::invalid_argument("Invalid choice for PIOCHE_SIOUI_DEFAUSSE effect");
                         }

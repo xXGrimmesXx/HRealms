@@ -225,7 +225,7 @@ std::string CardRenderer::formatEffect(const Effet& effet) {
             result = "+" + std::to_string(effet.getMontant1()) + " combat par garde";
             break;
         case TypeEffet::COMBAT_PAR_ALLIE:
-            result = "+" + std::to_string(effet.getMontant1()) + " combat par allié";
+            result = "+" + std::to_string(effet.getMontant1()) + " combat par allie";
             break;
         case TypeEffet::VIE_PAR_CHAMPION:
             result = "+" + std::to_string(effet.getMontant1()) + " vie par champion";

@@ -124,17 +124,17 @@ void Joueur::choisirChampionDefausseAjouterDessusDeck(int montant){
 void Joueur::sacrifier(int montant, Partie& p){
     for(int i=0; i<montant; i++){
         std::cout << "choisissez une carte à sacrifier"<<std::endl;
-        for (int j =0; j<(int)main.getCartes().size();j++){
+        for (int j =1; j<=(int)main.getCartes().size();j++){
             std::cout<<j<<")   ";
         }
         std::cout <<std::endl;
         int choix;
         std::cin >>choix;
-        while(choix<0 || choix >=(int)main.getCartes().size()){
+        while(choix<1 || choix >(int)main.getCartes().size()){
             std::cout<<"choisissez un indice valide"<<std::endl;
             std::cin >> choix;
         }
-        Carte* c = main.getCarte(choix);
+        Carte* c = main.getCarte(choix-1);
         main.sacrifier(c);
         p.getCartesSacrifie().ajouter(c);
     }
