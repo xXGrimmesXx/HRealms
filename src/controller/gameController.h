@@ -47,4 +47,5 @@ public:
     bool validerIndex(int index, int max, const std::string& type);
     void gererErreur(std::string& erreur);
     void toggleGodMode();
+    void executerActionGodMode(int choix);
 };

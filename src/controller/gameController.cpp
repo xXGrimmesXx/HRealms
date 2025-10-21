@@ -144,9 +144,12 @@ void GameController::gererActionJoueur() {
         case 7: // Finir le tour
             finirTour();
             break;
-            
+        case 8: // Activer le godMode
+            toggleGodMode();
+            afficherEtatJeu();
+            break;
         default:
-            std::string message = "Choix invalide. Veuillez choisir entre 1 et 7.";
+            std::string message = "Choix invalide. Veuillez choisir entre 1 et 8.";
             view->afficherErreur(message);
             break;
     }
@@ -234,7 +237,7 @@ std::vector<void*> GameController::choisirCiblePrimaires(Carte* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs(), partie->getIdxJoueurActuel()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -307,7 +310,7 @@ std::vector<void*> GameController::choisirCibleAllie(Carte* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs(),partie->getIdxJoueurActuel()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -375,7 +378,7 @@ std::vector<void*> GameController::choisirCibleMobiliser(Champion* carte) {
             case TypeCible::ADVERSAIRE:
                 // Demander quel joueur attaquer
                 {
-                int index = view->demanderIndexJoueur(partie->getJoueurs(), partie->getIdxJoueurActuel()); // Réutiliser cette méthode
+                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
                 targets.push_back(&partie->getJoueurs().at( index ));
                 }
                 break;
@@ -475,7 +478,7 @@ bool GameController::attaquerJoueur() {
     //const Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Demander quel joueur attaquer
-    int index = view->demanderIndexJoueur(joueurs, partie->getIdxJoueurActuel()); // Réutiliser cette méthode
+    int index = view->demanderIndexJoueur(joueurs); // Réutiliser cette méthode
     
     // Valider l'index
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
@@ -553,6 +556,48 @@ void GameController::finirTour() {
     std::string message = "Tour terminé.";
     view->afficherMessage(message);
     partie->finTour();
+}
+
+void GameController::toggleGodMode() {
+    if (partie->getGodMode().actif) {
+        partie->toggleGodMode();
+        std::string message = "🔧 GodMode DÉSACTIVÉ";
+        view->afficherMessage(message);
+    } else {
+        std::string motDePasse = view->demanderMotDePasseGodMode();
+        
+        if (motDePasse == "joelgaylegoat") {
+            partie->toggleGodMode();
+            std::string message = "🔧 GodMode ACTIVÉ - Choisissez une action:";
+            view->afficherMessage(message);
+            
+            int choixGod = view->demanderChoixGodMode();
+            executerActionGodMode(choixGod);
+        } else {
+            std::string message = "❌ Mot de passe incorrect.";
+            view->afficherErreur(message);
+        }
+    }
+}
+
+void GameController::executerActionGodMode(int choix) {
+    switch (choix) {
+        case 1:
+            {
+                partie->GOD_mettreTousJoueurs1PV();
+                std::string message = "Tous les joueurs ont maintenant 1 PV.";
+                view->afficherMessage(message);
+            }
+            break;
+        case 2:
+            {
+                int idx = view->demanderIndexDeck(partie->getMarche()->getDeckMarche());
+                partie->GOD_acheterDepuisDeckMarche(idx, partie->getJoueurActuel());
+                std::string message = "Carte achetée depuis le deck.";
+                view->afficherMessage(message);
+            }
+            break;
+    }
 }
 
 void GameController::afficherEtatJeu() {

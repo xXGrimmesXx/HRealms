@@ -10,6 +10,7 @@ class Marche;
 class Carte;
 class Pile;
 class Champion;
+class Deck;
 
 class GameView {
 public:
@@ -27,6 +28,7 @@ public:
         virtual void afficherPileGemmeDeFeu(const Pile& pile) = 0;
         virtual void afficherChampions(const std::vector<Champion*>& champions) = 0;
         virtual void afficherDefausse(const Joueur& joueur) = 0;
+        virtual void afficherDeckMarche(Deck& deckMarche) = 0;
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
@@ -40,4 +42,7 @@ public:
     virtual bool confirmerAction(std::string& action) = 0;
     virtual void attendreEntree() = 0;
     virtual void viderEcran() = 0;
+    virtual int demanderChoixGodMode() = 0;
+    virtual int demanderIndexDeck(Deck& deckMarche) = 0;
+    virtual std::string demanderMotDePasseGodMode() = 0;
 };

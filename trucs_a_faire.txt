@@ -8,7 +8,7 @@ DEFAUSSE FAIRE CHOISIR LA CARTE AU JOUEUR
 GEMME DE FEU PAS AFFICHEE (du moins ds défausse)
 SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
 
-CODER GODMOD
+CODER GODMOD (commencé mais à finir)
 QUAND ON JOUE UNE CARTE QUI FAIT ENLEVER UNE AUTRE ON ENL7VE 1 A TOUTERS LES INDICES APRES LINDICE DE LA CARTE SUPPRIMER
 si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
 

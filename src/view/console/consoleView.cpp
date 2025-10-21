@@ -147,6 +147,31 @@ void ConsoleView::afficherDefausse(const Joueur& joueur) {
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
+void ConsoleView::afficherDeckMarche(Deck& deckMarche) {
+    std::cout << "🗂️ Deck de la marche:" << std::endl;
+    std::cout << "───────────────────────────────────────" << std::endl;
+
+    int taille = deckMarche.getTaille();
+
+    if (taille == 0) {
+        std::cout << "Défausse vide." << std::endl;
+        return;
+    }
+    
+    std::cout << "Nombre de cartes: " << taille << std::endl;
+    const auto& cartes = deckMarche.getCartes();
+    
+    for (int i = 0; i < taille; ++i) {
+        Carte* c = cartes[i];
+        if (c) {
+            std::cout << "[" << i + 1 << "] " << c->getNom();
+            std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
+        }
+    }
+    
+    std::cout << "───────────────────────────────────────" << std::endl;
+}
+
 int ConsoleView::demanderNombreJoueurs() {
     int nombre = 0;
     std::string line;
@@ -200,6 +225,7 @@ int ConsoleView::demanderChoixAction() {
     std::cout << "[5] Attaquer un joueur" << std::endl;
     std::cout << "[6] Consulter sa défausse" << std::endl;
     std::cout << "[7] Finir le tour" << std::endl;
+    std::cout << "[8] GodMode (si activé)" << std::endl;
     std::cout << "Votre choix: ";
     
     
@@ -329,6 +355,43 @@ void ConsoleView::viderEcran() {
 #else
     system("clear");
 #endif
+}
+
+int ConsoleView::demanderChoixGodMode() {
+    std::cout << "🔧 GOD MODE:" << std::endl;
+    std::cout << "[1] Mettre tous à 1 PV" << std::endl;
+    std::cout << "[2] Acheter depuis deck" << std::endl;
+    std::cout << "Choix: ";
+
+    int choix;
+    std::cin >> choix;
+    while (choix < 1 || choix > 2) {
+        std::string msg = "Choix invalide. Veuillez choisir 1 ou 2.";
+        afficherErreur(msg);
+        std::cin >> choix;
+    }
+    return choix;
+}
+
+int ConsoleView::demanderIndexDeck(Deck& deckMarche) {
+    afficherDeckMarche(deckMarche);
+    int index;
+    std::cout << "📚 Index de la carte dans le deck du marché: ";
+    if (!(std::cin >> index)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    // retirer le reste de la ligne
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return index - 1; // Convertir en index 0-based
+}
+
+std::string ConsoleView::demanderMotDePasseGodMode() {
+    std::string motDePasse;
+    std::cout << "🔐 Entrez le mot de passe God Mode: ";
+    std::getline(std::cin, motDePasse);
+    return motDePasse;
 }
 
 std::string ConsoleView::getFactionSymbol(Faction faction)  {

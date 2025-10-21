@@ -17,6 +17,9 @@ public:
 
     // Getters
     int getTaille() const { return cartes.size(); }
+    std::vector<Carte*> getCartes() {
+        return std::vector<Carte*>(cartes.begin(), cartes.end());
+    }
     
     // Méthodes
     void melanger();
@@ -24,5 +27,6 @@ public:
     void ajouterDessous(Carte* c);
     bool estVide() const;
     void rechargerDepuis(Pile& defausse);
+
 
 };

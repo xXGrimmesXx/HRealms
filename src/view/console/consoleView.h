@@ -5,6 +5,7 @@
 #include "../../model/pile.h"
 #include "../../model/typeEffet.h"
 #include "../../model/typeCible.h"
+#include "../../model/deck.h"
 
 
 #include <iostream>
@@ -31,7 +32,8 @@ public:
         void afficherGagnant(Joueur& gagnant)override;
         void afficherPileGemmeDeFeu(const Pile& pile);
         void afficherChampions(const std::vector<Champion*>& champions)override;
-        void afficherDefausse(const Joueur& joueur);
+        void afficherDefausse(const Joueur& joueur)override;
+        void afficherDeckMarche(Deck& deckMarche)override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
@@ -49,6 +51,10 @@ public:
     bool confirmerAction(std::string& action) override;
     void attendreEntree() override;
     void viderEcran() override;
+    int demanderChoixGodMode()override;
+    int demanderIndexDeck(Deck& deckMarche)override;
+    std::string demanderMotDePasseGodMode()override;
+
 
 private:
     std::string getFactionSymbol(Faction faction) ;

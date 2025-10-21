@@ -23,4 +23,6 @@ public:
     void retournerGemmeFeuDansPile(Carte* g);
 
     const std::vector<Carte*>& getLigne() const { return ligne; }
+    Deck& getDeckMarche() { return deckMarche; }
+    Pile& getZoneSacrifice() { return zoneSacrifice; }
 };
