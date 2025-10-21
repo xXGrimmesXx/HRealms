@@ -530,12 +530,29 @@ bool GameController::consulterDefausse() {
 }
 
 void GameController::finirTour() {
-    std::string message = "Êtes-vous sûr de vouloir finir votre tour ?";
-    if (view->confirmerAction(message)) {
-        std::string message = "Tour terminé.";
-        view->afficherMessage(message);
-        partie->finTour();
+    Joueur& joueurActuel = partie->getJoueurActuel();
+    if(joueurActuel.aCarteNonJouee()){
+        std::string message = "Vous avez des cartes non jouées ou des ressources non utilisées. Êtes-vous sûr de vouloir finir votre tour ?";
+        if (!view->confirmerAction(message)) {
+            return;
+        }
     }
+    else if (partie->getTourCourant()->getDegats() > 0){
+        std::string message = "Vous avez "+std::to_string(partie->getTourCourant()->getDegats())+" dégâts non utilisés. Êtes-vous sûr de vouloir finir votre tour ?";
+        if (!view->confirmerAction(message)) {
+            return;
+        }
+    }
+    else if (partie->getTourCourant()->getOr() > 0){
+        std::string message = "Vous avez "+std::to_string(partie->getTourCourant()->getOr())+" or non utilisé. Êtes-vous sûr de vouloir finir votre tour ?";
+        if (!view->confirmerAction(message)) {
+            return;
+        }
+    }
+    
+    std::string message = "Tour terminé.";
+    view->afficherMessage(message);
+    partie->finTour();
 }
 
 void GameController::afficherEtatJeu() {

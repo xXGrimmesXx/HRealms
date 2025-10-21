@@ -174,3 +174,17 @@ bool Joueur::possedeAllie(Carte& carte) {
     }
     return false;
 }
+
+bool Joueur::aCarteNonJouee() {
+    for (auto c:main.getCartes()) {
+        if (!c->getEstJouee()) {
+            return true;
+        }
+    }
+    for (auto c:champions) {
+        if (!c->estMobilise()) {
+            return true;
+        }
+    }
+    return false;
+}
