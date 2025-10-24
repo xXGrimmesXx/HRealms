@@ -43,3 +43,9 @@ void Deck::rechargerDepuis(Pile& defausse){
         cartes.push_front(c);
     }
 }
+
+void Deck::retirerCarte(int idx){
+    if (idx >= 0 && idx < static_cast<int>(cartes.size())) {
+        cartes.erase(cartes.begin() + idx);
+    }
+}

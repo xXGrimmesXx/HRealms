@@ -58,8 +58,7 @@ void Partie::GOD_mettreTousJoueurs1PV() {
 }
 
 void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur& j) {
-    tour_courant->ajouterOr(1000);
-    marche->acquerirDepuisDeck(idx, j, *this);
+    marche->acquerirDepuisDeck(idx, j);
 }
 
 Joueur* Partie::getGagnant() {

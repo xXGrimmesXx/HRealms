@@ -63,9 +63,7 @@ void GameController::initialiserPartie() {
 
 void GameController::boucleJeu() {
     while (jeuEnCours && !partie->estTerminee()) {
-
         jouerTour();
- 
     }
 }
 
@@ -94,7 +92,7 @@ void GameController::jouerTour() {
 }
 
 void GameController::gererActionJoueur() {
-    int choix = view->demanderChoixAction();
+    int choix = view->demanderChoixAction(*partie);
     
     switch (choix) {
         case 1: // Jouer une carte
@@ -147,10 +145,6 @@ void GameController::gererActionJoueur() {
         case 8: // Activer le godMode
             toggleGodMode();
             afficherEtatJeu();
-            break;
-        default:
-            std::string message = "Choix invalide. Veuillez choisir entre 1 et 8.";
-            view->afficherErreur(message);
             break;
     }
 
@@ -534,7 +528,7 @@ bool GameController::consulterDefausse() {
 
 void GameController::finirTour() {
     Joueur& joueurActuel = partie->getJoueurActuel();
-    if(joueurActuel.aCarteNonJouee()){
+    if(joueurActuel.getNombreCartesJouables() > 0){
         std::string message = "Vous avez des cartes non jouées ou des ressources non utilisées. Êtes-vous sûr de vouloir finir votre tour ?";
         if (!view->confirmerAction(message)) {
             return;
@@ -628,7 +622,10 @@ void GameController::afficherEtatJeu() {
     afficherMarche();
     afficherPileGemmeDeFeu();
     afficherMain();
-    afficherChampions();
+    if(!partie->getJoueurActuel().getChampions().empty()){
+        afficherChampions();
+    }
+    
 }
 
 void GameController::afficherMain() {

@@ -215,21 +215,84 @@ std::string ConsoleView::demanderNomJoueur(int numero) {
     return nom;
 }
 
-int ConsoleView::demanderChoixAction() {
-    int choix;
+int ConsoleView::demanderChoixAction(Partie& partie) {
     std::cout << "🎯 Choisissez votre action:" << std::endl;
-    std::cout << "[1] Jouer une carte" << std::endl;
-    std::cout << "[2] Mobiliser un champion" << std::endl;
-    std::cout << "[3] Acheter une carte" << std::endl;
-    std::cout << "[4] Acheter une Gemme de Feu" << std::endl;
-    std::cout << "[5] Attaquer un joueur" << std::endl;
-    std::cout << "[6] Consulter sa défausse" << std::endl;
-    std::cout << "[7] Finir le tour" << std::endl;
-    std::cout << "[8] GodMode (si activé)" << std::endl;
+    
+    // Récupérer les informations nécessaires
+    Joueur& joueur = partie.getJoueurActuel();
+    Tour* tour = partie.getTourCourant();
+    Marche* marche = partie.getMarche();
+    
+    // Construire un mapping entre numéro affiché et action réelle
+    std::vector<int> actionsDisponibles;
+    int numeroAffiche = 1;
+    
+    // Seulement si le joueur a des cartes en main
+    if (joueur.getNombreCartesJouables() > 0) {
+        std::cout << "[" << numeroAffiche << "] Jouer une carte" << std::endl;
+        actionsDisponibles.push_back(1);
+        numeroAffiche++;
+    }
+    
+    // Seulement s'il y a des champions
+    if (joueur.getChampions().size() > 0) {
+        std::cout << "[" << numeroAffiche << "] Mobiliser un champion" << std::endl;
+        actionsDisponibles.push_back(2);
+        numeroAffiche++;
+    }
+    
+    // Seulement si le joueur a de l'or et qu'il y a des cartes au marché (cas très rare où toutes les cartes ont été jouées)
+    if (tour && tour->getOr() > 0 && marche && marche->getLigne().size() > 0) {
+        // Vérifier s'il y a au moins une carte que le joueur peut se payer
+        bool carteAbordable = false;
+        for (const auto& carte : marche->getLigne()) {
+            if (carte && carte->getCout() <= tour->getOr()) {
+                carteAbordable = true;
+                break;
+            }
+        }
+        
+        if (carteAbordable) {
+            std::cout << "[" << numeroAffiche << "] Acheter une carte" << std::endl;
+            actionsDisponibles.push_back(3);
+            numeroAffiche++;
+        }
+    }
+
+    // Seulement si le joueur a au moins 2 d'or et qu'il y a des gemmes
+    if (tour && tour->getOr() >= 2 && partie.getGemmeDeFeu().getPile().getTaille() > 0) {
+        std::cout << "[" << numeroAffiche << "] Acheter une Gemme de Feu" << std::endl;
+        actionsDisponibles.push_back(4);
+        numeroAffiche++;
+    }
+    
+    // Attaquer un joueur - seulement si le joueur a des dégâts
+    if (tour && tour->getDegats() > 0) {
+        std::cout << "[" << numeroAffiche << "] Attaquer un joueur" << std::endl;
+        actionsDisponibles.push_back(5);
+        numeroAffiche++;
+    }
+    
+    // Seulement si le joueur à au moins une carte dans sa défausse
+    if (joueur.getDefausse().getTaille() > 0) {
+        std::cout << "[" << numeroAffiche << "] Consulter sa défausse" << std::endl;
+        actionsDisponibles.push_back(6);
+        numeroAffiche++;
+    }
+    
+    // [7] Finir le tour - toujours disponible
+    std::cout << "[" << numeroAffiche << "] Finir le tour" << std::endl;
+    actionsDisponibles.push_back(7);
+    numeroAffiche++;
+    
+    // [8] GodMode - toujours disponible
+    std::cout << "[" << numeroAffiche << "] GodMode" << std::endl;
+    actionsDisponibles.push_back(8);
+    
     std::cout << "Votre choix: ";
     
-    
-    if (!(std::cin >> choix)) {
+    int choixAffiche;
+    if (!(std::cin >> choixAffiche)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
@@ -237,7 +300,14 @@ int ConsoleView::demanderChoixAction() {
     // retirer le reste de la ligne (y compris '\n') pour que getline() suivant fonctionne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
-    return choix;
+    // Si choix invalide
+    if (choixAffiche < 1 || choixAffiche > (int)actionsDisponibles.size()) {
+        std::cout << "❌ ERREUR: Choix invalide. Veuillez choisir entre 1 et " << actionsDisponibles.size() << "." << std::endl;
+        return -1;
+    }
+
+    // Convertir le choix affiché en action réelle
+    return actionsDisponibles[choixAffiche - 1];
 }
 
 std::vector<int> ConsoleView::demanderIndexCarte() {

@@ -27,8 +27,12 @@ bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
 }
 
 
-bool Marche::acquerirDepuisDeck(int idx, Joueur& j, Partie& partie){
-    std::cout << "Acquisition depuis le deck du marché non implémentée." << std::endl;
-    std::cout << idx << " " << j << " " << partie << std::endl;
+bool Marche::acquerirDepuisDeck(int idx, Joueur& j){
+    Carte* c = deckMarche.getCartes().at(idx);
+    if (c==nullptr){
+        return false;
+    }
+    j.getMain().ajouter(c);
+    deckMarche.retirerCarte(idx);
     return true;
 }

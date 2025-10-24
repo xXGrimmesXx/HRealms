@@ -42,7 +42,7 @@ public:
     // Implémentation des méthodes de saisie
     int demanderNombreJoueurs() override;
     std::string demanderNomJoueur(int numero) override;
-    int demanderChoixAction() override;
+    int demanderChoixAction(Partie& partie) override;
     std::vector<int> demanderIndexCarte() override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) override;

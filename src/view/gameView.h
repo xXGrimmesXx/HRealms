@@ -33,7 +33,7 @@ public:
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
     virtual std::string demanderNomJoueur(int numero) = 0;
-    virtual int demanderChoixAction() = 0;
+    virtual int demanderChoixAction(Partie& partie) = 0;
     virtual std::vector<int> demanderIndexCarte() = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) = 0;

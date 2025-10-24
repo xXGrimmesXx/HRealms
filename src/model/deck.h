@@ -27,6 +27,7 @@ public:
     void ajouterDessous(Carte* c);
     bool estVide() const;
     void rechargerDepuis(Pile& defausse);
+    void retirerCarte(int idx);
 
 
 };

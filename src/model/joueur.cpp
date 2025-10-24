@@ -175,16 +175,13 @@ bool Joueur::possedeAllie(Carte& carte) {
     return false;
 }
 
-bool Joueur::aCarteNonJouee() {
-    for (auto c:main.getCartes()) {
-        if (!c->getEstJouee()) {
-            return true;
+int Joueur::getNombreCartesJouables() const {
+    int count = 0;
+    for (int i = 0; i < main.getTaille(); ++i) {
+        Carte* carte = main.getCarte(i);
+        if (carte && !carte->getEstJouee()) {
+            count++;
         }
     }
-    for (auto c:champions) {
-        if (!c->estMobilise()) {
-            return true;
-        }
-    }
-    return false;
+    return count;
 }

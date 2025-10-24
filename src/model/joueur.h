@@ -40,8 +40,8 @@ public:
     void sacrifier(int montant, Partie& p);
     std::vector<Champion*> getGardes()const;
     bool possedeAllie(Carte& carte);
-    bool aCarteNonJouee();
-    // TODO
+    int getNombreCartesJouables() const;
+
     
     
     void choisirCarteDefausseAjouterDessusDeck(int montant);
