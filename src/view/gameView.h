@@ -45,4 +45,5 @@ public:
     virtual int demanderChoixGodMode() = 0;
     virtual int demanderIndexDeck(Deck& deckMarche) = 0;
     virtual std::string demanderMotDePasseGodMode() = 0;
+    
 };

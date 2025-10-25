@@ -236,9 +236,17 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
     
     // Seulement s'il y a des champions
     if (joueur.getChampions().size() > 0) {
-        std::cout << "[" << numeroAffiche << "] Mobiliser un champion" << std::endl;
-        actionsDisponibles.push_back(2);
-        numeroAffiche++;
+        bool aChampionMobilisable = std::any_of(
+            joueur.getChampions().begin(), 
+            joueur.getChampions().end(),
+            [](Champion* c) { return c && !c->estMobilise(); }
+        );
+        
+        if (aChampionMobilisable) {
+            std::cout << "[" << numeroAffiche << "] Mobiliser un champion" << std::endl;
+            actionsDisponibles.push_back(2);
+            numeroAffiche++;
+        }
     }
     
     // Seulement si le joueur a de l'or et qu'il y a des cartes au marché (cas très rare où toutes les cartes ont été jouées)
@@ -279,16 +287,20 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
         actionsDisponibles.push_back(6);
         numeroAffiche++;
     }
-    
-    // [7] Finir le tour - toujours disponible
-    std::cout << "[" << numeroAffiche << "] Finir le tour" << std::endl;
+
+    // Consulter main adversaire - TOUJOURS DISPONIBLE
+    std::cout << "[" << numeroAffiche << "] Consulter main adversaire" << std::endl;
     actionsDisponibles.push_back(7);
     numeroAffiche++;
     
-    // [8] GodMode - toujours disponible
-    std::cout << "[" << numeroAffiche << "] GodMode" << std::endl;
+    // Finir le tour - toujours disponible
+    std::cout << "[" << numeroAffiche << "] Finir le tour" << std::endl;
     actionsDisponibles.push_back(8);
+    numeroAffiche++;
     
+    // GodMode - toujours disponible
+    std::cout << "[" << numeroAffiche << "] GodMode" << std::endl;
+    actionsDisponibles.push_back(9);
     std::cout << "Votre choix: ";
     
     int choixAffiche;

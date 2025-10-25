@@ -25,16 +25,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    // Assuming Joueur has a method to add gold
                     partie.getTourCourant()->ajouterOr(montant1);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
                 
             }
-            // Handle other target types if necessary
             else{
-                // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for AJOUT_OR effect");
             }
             break;
@@ -42,14 +39,12 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    // Assuming Joueur has a method to add combat points
                     partie.getTourCourant()->ajouterDegats(montant1);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
             }
             else{
-                // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for AJOUT_COMBAT effect");
             }
             break;
@@ -63,7 +58,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                 }
             }
             else{
-                // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for AJOUT_VIE effect");
             }
             break;
@@ -77,7 +71,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                 }
             }
             else{
-                // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for PIOCHER effect");
             }
             break;
@@ -85,13 +78,19 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::ADVERSAIRE|| cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    joueurTgt->defausser(montant1);
+                    for (int i = 0; i < montant1; i++) {
+                        if (joueurTgt->getMain().getTaille() == 0) {
+                            break; // Plus de cartes à défausser
+                        }
+                        // TODO: Demander à l'utilisateur quel index défausser
+                        // Pour l'instant, on défausse toujours l'index 0
+                        joueurTgt->defausser(0);
+                    }
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
             }
             else{
-                // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for DEFAUSSE_CIBLE effect");
             }
             break;

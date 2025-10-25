@@ -22,18 +22,18 @@ public:
     ~ConsoleView();
     
     // Implémentation des méthodes d'affichage
-        void afficherMessage(std::string& message)override;
-        void afficherErreur(std::string& erreur)override;
-        void afficherPartie(Partie& partie)override;
-        void afficherJoueur(Joueur& joueur)override;
-        void afficherMain(Joueur& joueur)override;
-        void afficherMarche(Marche& marche)override;
-        void afficherScores(std::vector<Joueur>& joueurs)override;
-        void afficherGagnant(Joueur& gagnant)override;
-        void afficherPileGemmeDeFeu(const Pile& pile);
-        void afficherChampions(const std::vector<Champion*>& champions)override;
-        void afficherDefausse(const Joueur& joueur)override;
-        void afficherDeckMarche(Deck& deckMarche)override;
+    void afficherMessage(std::string& message)override;
+    void afficherErreur(std::string& erreur)override;
+    void afficherPartie(Partie& partie)override;
+    void afficherJoueur(Joueur& joueur)override;
+    void afficherMain(Joueur& joueur)override;
+    void afficherMarche(Marche& marche)override;
+    void afficherScores(std::vector<Joueur>& joueurs)override;
+    void afficherGagnant(Joueur& gagnant)override;
+    void afficherPileGemmeDeFeu(const Pile& pile);
+    void afficherChampions(const std::vector<Champion*>& champions)override;
+    void afficherDefausse(const Joueur& joueur)override;
+    void afficherDeckMarche(Deck& deckMarche)override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
@@ -54,6 +54,7 @@ public:
     int demanderChoixGodMode()override;
     int demanderIndexDeck(Deck& deckMarche)override;
     std::string demanderMotDePasseGodMode()override;
+    
 
 
 private:

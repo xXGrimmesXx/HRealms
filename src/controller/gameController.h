@@ -42,6 +42,7 @@ public:
     void afficherMarche();
     void afficherPileGemmeDeFeu();
     void afficherChampions();
+    void afficherMainAdversaire();
     
     // Utilitaires
     bool validerIndex(int index, int max, const std::string& type);

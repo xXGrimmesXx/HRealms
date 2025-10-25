@@ -16,7 +16,6 @@
 - acheter plusieurs cartes en mm temps
 - afficherEffet pour les longs textes
 - une option 6 dans jouer une carte pour jouer toutes ses cartes en même temps
-- boucle infinie mauvais choix godmode
 
 Normalement c bon mais à tester :
 
@@ -41,3 +40,4 @@ GodMode
 - SI AUCUN CHAMPION EN JEU NE PAS DEMANDER QUEL CHAMPION CHOISIR
 --> Plus globalement, ne proposer les options que si elle sont possibles
 Cad, changer le switch de gererActionJoueur en une suite de ifs
+- boucle infinie mauvais choix godmode

@@ -139,10 +139,14 @@ void GameController::gererActionJoueur() {
             }
             afficherEtatJeu();
             break;
-        case 7: // Finir le tour
+        case 7: // Consulter la main d'un adversaire
+            afficherMainAdversaire();
+            afficherEtatJeu();
+            break;
+        case 8: // Finir le tour
             finirTour();
             break;
-        case 8: // Activer le godMode
+        case 9: // Activer le godMode
             toggleGodMode();
             afficherEtatJeu();
             break;
@@ -649,6 +653,50 @@ void GameController::afficherPileGemmeDeFeu() {
 void GameController::afficherChampions() {
     const Joueur& joueurActuel = partie->getJoueurActuel();
     view->afficherChampions(joueurActuel.getChampions());
+}
+
+void GameController::afficherMainAdversaire() {
+    std::vector<Joueur>& joueurs = partie->getJoueurs();
+    
+    // Filtrer pour ne montrer que les adversaires
+    std::vector<Joueur> adversaires;
+    for (auto& j : joueurs) {
+        if (j.getNom() != partie->getJoueurActuel().getNom()) {
+            adversaires.push_back(j);
+        }
+    }
+
+    // S'il y a plus d'un adversaire, demander lequel afficher
+    if(adversaires.size() > 1){
+        
+        int index = view->demanderIndexJoueur(adversaires);
+        
+        if (index < 0 || index >= (int)adversaires.size()) {
+            std::string message = "Index invalide.";
+            view->afficherErreur(message);
+            return;
+        }
+        
+        // Trouver le vrai joueur dans la liste complète
+        for (auto& j : joueurs) {
+            if (j.getNom() == adversaires.at(index).getNom()) {
+                view->afficherMain(j);
+                
+                if (!j.getChampions().empty()) {
+                    view->afficherChampions(j.getChampions());
+                }
+                
+                view->attendreEntree();
+                return;
+            }
+        }
+    }
+    // S'il n'y a qu'un seul adversaire
+    else{
+        Joueur& j = adversaires.at(0);
+        view->afficherMain(j);
+        view->attendreEntree();
+    }
 }
 
 void GameController::finirPartie() {
