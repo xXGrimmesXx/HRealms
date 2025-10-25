@@ -7,12 +7,9 @@
 - si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
 --> Pour les 2 précédents, trier par ordre décroissant et appliquer dans cet ordre
 - DEFAUSSE (adversaire) FAIRE CHOISIR LA CARTE AU JOUEUR
-- GEMME DE FEU PAS AFFICHEE (du moins ds défausse et dans main aussi je crois)
---> enft quand achète gemme de feu, achète carte aléatoire.
 
 
 2) Affichage/utilitaire :
-- renderCard pour gemmeDeFeu + consulter defausse
 - acheter plusieurs cartes en mm temps
 - afficherEffet pour les longs textes
 - une option 6 dans jouer une carte pour jouer toutes ses cartes en même temps
