@@ -11,7 +11,6 @@
 
 2) Affichage/utilitaire :
 - acheter plusieurs cartes en mm temps
-- afficherEffet pour les longs textes
 - une option 6 dans jouer une carte pour jouer toutes ses cartes en même temps
 
 Normalement c bon mais à tester :

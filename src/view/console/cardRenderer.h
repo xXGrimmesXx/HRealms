@@ -33,7 +33,7 @@ public:
 private:
     static std::string getFactionColor(Faction faction);
     static std::string getTypeSymbol(const Carte* carte);
-    static std::string truncateText(const std::string& text, int maxLength);
+    static std::vector<std::string> truncateText(const std::string& text, int maxLength);
     static std::string centerText(const std::string& text, int width);
     static std::string formatEffect(const Effet& effet);
     static std::string getFactionSymbol(Faction faction);

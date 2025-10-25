@@ -30,7 +30,7 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     lines[1] = grayOut + "│ " + line1Content + " │" + RESET;
     
     // Ligne 2: Nom de la carte
-    std::string nom = truncateText(carte->getNom(), CARD_WIDTH - 4);
+    std::string nom = truncateText(carte->getNom(), CARD_WIDTH - 4)[0];
     lines[2] = grayOut + "│ " + BOLD + centerText(nom, CARD_WIDTH - 4) + RESET + grayOut + " │" + RESET;
     
     // Ligne 3: Type et faction
@@ -91,9 +91,9 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
         // Afficher garde et mobilisation
         if (champion->estGarde()) {
             if (champion->estMobilise()) {
-                lines[ CARD_HEIGHT - 2] = grayOut + "│  🛡️ Garde (Mobilise)" + std::string(CARD_WIDTH -21, ' ') + "│" + RESET;
+                lines[ CARD_HEIGHT - 2] = grayOut + "│  🛡️ Garde "+BOLD+std::to_string(champion->getVie())+NORMAL+"❤️ (Mobilise)" + std::string(CARD_WIDTH -27, ' ') + "│" + RESET;
             } else {
-                lines[ CARD_HEIGHT - 2] = grayOut + "│ 🛡️ Garde" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
+                lines[ CARD_HEIGHT - 2] = grayOut + "│ 🛡️ Garde " +BOLD+std::to_string(champion->getVie())+NORMAL+"❤️"+ std::string(CARD_WIDTH - 15, ' ') + "│" + RESET;
             }
         } else if (champion->estMobilise()) {
             lines[ CARD_HEIGHT - 2] = grayOut + "│ " + "Mobilise" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
@@ -105,15 +105,25 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     }
     
     // Remplir les lignes d'effets
-    for (int i = 5; i < CARD_HEIGHT-1; ++i) {
-        int effectIndex = i - 5;
+
+    //on commence à la ligne 5 car en-tete carte jusqu'a la ligne 4
+    int effectIndex =  0;
+    for (int nb_ligne = 5; nb_ligne < CARD_HEIGHT-1; ++nb_ligne) {
+        //faire correspondre i avec les indice des effets
+        
+        // si il y a un effet à afficher
         if (effectIndex < (int)effects.size()) {
-            std::string effect = truncateText(effects[effectIndex], CARD_WIDTH - 4);
-            
-            lines[i] = grayOut + "│ " + effect + std::string(CARD_WIDTH - 3 - effect.length(), ' ') + "│" + RESET;
-        } else {
-            lines[i] = grayOut + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
+            std::vector<std::string> effect = truncateText(effects[effectIndex], CARD_WIDTH - 4);
+
+            for (const auto& line : effect) {
+                lines[nb_ligne] = grayOut + "│ " + line + std::string(CARD_WIDTH - 3 - line.length(), ' ') + "│" + RESET;
+                ++nb_ligne;
+            }
+            nb_ligne--; // ajuster car la boucle for va l'incrementer
+        } else if (lines[nb_ligne].empty()) {
+            lines[nb_ligne] = grayOut + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
         }
+        effectIndex++;
     }
     
     // DERNIèRE LIGNE: Bordure inférieure
@@ -199,9 +209,35 @@ std::string CardRenderer::getTypeSymbol(const Carte* carte) {
     return "❓";
 }
 
-std::string CardRenderer::truncateText(const std::string& text, int maxLength) {
-    if ((int)text.length() <= maxLength) return text;
-    return text.substr(0, maxLength - 3) + "...";
+std::vector<std::string> CardRenderer::truncateText(const std::string& text, int maxLength) {
+    std::vector<std::string> result;
+    std::istringstream words(text);
+    std::string line = "  ";
+    std::string word;
+    // si le texte est déjà plus court que la longueur max, on le retourne directement
+    if (text.length() <= (size_t)maxLength) {
+        result.push_back(text);
+        return result;
+        
+    }
+    while (words >> word) {
+        //tant qu'il y a des mots 
+        if (line.length() + word.length() + 1 > (size_t)maxLength) {
+            // check si le mot peut rentrer dans la ligne actuelle 
+            //si non on ajoute la ligne dans le resultat et on commence une nouvelle ligne
+            result.push_back(line);
+            line = "  " + word;
+        } else {
+            //si oui on ajoute le mot à la ligne actuelle
+            if (!line.empty()) line += " ";
+            line += word;
+        }
+    }
+    //ajout de la dernierre ligne
+    if (!line.empty()){
+        result.push_back(line);
+    } 
+    return result;
 }
 
 std::string CardRenderer::centerText(const std::string& text, int width) {
