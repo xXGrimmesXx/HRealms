@@ -435,12 +435,12 @@ int ConsoleView::demanderChoixGodMode() {
     std::cout << "Choix: ";
 
     int choix;
-    std::cin >> choix;
-    while (choix < 1 || choix > 3) {
-        std::string msg = "Choix invalide. Veuillez choisir 1, 2 ou 3.";
-        afficherErreur(msg);
-        std::cin >> choix;
+    if (!(std::cin>>choix)){
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
     }
+
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return choix;
 }

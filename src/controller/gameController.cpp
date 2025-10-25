@@ -553,32 +553,30 @@ void GameController::finirTour() {
 }
 
 void GameController::toggleGodMode() {
-    if (partie->getGodMode().actif) {
-        int choixGod = view->demanderChoixGodMode();
-        if (choixGod == 3) {
-            partie->toggleGodMode();
-            std::string message = "🔧 GodMode DÉSACTIVÉ";
-            view->afficherMessage(message);
-        } else {
-            executerActionGodMode(choixGod);
-        }
-    } else {
+    if (!partie->getGodMode().actif) {
+        // GodMode inactif → demander mot de passe
         std::string motDePasse = view->demanderMotDePasseGodMode();
         
-        if (motDePasse == "joelgaylegoat") {
-            partie->toggleGodMode();
-            std::string message = "🔧 GodMode ACTIVÉ - Choisissez une action:";
-            view->afficherMessage(message);
-            
-            int choixGod = view->demanderChoixGodMode();
-            if (choixGod != 3) {
-                executerActionGodMode(choixGod);
-            }
-        } else {
+        if (motDePasse != "joelgaylegoat") {
             std::string message = "❌ Mot de passe incorrect.";
             view->afficherErreur(message);
+            return;
         }
+        
+        // Activer le GodMode
+        partie->toggleGodMode();
+        std::string message = "🔧 GodMode ACTIVÉ";
+        view->afficherMessage(message);
     }
+    
+    int choixGod = view->demanderChoixGodMode();
+    
+    if (choixGod == -1 || choixGod < 1 || choixGod > 3) {
+        std::string message = "❌ Choix invalide.";
+        view->afficherErreur(message);
+        return;
+    }
+    executerActionGodMode(choixGod);
 }
 
 void GameController::executerActionGodMode(int choix) {
@@ -610,7 +608,12 @@ void GameController::executerActionGodMode(int choix) {
                 }
             }
             break;
-        case 3: // Ne rien faire, c'est géré dans toggleGodMode()
+        case 3: // Désactiver GodMode
+            partie->toggleGodMode();
+            {
+                std::string message = "🔧 GodMode DÉSACTIVÉ";
+                view->afficherMessage(message);
+            }
             break;
     }
 }

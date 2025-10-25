@@ -8,6 +8,7 @@
 --> Pour les 2 précédents, trier par ordre décroissant et appliquer dans cet ordre
 - DEFAUSSE (adversaire) FAIRE CHOISIR LA CARTE AU JOUEUR
 - GEMME DE FEU PAS AFFICHEE (du moins ds défausse et dans main aussi je crois)
+--> enft quand achète gemme de feu, achète carte aléatoire.
 
 
 2) Affichage/utilitaire :
@@ -15,6 +16,7 @@
 - acheter plusieurs cartes en mm temps
 - afficherEffet pour les longs textes
 - une option 6 dans jouer une carte pour jouer toutes ses cartes en même temps
+- boucle infinie mauvais choix godmode
 
 Normalement c bon mais à tester :
 
