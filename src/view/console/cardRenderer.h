@@ -28,6 +28,7 @@ public:
     static std::vector<std::string> renderCard(const Carte* carte, int index = -1);
     static std::vector<std::string> renderEmptySlot(int index);
     static void printCardsRow(const std::vector<std::vector<std::string>>& cards);
+    static void printCards(const std::vector<Carte*>& cartes, const int cardsPerRow = 5);
     
 private:
     static std::string getFactionColor(Faction faction);

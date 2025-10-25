@@ -25,7 +25,7 @@ public:
         virtual void afficherMarche(Marche& marche) = 0;
         virtual void afficherScores(std::vector<Joueur>& joueurs) = 0;
         virtual void afficherGagnant(Joueur& gagnant) = 0;
-        virtual void afficherPileGemmeDeFeu(const Pile& pile) = 0;
+        virtual void afficherPileGemmeDeFeu(const std::vector<Carte*>& pile) = 0;
         virtual void afficherChampions(const std::vector<Champion*>& champions) = 0;
         virtual void afficherDefausse(const Joueur& joueur) = 0;
         virtual void afficherDeckMarche(Deck& deckMarche) = 0;

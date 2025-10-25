@@ -3,14 +3,8 @@
 
 #include "Tour.h"
 
-Partie::Partie(){
-    joueurs = std::vector<Joueur>();
-    marche = new Marche();
-    tour_courant = nullptr;
-    nb_tour = 0;
-    idx_joueur_actuel = 0;
-    godMode = GodMode();
-    cartesSacrifie = Pile();
+Partie::Partie():joueurs(),marche(new Marche()),tour_courant(nullptr),nb_tour(0),idx_joueur_actuel(0),godMode(GodMode()),cartesSacrifie(),gemmeDeFeu() {
+
 }
 
 void Partie::commencer(std::vector<std::string> nomsJoueurs) {

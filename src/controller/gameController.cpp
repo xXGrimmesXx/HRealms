@@ -52,6 +52,7 @@ void GameController::initialiserPartie() {
     }
     
     // Créer la partie
+
     partie = std::make_unique<Partie>();
     partie->commencer(nomsJoueurs);
     
@@ -646,7 +647,7 @@ void GameController::afficherMarche() {
 }
 
 void GameController::afficherPileGemmeDeFeu() {
-    const Pile& pileGemmes = partie->getGemmeDeFeu().getPile();
+    const std::vector<Carte*>& pileGemmes = partie->getGemmeDeFeu().getPile().getCartes();
     view->afficherPileGemmeDeFeu(pileGemmes);
 }
 

@@ -155,6 +155,32 @@ void CardRenderer::printCardsRow(const std::vector<std::vector<std::string>>& ca
     }
 }
 
+void CardRenderer::printCards(const std::vector<Carte*>& cartes, const int cardsPerRow) {
+    int taille = cartes.size();
+    
+    if (taille == 0) {
+        std::cout << "Aucune carte à afficher." << std::endl;
+        return;
+    }
+    
+    for (int row = 0; row < (taille + cardsPerRow - 1) / cardsPerRow; ++row) {
+        std::vector<std::vector<std::string>> cardsInRow;
+        
+        for (int i = 0; i < cardsPerRow; ++i) {
+            int cardIndex = row * cardsPerRow + i;
+            if (cardIndex < taille) {
+                Carte* carte = cartes.at(cardIndex);
+                cardsInRow.push_back(renderCard(carte, cardIndex));
+            }
+        }
+        
+        if (!cardsInRow.empty()) {
+            printCardsRow(cardsInRow);
+            std::cout << std::endl;
+        }
+    }
+}
+
 std::string CardRenderer::getFactionColor(Faction faction) {
     switch (faction) {
         case Faction::IMPERIALE: return BLUE;

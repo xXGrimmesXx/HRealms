@@ -22,6 +22,7 @@ public:
     ~ConsoleView();
     
     // Implémentation des méthodes d'affichage
+<<<<<<< Updated upstream
     void afficherMessage(std::string& message)override;
     void afficherErreur(std::string& erreur)override;
     void afficherPartie(Partie& partie)override;
@@ -34,6 +35,20 @@ public:
     void afficherChampions(const std::vector<Champion*>& champions)override;
     void afficherDefausse(const Joueur& joueur)override;
     void afficherDeckMarche(Deck& deckMarche)override;
+=======
+        void afficherMessage(std::string& message)override;
+        void afficherErreur(std::string& erreur)override;
+        void afficherPartie(Partie& partie)override;
+        void afficherJoueur(Joueur& joueur)override;
+        void afficherMain(Joueur& joueur)override;
+        void afficherMarche(Marche& marche)override;
+        void afficherScores(std::vector<Joueur>& joueurs)override;
+        void afficherGagnant(Joueur& gagnant)override;
+        void afficherPileGemmeDeFeu(const std::vector<Carte*>& pile)override;
+        void afficherChampions(const std::vector<Champion*>& champions)override;
+        void afficherDefausse(const Joueur& joueur)override;
+        void afficherDeckMarche(Deck& deckMarche)override;
+>>>>>>> Stashed changes
 
     //helpers
     std::string typeEffetToString(TypeEffet t);

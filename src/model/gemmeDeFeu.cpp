@@ -3,8 +3,7 @@
 #include "partie.h"
 #include "bibliothequeCartes.h"
 
-GemmeDeFeu::GemmeDeFeu() {
-    pile = BibliothequeCartes::creerPileGemmeDeFeu();
+GemmeDeFeu::GemmeDeFeu(): pile(BibliothequeCartes::creerPileGemmeDeFeu()) {
 }
 
 bool GemmeDeFeu::acheter(Joueur& joueur, Partie& partie) {

@@ -22,10 +22,10 @@ int main() {
     #endif
     try {
         // Créer la vue console
-        ConsoleView view = ConsoleView();
+        ConsoleView* view = new ConsoleView();
         
         // Créer le contrôleur avec la vue
-        GameController controller(&view);
+        GameController controller(view);
         
         // Lancer le jeu
         controller.lancerJeu();

@@ -111,12 +111,10 @@ void ConsoleView::afficherGagnant( Joueur& gagnant) {
     std::cout << "Score final: " << gagnant.getPv() << " points de vie" << std::endl;
 }
 
-void ConsoleView::afficherPileGemmeDeFeu(const Pile& pile) {
-    std::cout << "💎 GEMMES DE FEU disponibles: " << pile.getTaille() << std::endl;
-    if (!(pile.getTaille()==0)) {
-        std::cout << "   Coût: 2 Or - Effet: +2 Or | Sacrifice: +3 Combat" << std::endl;
-    } else {
-        std::cout << "   Épuisée !" << std::endl;
+void ConsoleView::afficherPileGemmeDeFeu(const std::vector<Carte*>& pile) {
+    std::cout << "💎 GEMMES DE FEU disponibles: " << pile.size() << std::endl;
+    if (!pile.empty()) {
+        CardRenderer::printCards(std::vector<Carte*>{pile.back()}, 1);
     }
     std::cout << "───────────────────────────────────────" << std::endl;
 }
@@ -136,39 +134,29 @@ void ConsoleView::afficherDefausse(const Joueur& joueur) {
     std::cout << "Nombre de cartes: " << taille << std::endl;
     const auto& cartes = defausse.getCartes();
     
-    for (int i = 0; i < taille; ++i) {
-        Carte* c = cartes[i];
-        if (c) {
-            std::cout << "[" << i + 1 << "] " << c->getNom();
-            std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
-        }
-    }
+    const int CARDS_PER_ROW = 5;
+    CardRenderer::printCards(cartes, CARDS_PER_ROW);
     
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
 void ConsoleView::afficherDeckMarche(Deck& deckMarche) {
-    std::cout << "🗂️ Deck de la marche:" << std::endl;
+    std::cout << "🗂️ Deck du marché:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
 
     int taille = deckMarche.getTaille();
 
     if (taille == 0) {
-        std::cout << "Défausse vide." << std::endl;
+        std::cout << "marché vide." << std::endl;
         return;
     }
     
     std::cout << "Nombre de cartes: " << taille << std::endl;
     const auto& cartes = deckMarche.getCartes();
-    
-    for (int i = 0; i < taille; ++i) {
-        Carte* c = cartes[i];
-        if (c) {
-            std::cout << "[" << i + 1 << "] " << c->getNom();
-            std::cout << " - " << getFactionSymbol(c->getFaction()) << std::endl;
-        }
-    }
-    
+    const int CARDS_PER_ROW = 5;
+
+    CardRenderer::printCards(cartes, CARDS_PER_ROW);
+
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
@@ -504,24 +492,8 @@ void ConsoleView::afficherMain( Joueur& joueur) {
 
     // Afficher les cartes par groupes de 5 pour éviter que ça déborde
     const int CARDS_PER_ROW = 5;
-    
-    for (int row = 0; row < (taille + CARDS_PER_ROW - 1) / CARDS_PER_ROW; ++row) {
-        std::vector<std::vector<std::string>> cardsInRow;
-        
-        for (int i = 0; i < CARDS_PER_ROW; ++i) {
-            int cardIndex = row * CARDS_PER_ROW + i;
-            if (cardIndex < taille) {
-                Carte* carte = main.getCarte(cardIndex);
-                cardsInRow.push_back(CardRenderer::renderCard(carte, cardIndex));
-            }
-        }
-        
-        if (!cardsInRow.empty()) {
-            CardRenderer::printCardsRow(cardsInRow);
-            std::cout << std::endl;
-        }
-    }
-    
+    CardRenderer::printCards(main.getCartes(), CARDS_PER_ROW);
+
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
 
@@ -532,11 +504,8 @@ void ConsoleView::afficherMarche(Marche& marche) {
     const auto& ligne = marche.getLigne();
     std::vector<std::vector<std::string>> cardsToRender;
     
-    for (size_t i = 0; i < ligne.size(); ++i) {
-        cardsToRender.push_back(CardRenderer::renderCard(ligne[i], i));
-    }
-    
-    CardRenderer::printCardsRow(cardsToRender);
+   CardRenderer::printCards(ligne, 5);
+
     std::cout << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
@@ -551,13 +520,14 @@ void ConsoleView::afficherChampions(const std::vector<Champion*>& champions) {
         return;
     }
     else{
-        std::vector<std::vector<std::string>> cardsToRender;
-        
-        for (size_t i = 0; i < champions.size(); ++i) {
-            cardsToRender.push_back(CardRenderer::renderCard(champions[i], i));
+        const int CARDS_PER_ROW = 5;
+        // Convert Champion* vector to Carte* vector because CardRenderer expects Carte*
+        std::vector<Carte*> cartes;
+        cartes.reserve(champions.size());
+        for (Champion* c : champions) {
+            cartes.push_back(static_cast<Carte*>(c));
         }
-        
-        CardRenderer::printCardsRow(cardsToRender);
+        CardRenderer::printCards(cartes, CARDS_PER_ROW);
         std::cout << std::endl;
         std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     }  
