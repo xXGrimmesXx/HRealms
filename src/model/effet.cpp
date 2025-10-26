@@ -136,12 +136,20 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                 if (joueurTgt != nullptr) {
                     std::cout << "1 : " << montant1 << " degats " << std::endl;
                     std::cout << "2 : " << montant2 << " vie " << std::endl;
-                    std::cout << "Choisissez une option (1 ou 2) : ";
-                    int choix;
-                    std::cin >> choix;
+                    int choix=-1;
+
                     while (choix != 1 && choix != 2) {
-                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
-                        std::cin >> choix;
+                        std::cout << "Choisissez une option (1 ou 2) : ";
+
+                        if(!(std::cin >> choix)){
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cout << "Entrée invalide." << std::endl;
+                            choix=-1;
+                        }else {
+                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        }
                     }
                     if (choix == 1) {
                         partie.getTourCourant()->ajouterDegats(montant1);
@@ -164,14 +172,22 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    std::cout << "1 : " << montant1 << " Or " << std::endl;
-                    std::cout << "2 : " << montant2 << " Degat(s) " << std::endl;
-                    std::cout << "Choisissez une option (1 ou 2) : ";
-                    int choix;
-                    std::cin >> choix;
+                    std::cout << "1 : " << montant1 << " or " << std::endl;
+                    std::cout << "2 : " << montant2 << " dégâts " << std::endl;
+                    int choix=-1;
+
                     while (choix != 1 && choix != 2) {
-                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
-                        std::cin >> choix;
+                        std::cout << "Choisissez une option (1 ou 2) : ";
+
+                        if(!(std::cin >> choix)){
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cout << "Entrée invalide." << std::endl;
+                            choix=-1;
+                        }else {
+                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        }
                     }
                     if (choix == 1) {
                         partie.getTourCourant()->ajouterOr(montant1);
@@ -258,6 +274,38 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::OR_OU_VIE_PAR_CHAMPION:
+            if (cible == TypeCible::SOI) {
+                Joueur* joueurTgt = static_cast<Joueur*>(target);
+                int nbChampions = joueurTgt->getChampions().size();
+                if (joueurTgt != nullptr) {
+                    std::cout << "1 : " << montant1 << " or " << std::endl;
+                    std::cout << "2 : " << montant2 << " vie par champion en jeu, soit " << montant2*nbChampions << std::endl;
+                    int choix=-1;
+
+                    while (choix != 1 && choix != 2) {
+                        std::cout << "Choisissez une option (1 ou 2) : ";
+
+                        if(!(std::cin >> choix)){
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cout << "Entrée invalide." << std::endl;
+                            choix=-1;
+                        }else {
+                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        }
+                    }
+                    if (choix == 1) {
+                        partie.getTourCourant()->ajouterOr(montant1);
+                    } else if (choix == 2) {
+                        partie.getTourCourant()->ajouterDegats(montant2*nbChampions);
+                    } else {
+                        throw std::invalid_argument("Invalid choice for OR_OU_VIE_PAR_CHAMPION effect");
+                    }
+                } else {
+                    throw std::invalid_argument("Target is not a valid Joueur pointer");
+                }
+            }
             if (cible== TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
@@ -374,6 +422,45 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT :
+            if (cible == TypeCible::SOI) {
+                    Joueur* joueurTgt = static_cast<Joueur*>(target);
+                    if (joueurTgt != nullptr) {
+                        std::cout << "Voulez vous sacrifier 1 carte et ensuite gagner "<<montant2 <<" combats ?"<<std::endl;
+                        std::cout << "1 : oui" << std::endl;
+                        std::cout << "2 : non" << std::endl;
+                        int choix=-1;
+
+                        while (choix != 1 && choix != 2) {
+                            std::cout << "Choisissez une option (1 ou 2) : ";
+
+                            if(!(std::cin >> choix)){
+                                std::cin.clear();
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                std::cout << "Entrée invalide." << std::endl;
+                                choix=-1;
+                            }else {
+                                std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            }
+                        }
+                        if (choix == 1) {
+                            return;
+                        } else if (choix == 2) {
+                            joueurTgt->sacrifier(1,partie);
+                            partie.getTourCourant()->ajouterDegats(montant2);                            
+                        } else {
+                            throw std::invalid_argument("Invalid choice for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
+                        }
+                    } else {
+                        throw std::invalid_argument("Target is not a valid Joueur pointer");
+                    }
+                }
+                else{
+                    // Invalid target type for this effect
+                    throw std::invalid_argument("Invalid target type for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
+                }
+                break;
+
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                     if (joueurTgt != nullptr){
@@ -415,28 +502,52 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                         }
                         std::cout << "Choisissez une option : ";
                         int choix;
-                        std::cin >> choix;
+
+                        if (!(std::cin >> choix)) {
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cout << "Entrée invalide." << std::endl;
+                            return;
+                        }
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
                         while (choix < 1 || choix > montant1+1) {
                             std::cout << "Choix invalide. Veuillez choisir entre 1 et " << montant1+1 << " : ";
-                            std::cin >> choix;
+
+                            if (!(std::cin >> choix)) {
+                                std::cin.clear();
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                std::cout << "Entrée invalide." << std::endl;
+                                return;
+                            }
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         }
+
                         if (choix == 1) {
                             return;
                         } else if (choix <= montant1+1) {
-                            int indexDefausse;
+                            int indexDefausse=-1;
                             joueurTgt->piocher(choix-1);
                             std::cout <<joueurTgt->getMain().toString()<<std::endl;
+
                             for (int i=0;i<choix-1;i++){
                                 std::cout << " Quelle carte voulez vous defausser ? (1-" << joueurTgt->getMain().getTaille() << ") : ";
-                                std::cin >> indexDefausse;
+
                                 while (indexDefausse < 1 || indexDefausse > joueurTgt->getMain().getTaille()) {
-                                    std::cout << "Choix invalide. Veuillez choisir entre 1 et " << joueurTgt->getMain().getTaille() << " : ";
-                                    std::cin >> indexDefausse;
+                                    std::cout << " Quelle carte voulez-vous défausser ? (1-" << joueurTgt->getMain().getTaille() << ") : ";
+                                    
+                                    if (!(std::cin >> indexDefausse)) {
+                                        std::cin.clear();
+                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                        std::cout << "❌ Entrée invalide." << std::endl;
+                                        indexDefausse = -1; // Force à redemander
+                                    } else {
+                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                    }
                                 }
-                                joueurTgt->defausser(indexDefausse -1);
+                                
+                                joueurTgt->defausser(indexDefausse - 1);
                             }
-                        } else {
-                            throw std::invalid_argument("Invalid choice for PIOCHE_SIOUI_DEFAUSSE effect");
                         }
                     }
                 else{

@@ -95,8 +95,13 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
             } else {
                 lines[ CARD_HEIGHT - 2] = grayOut + "│ 🛡️ Garde " +BOLD+std::to_string(champion->getVie())+NORMAL+"❤️"+ std::string(CARD_WIDTH - 15, ' ') + "│" + RESET;
             }
-        } else if (champion->estMobilise()) {
-            lines[ CARD_HEIGHT - 2] = grayOut + "│ " + "Mobilise" + std::string(CARD_WIDTH - 11, ' ') + "│" + RESET;
+        } else {
+            // Champion sans garde : afficher PV + statut mobilisé
+            if (champion->estMobilise()) {
+                lines[ CARD_HEIGHT - 2] = grayOut + "│ "+BOLD+std::to_string(champion->getVie())+NORMAL+"❤️ (Mobilise)" + std::string(CARD_WIDTH - 15, ' ') + "│" + RESET;
+            } else {
+                lines[ CARD_HEIGHT - 2] = grayOut + "│ " +BOLD+std::to_string(champion->getVie())+NORMAL+"❤️"+ std::string(CARD_WIDTH - 6, ' ') + "│" + RESET;
+            }
         }
     }
     else {

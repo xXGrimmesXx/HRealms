@@ -19,8 +19,8 @@ class Champion : public Carte {
 public:
 
     // Constructeur
-    Champion(const std::string& nom, int cout, Faction f, bool garde, int vie) : Carte(nom, cout, f), vie(vie), garde(garde), mobilise(false), effetsActiver() {}
-
+    Champion(const std::string& nom, int cout, Faction f, bool garde, int vie) 
+        : Carte(nom, cout, f), vie(vie), garde(garde), mobilise(false), effetsActiver() {}
     // Getters & setters
     std::vector<Effet> getEffetsActiver() const {return effetsActiver;}
     Champion* ajouterEffetActiver(const Effet& e) { effetsActiver.push_back(e); return this; }

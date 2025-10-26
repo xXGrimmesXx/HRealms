@@ -1,11 +1,10 @@
 1) Fonctions importantes :
-- refaire chemin pour attaquer le joueur / champion 
-- quand on a choix piocher puis defausser si mauvaise réponse boucle infinie
+?? - refaire chemin pour attaquer le joueur / champion 
 - si pas de champions ne pas demander qui assomer
--  enlever possibilité de s'attaquer sois meme
+(il me semble que tu as fais)-  enlever possibilité de s'attaquer sois meme
 - voir champ adversaires quand t'attaques et surtout faire en sorte que les gardes 
 prennent majoritairement les degats
-- sacrifier carte indice décalé
+- sacrifier carte:JOUER un champion indice décalé
 - effets complexes, comme PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
 (attention yen a peut être d'autres)
 - QUAND ON JOUE UNE CARTE QUI FAIT ENLEVER UNE AUTRE ON ENL7VE 1 A TOUTERS LES INDICES APRES LINDICE DE LA CARTE SUPPRIMER
@@ -17,6 +16,7 @@ prennent majoritairement les degats
 2) Affichage/utilitaire :
 - acheter plusieurs cartes en mm temps
 - une option 6 dans jouer une carte pour jouer toutes ses cartes en même temps
+- ne pas demander quel champion mobiliser si yen a un seul
 
 Normalement c bon mais à tester :
 
@@ -42,3 +42,5 @@ GodMode
 --> Plus globalement, ne proposer les options que si elle sont possibles
 Cad, changer le switch de gererActionJoueur en une suite de ifs
 - boucle infinie mauvais choix godmode
+- quand on a choix piocher puis defausser si mauvaise réponse boucle infinie
+--> même pb pour or_ou_combat, or_ou_vie_par_champ et sacrifier_sioui_ajout_combat

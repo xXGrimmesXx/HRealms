@@ -45,7 +45,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-       (new Champion("Darian, War Mage", 4, Faction::IMPERIALE, 5, false))
+       (new Champion("Darian, War Mage", 4, Faction::IMPERIALE, false, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_OU_VIE, 3, 4, TypeCible::SOI))
     );
 
@@ -58,14 +58,14 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Cristov, the Just", 5, Faction::IMPERIALE, 5, true))
+        (new Champion("Cristov, the Just", 5, Faction::IMPERIALE, true, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_VIE, 3, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Kraka, High Priest", 6, Faction::IMPERIALE, 6, false))
+        (new Champion("Kraka, High Priest", 6, Faction::IMPERIALE, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_VIE, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_VIE, 2, TypeCible::SOI))
@@ -73,19 +73,19 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Man-at-Arms", 3, Faction::IMPERIALE, 4, true))
+        (new Champion("Man-at-Arms", 3, Faction::IMPERIALE, true, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_GARDE, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Man-at-Arms", 3, Faction::IMPERIALE, 4, true))
+        (new Champion("Man-at-Arms", 3, Faction::IMPERIALE, true, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_GARDE, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Master Weyan", 4, Faction::IMPERIALE, 4, true))
+        (new Champion("Master Weyan", 4, Faction::IMPERIALE, true, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_CHAMPION, 1, TypeCible::SOI))
     );
@@ -122,12 +122,12 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Tithe Priest", 2, Faction::IMPERIALE, 3, false))
+        (new Champion("Tithe Priest", 2, Faction::IMPERIALE, false, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_VIE_PAR_CHAMPION, 3, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Tithe Priest", 2, Faction::IMPERIALE, 3, false))
+        (new Champion("Tithe Priest", 2, Faction::IMPERIALE, false, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_VIE_PAR_CHAMPION, 3, 1, TypeCible::SOI))
     );
 
@@ -158,7 +158,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
 
     // === GUILDE ===
     deck.ajouterDessous(
-        (new Champion("Borg, Ogre Mercenary", 6, Faction::GUILDE, 6, true))
+        (new Champion("Borg, Ogre Mercenary", 6, Faction::GUILDE, true, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
@@ -221,13 +221,13 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Myros, Guild Mage", 5, Faction::GUILDE, 3, true))
+        (new Champion("Myros, Guild Mage", 5, Faction::GUILDE, true, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_OR, 3, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Parov, the Enforcer", 5, Faction::GUILDE, 5, true))
+        (new Champion("Parov, the Enforcer", 5, Faction::GUILDE, true, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
@@ -251,13 +251,13 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Rake, Master Assassin", 7, Faction::GUILDE, 7, false))
+        (new Champion("Rake, Master Assassin", 7, Faction::GUILDE, false, 7))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::ASSOMMER_CHAMPION, 1, TypeCible::CHAMPION))
     );
 
     deck.ajouterDessous(
-        (new Champion("Rasmus, the Smuggler", 4, Faction::GUILDE, 5, false))
+        (new Champion("Rasmus, the Smuggler", 4, Faction::GUILDE, false, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK, 1, TypeCible::SOI))
     );
@@ -269,24 +269,24 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Street Thug", 3, Faction::GUILDE, 4, false))
+        (new Champion("Street Thug", 3, Faction::GUILDE, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_COMBAT, 1, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Street Thug", 3, Faction::GUILDE, 4, false))
+        (new Champion("Street Thug", 3, Faction::GUILDE, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_COMBAT, 1, 2, TypeCible::SOI))
     );
 
     // === NECROS ===
     deck.ajouterDessous(
-        (new Champion("Cult Priest", 3, Faction::NECROS, 4, false))
+        (new Champion("Cult Priest", 3, Faction::NECROS, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_COMBAT, 1, 1, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Cult Priest", 3, Faction::NECROS, 4, false))
+        (new Champion("Cult Priest", 3, Faction::NECROS, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::OR_OU_COMBAT, 1, 1, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
@@ -305,12 +305,12 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Death Cultist", 2, Faction::NECROS, 3, true))
+        (new Champion("Death Cultist", 2, Faction::NECROS, true, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Death Cultist", 2, Faction::NECROS, 3, true))
+        (new Champion("Death Cultist", 2, Faction::NECROS, true, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
@@ -336,7 +336,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Rayla, Endweaver", 4, Faction::NECROS, 4, false))
+        (new Champion("Rayla, Endweaver", 4, Faction::NECROS, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
@@ -360,7 +360,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Krythos, Master Vampire", 7, Faction::NECROS, 6, false))
+        (new Champion("Krythos, Master Vampire", 7, Faction::NECROS, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 3, TypeCible::SOI))
     );
@@ -373,7 +373,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Lys, the Unseen", 6, Faction::NECROS, 5, true))
+        (new Champion("Lys, the Unseen", 6, Faction::NECROS, true, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 2, TypeCible::SOI))
     );
@@ -393,33 +393,33 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Tyrannor, the Devourer", 8, Faction::NECROS, 6, true))
+        (new Champion("Tyrannor, the Devourer", 8, Faction::NECROS, true, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER, 2, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Varrick, the Necromancer", 5, Faction::NECROS, 3, false))
+        (new Champion("Varrick, the Necromancer", 5, Faction::NECROS, false, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK, 1, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     // === WILD ===
     deck.ajouterDessous(
-        (new Champion("Broelyn, Loreweaver", 4, Faction::SAUVAGE, 6, false))
+        (new Champion("Broelyn, Loreweaver", 4, Faction::SAUVAGE, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
     );
 
     deck.ajouterDessous(
-        (new Champion("Cron, the Berserker", 6, Faction::SAUVAGE, 6, false))
+        (new Champion("Cron, the Berserker", 6, Faction::SAUVAGE, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 5, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Dire Wolf", 5, Faction::SAUVAGE, 5, true))   
+        (new Champion("Dire Wolf", 5, Faction::SAUVAGE, true, 5))   
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
@@ -460,7 +460,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Grak, Storm Giant", 8, Faction::SAUVAGE, 7, true))
+        (new Champion("Grak, Storm Giant", 8, Faction::SAUVAGE, true, 7))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
@@ -474,13 +474,13 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Orc Grunt", 3, Faction::SAUVAGE, 3, true))
+        (new Champion("Orc Grunt", 3, Faction::SAUVAGE, true, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
-        (new Champion("Orc Grunt", 3, Faction::SAUVAGE, 3, true))
+        (new Champion("Orc Grunt", 3, Faction::SAUVAGE, true, 3))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
@@ -492,7 +492,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Torgen Rocksplitter", 7, Faction::SAUVAGE, 7, true))
+        (new Champion("Torgen Rocksplitter", 7, Faction::SAUVAGE, true, 7))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
     );
@@ -526,13 +526,13 @@ Deck BibliothequeCartes::creerDeckMarche() {
     );
 
     deck.ajouterDessous(
-        (new Champion("Wolf Shaman", 2, Faction::SAUVAGE, 4, false))
+        (new Champion("Wolf Shaman", 2, Faction::SAUVAGE, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_ALLIE, 1, TypeCible::SOI)) 
     );
 
     deck.ajouterDessous(
-        (new Champion("Wolf Shaman", 2, Faction::SAUVAGE, 4, false))
+        (new Champion("Wolf Shaman", 2, Faction::SAUVAGE, false, 4))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
             ->ajouterEffetActiver(Effet(TypeEffet::COMBAT_PAR_ALLIE, 1, TypeCible::SOI))
     );
