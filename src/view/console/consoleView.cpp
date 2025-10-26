@@ -349,6 +349,26 @@ std::vector<int> ConsoleView::demanderIndexChampion(Joueur& joueur) {
     
 }
 
+std::vector<int> ConsoleView::demanderIndexGarde(Joueur& joueur) {
+    std::vector<int> indices;
+    char * line;
+    std::string input;
+    afficherChampions(joueur.getGardes());
+    std::cout << "🛡️ Numéro du garde (séparer les numeros pas des espaces): ";
+    std::getline(std::cin, input, '\n');
+    if (!input.empty()) {
+        line = trimString(input).data();
+        char * p;
+        p = strtok(line, " " ); 
+        while (p !=  NULL ) {
+            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            p = strtok( NULL , " " );
+        }
+    }
+    return indices;
+    
+}
+
 int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs) {
     int index;
     std::cout << "👤 Numéro du joueur: ";

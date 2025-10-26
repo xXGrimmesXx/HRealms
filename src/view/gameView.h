@@ -38,6 +38,7 @@ public:
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) = 0;
     virtual std::vector<int> demanderIndexChampion(Joueur& joueur) = 0;
+    virtual std::vector<int> demanderIndexGarde(Joueur& joueur) = 0;
     virtual int demanderSlotMarche() = 0;
     virtual bool confirmerAction(std::string& action) = 0;
     virtual void attendreEntree() = 0;

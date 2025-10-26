@@ -1,5 +1,10 @@
 1) Fonctions importantes :
-- voir champ adversaires quand t'attaques
+- refaire chemin pour attaquer le joueur / champion 
+- quand on a choix piocher puis defausser si mauvaise réponse boucle infinie
+- si pas de champions ne pas demander qui assomer
+-  enlever possibilité de s'attaquer sois meme
+- voir champ adversaires quand t'attaques et surtout faire en sorte que les gardes 
+prennent majoritairement les degats
 - sacrifier carte indice décalé
 - effets complexes, comme PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
 (attention yen a peut être d'autres)
@@ -18,7 +23,7 @@ Normalement c bon mais à tester :
 
 
 FAIT : 
-eneLever possibilité s'attaquer sois meme
+
 demander confirmation fintour seulement si toutes cartes et champions non joués
 CHAMPION MOBILIS2 A LINFINI
 effet allie s'active toujours

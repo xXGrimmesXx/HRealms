@@ -76,9 +76,9 @@ void Joueur::finTour(){
         c->demobiliser();
     }
 }
-bool Joueur::aGardeMobilise()const {
+bool Joueur::aGarde()const {
     for (auto c : champions){
-        if (c->estMobilise()){
+        if (c->estGarde()){
             return true;
         }
     }
@@ -101,8 +101,12 @@ void Joueur::assomerChampions(){
     champions.clear();
 }
 void Joueur::assomerChampion(Champion* c){
+    std::cout << "Recherche du champion " << c->getNom() << " à assommer." << std::endl;
+    std::cout << "Nombre de champions en jeu: " << champions.size() << std::endl;
     for (int i=0; i<(int)champions.size();i++){
+        std::cout << "Vérification du champion " << champions.at(i)->getNom() <<" : "<<c->getNom() << std::endl;
         if (champions.at(i)==c){
+            std::cout << "Assommer le champion " << c->getNom() << std::endl;
             defausse.ajouter(c);
             champions.erase(std::next(champions.begin(),i));
         }
@@ -150,7 +154,7 @@ std::vector<Champion*> Joueur::getGardes()const{
 }
 
 bool Joueur::prendreDegats(int m){
-    if (aGardeMobilise()){
+    if (aGarde()){
         throw std::runtime_error("Impossible d'attaquer le joueur tant qu'un garde est mobilisé");
         return false;
     }

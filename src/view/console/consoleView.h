@@ -47,6 +47,7 @@ public:
     int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) override;
     std::vector<int> demanderIndexChampion(Joueur& joueur) override;
+    std::vector<int> demanderIndexGarde(Joueur& joueur)override;
     int demanderSlotMarche() override;
     bool confirmerAction(std::string& action) override;
     void attendreEntree() override;

@@ -474,47 +474,64 @@ bool GameController::acheterGemmeDeFeu() {
 
 bool GameController::attaquerJoueur() {
     std::vector<Joueur>& joueurs = partie->getJoueurs();
-    //const Joueur& joueurActuel = partie->getJoueurActuel();
+    
     
     // Demander quel joueur attaquer
-    int index = view->demanderIndexJoueur(joueurs); // Réutiliser cette méthode
+    // si il n'y a qu'un seul adversaire, on l'attaque directement
+    int index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel()); // Réutiliser cette méthode
     
     // Valider l'index
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
         return false;
     }
     
-    // Confirmer l'attaque
-    std::string nomCible = joueurs.at(index).getNom();
-    std::string message = "Confirmez-vous l'attaque contre " + nomCible + " ?";
-    if (!view->confirmerAction(message)) {
-        return false;
-    }
     
-    // Essayer d'attaquer
+    
     try {
         Joueur& cible = partie->getJoueurs().at(index);
-        if (cible.aGardeMobilise()) {
-            std::string message = nomCible + " a un garde mobilisé. Attaque annulée.";
-            view->afficherErreur(message);
-            return false;
-        }
-        int degats = partie->getTourCourant()->getDegats();
-        if (degats > cible.getPv()) {
-            degats = cible.getPv(); // Ne pas infliger plus de dégâts que les PV restants
-        }
-        bool succes = cible.prendreDegats(degats);
-        if (succes) {
-            partie->getTourCourant()->utiliserDegats(degats); // Réinitialiser les dégâts après l'attaque
-            message = "Attaque réussie contre " + nomCible + " !";
+        // si l'adversaire a un champion garde, on doit l'attaquer en premier
+        if (cible.aGarde()){
+            std::string message = joueurs.at(index).getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
             view->afficherMessage(message);
+            std::vector<int> indexGarde = view->demanderIndexGarde(cible);
+            for (int ind : indexGarde){
+                if (!validerIndex(ind,cible.getChampions().size(), "champion garde")) {
+                    return false;
+                }
+                Champion* garde = cible.getChampions().at(ind);
+                if (!garde->estGarde()){
+                    throw std::runtime_error("Le champion sélectionné n'est pas un garde.");
+                    return false;
+                }
+                std::cout << garde->getVie() <<" : "<<partie->getTourCourant()->getDegats() << std::endl;
+                if (garde->getVie()<=partie->getTourCourant()->getDegats()){
+                    std::cout << "Attaque du garde " << garde->getNom() << std::endl;
+                    cible.assomerChampion(garde);
+                    partie->getTourCourant()->utiliserDegats(garde->getVie());
+                    return true;
+                }
+                else {
+                    std::string message = "Vous ne pouvez pas attaquer ce garde car vous n'avez pas assez d'attaques restantes.";
+                    view->afficherErreur(message);
+                    return false;
+                }
+            }
         }
-        return succes;
+        else {
+            // Essayer d'attaquer le joueur
+            bool succes = cible.prendreDegats(partie->getTourCourant()->getDegats());
+            partie->getTourCourant()->utiliserDegats(partie->getTourCourant()->getDegats());
+            std::string message = "Attaque réussie contre " + cible.getNom() + " !";
+            view->afficherMessage(message);
+            return succes;
+        }
+        
     } catch (const std::exception& e) {
         std::string message = "Erreur lors de l'attaque: " + std::string(e.what());
         view->afficherErreur(message);
         return false;
     }
+    return false;
 }
 
 bool GameController::consulterDefausse() {

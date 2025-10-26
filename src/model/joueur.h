@@ -30,7 +30,7 @@ public:
     bool mobiliserChampion(int idx, Partie& p,std::vector<void*> target);
     bool acheterDepuisMarche(int slot, Partie& p);
     void finTour();
-    bool aGardeMobilise() const;
+    bool aGarde() const;
     void soigner(int montant);
     void defausser(int n);
     void assomerChampions();
