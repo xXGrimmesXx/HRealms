@@ -1,7 +1,6 @@
 1) Fonctions importantes :
-?? - refaire chemin pour attaquer le joueur / champion 
-- si pas de champions ne pas demander qui assomer
-(il me semble que tu as fais)-  enlever possibilité de s'attaquer sois meme
+- Si on joue un champion qui a un effet assomer un champion et qu'on le joue sur ce champion (Rake, Master Assassin par ex) alors ça fait une erreur.
+- proposer d'attaquer les champions d'un joueur et obliger a tuer les gardes
 - voir champ adversaires quand t'attaques et surtout faire en sorte que les gardes 
 prennent majoritairement les degats
 - sacrifier carte:JOUER un champion indice décalé

@@ -105,9 +105,8 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                             }
                         }
                     }
-                } else {
-                    throw std::invalid_argument("Target is not a valid Champion pointer");
                 }
+                
             }
             else{
                 // Invalid target type for this effect

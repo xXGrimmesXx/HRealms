@@ -285,7 +285,12 @@ std::vector<void*> GameController::choisirCiblePrimaires(Carte* carte) {
                 int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
                 Joueur j = partie->getJoueurs().at( indexJoueur );
                 int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                if (validerIndex(index,j.getChampions().size(), "champion")) {
+                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                else {
+                    targets.push_back(nullptr);
+                }
                 }
                 break;
 
@@ -358,7 +363,12 @@ std::vector<void*> GameController::choisirCibleAllie(Carte* carte) {
                 int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs());
                 Joueur j = partie->getJoueurs().at( indexJoueur );
                 int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                if (validerIndex(index,j.getChampions().size(), "champion")) {
+                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                else {
+                    targets.push_back(nullptr);
+                }
                 break;
                 }
             }
@@ -426,7 +436,13 @@ std::vector<void*> GameController::choisirCibleMobiliser(Champion* carte) {
                 int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs());
                 Joueur j = partie->getJoueurs().at( indexJoueur );
                 int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                if (validerIndex(index,j.getChampions().size(), "champion")) {
+                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
+                }
+                else {
+                    targets.push_back(nullptr);
+                }
+                
                 break;
                 }
             }
@@ -475,7 +491,6 @@ bool GameController::acheterGemmeDeFeu() {
 bool GameController::attaquerJoueur() {
     std::vector<Joueur>& joueurs = partie->getJoueurs();
     
-    
     // Demander quel joueur attaquer
     // si il n'y a qu'un seul adversaire, on l'attaque directement
     int index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel()); // Réutiliser cette méthode
@@ -484,11 +499,13 @@ bool GameController::attaquerJoueur() {
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
         return false;
     }
-    
-    
-    
+    Joueur& cible = partie->getJoueurs().at(index);
+
+    if (!cible.getChampions().empty()){
+        
+    }
     try {
-        Joueur& cible = partie->getJoueurs().at(index);
+        
         // si l'adversaire a un champion garde, on doit l'attaquer en premier
         if (cible.aGarde()){
             std::string message = joueurs.at(index).getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";

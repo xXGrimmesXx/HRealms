@@ -333,6 +333,10 @@ std::vector<int> ConsoleView::demanderIndexChampion(Joueur& joueur) {
     std::vector<int> indices;
     char * line;
     std::string input;
+    if (joueur.getChampions().empty()) {
+        indices.push_back(-1);
+        return indices; // Retourner vide si pas de champions
+    }
     afficherChampions(joueur.getChampions());
     std::cout << "🛡️ Numéro du champion (séparer les numeros pas des espaces): ";
     std::getline(std::cin, input, '\n');
@@ -353,6 +357,9 @@ std::vector<int> ConsoleView::demanderIndexGarde(Joueur& joueur) {
     std::vector<int> indices;
     char * line;
     std::string input;
+    if (joueur.getGardes().empty()) {
+        return indices; // Retourner vide si pas de gardes
+    }
     afficherChampions(joueur.getGardes());
     std::cout << "🛡️ Numéro du garde (séparer les numeros pas des espaces): ";
     std::getline(std::cin, input, '\n');
