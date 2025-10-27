@@ -8,10 +8,14 @@
 --> Pour les précédents, trier par ordre décroissant et appliquer dans cet ordre
 - DEFAUSSE (adversaire) FAIRE CHOISIR LA CARTE AU JOUEUR
 - pioche_sioui_defausse : affichae moche et marche pas pour 2
+- vie par champion semble pas marcher (ex : recruit)
+- effetAllie marche pas sur un champion (ex : dire wolf)
+- defausser propose soit même alors que c'est pas censé être le cas
 
 ---------- AUTRES ----------
-
-
+- attaquer joueur : ne montre pas les champions avant de demander si on veut attaquer champion ou joueur.
+- en fait, je pense devrait afficher champion et gardes avant de demander quoique ce soit
+- dans afficherMainAdversaire, afficher aussi les champions/gardes
 
 2) Affichage/utilitaire :
 - acheter plusieurs cartes en mm temps

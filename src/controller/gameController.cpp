@@ -498,10 +498,22 @@ bool GameController::attaquerJoueur() {
     if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
         return false;
     }
+
     Joueur& cible = partie->getJoueurs().at(index);
     int degatsRestants = partie->getTourCourant()->getDegats();
 
     try {
+        // 🎯 AFFICHER L'ÉTAT DE LA CIBLE AVANT TOUT
+        std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "🎯 Cible : " << cible.getNom() << " (" << cible.getPv() << " ❤️)" << std::endl;
+        std::cout << "⚔️  Vos dégâts disponibles : " << degatsRestants << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
+
+        // Afficher les CHAMPIONS s'il y en a
+        if (!cible.getChampions().empty()) {
+            view->afficherChampions(cible.getChampions());
+            std::cout << std::endl;
+        }
         
         // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
         while (cible.aGarde() && degatsRestants > 0){
@@ -539,8 +551,16 @@ bool GameController::attaquerJoueur() {
             std::cout << "💀 " << garde->getNom() << " éliminé !" << std::endl;
             
             cible.assomerChampion(garde);
+
+            // Réafficher les gardes restants
+            if (cible.aGarde()) {
+                std::cout << "\n🛡️ Gardes restants :" << std::endl;
+                view->afficherChampions(cible.getGardes());
+                std::cout << std::endl;
+            }
         }
 
+        // 2 : Attaquer les autres champions si le joueur le souhaite
         if (degatsRestants > 0 && !cible.getChampions().empty()) {
             std::string choix = "Attaquer un champion (c) ou le joueur (j) ?";
             view->afficherMessage(choix);
