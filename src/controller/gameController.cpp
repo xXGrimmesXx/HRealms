@@ -492,7 +492,6 @@ bool GameController::attaquerJoueur() {
     std::vector<Joueur>& joueurs = partie->getJoueurs();
     
     // Demander quel joueur attaquer
-    // si il n'y a qu'un seul adversaire, on l'attaque directement
     int index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel()); // Réutiliser cette méthode
     
     // Valider l'index
@@ -500,55 +499,128 @@ bool GameController::attaquerJoueur() {
         return false;
     }
     Joueur& cible = partie->getJoueurs().at(index);
+    int degatsRestants = partie->getTourCourant()->getDegats();
 
-    if (!cible.getChampions().empty()){
-        
-    }
     try {
         
-        // si l'adversaire a un champion garde, on doit l'attaquer en premier
-        if (cible.aGarde()){
+        // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
+        while (cible.aGarde() && degatsRestants > 0){
             std::string message = joueurs.at(index).getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
             view->afficherMessage(message);
+
             std::vector<int> indexGarde = view->demanderIndexGarde(cible);
-            for (int ind : indexGarde){
-                if (!validerIndex(ind,cible.getChampions().size(), "champion garde")) {
-                    return false;
-                }
-                Champion* garde = cible.getChampions().at(ind);
-                if (!garde->estGarde()){
-                    throw std::runtime_error("Le champion sélectionné n'est pas un garde.");
-                    return false;
-                }
-                std::cout << garde->getVie() <<" : "<<partie->getTourCourant()->getDegats() << std::endl;
-                if (garde->getVie()<=partie->getTourCourant()->getDegats()){
-                    std::cout << "Attaque du garde " << garde->getNom() << std::endl;
-                    cible.assomerChampion(garde);
-                    partie->getTourCourant()->utiliserDegats(garde->getVie());
-                    return true;
-                }
-                else {
-                    std::string message = "Vous ne pouvez pas attaquer ce garde car vous n'avez pas assez d'attaques restantes.";
-                    view->afficherErreur(message);
-                    return false;
+            
+            if (indexGarde.empty() || indexGarde[0] < 0) {
+                std::string err = "Vous devez choisir un garde.";
+                view->afficherErreur(err);
+                continue;
+            }
+
+            int ind = indexGarde[0];
+
+            if (!validerIndex(ind, cible.getGardes().size(), "garde")) {
+                continue;
+            }
+
+            Champion* garde = cible.getGardes().at(ind);
+
+            if (degatsRestants < garde->getVie()) {
+                std::string err = "❌ Pas assez de dégâts pour ce garde (" 
+                                + std::to_string(garde->getVie()) + " PV). Il vous reste " 
+                                + std::to_string(degatsRestants) + " dégâts.";
+                view->afficherErreur(err);
+                continue;
+            }
+            
+            degatsRestants -= garde->getVie();
+            partie->getTourCourant()->utiliserDegats(garde->getVie());
+            
+            std::cout << "⚔️ " << garde->getVie() << " dégâts → " << garde->getNom() << std::endl;
+            std::cout << "💀 " << garde->getNom() << " éliminé !" << std::endl;
+            
+            cible.assomerChampion(garde);
+        }
+
+        if (degatsRestants > 0 && !cible.getChampions().empty()) {
+            std::string choix = "Attaquer un champion (c) ou le joueur (j) ?";
+            view->afficherMessage(choix);
+            
+            char reponse;
+            std::cout << "Choix (c/j): ";
+            std::cin >> reponse;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            
+            if (reponse == 'c' || reponse == 'C') {
+                while (degatsRestants > 0 && !cible.getChampions().empty()) {
+                    view->afficherChampions(cible.getChampions());
+                    
+                    std::vector<int> indexChamp = view->demanderIndexChampion(cible);
+                    
+                    if (indexChamp.empty() || indexChamp[0] < 0) {
+                        break;
+                    }
+                    
+                    int ind = indexChamp[0];
+                    
+                    if (!validerIndex(ind, cible.getChampions().size(), "champion")) {
+                        break;
+                    }
+                    
+                    Champion* champ = cible.getChampions().at(ind);
+                    
+                    if (degatsRestants < champ->getVie()) {
+                        std::string err = "❌ Pas assez de dégâts pour ce champion (" 
+                                        + std::to_string(champ->getVie()) + " PV).";
+                        view->afficherErreur(err);
+                        
+                        std::cout << "Choisir un autre champion ? (o/n): ";
+                        char rep;
+                        std::cin >> rep;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        
+                        if (rep != 'o' && rep != 'O') break;
+                        continue;
+                    }
+                    
+                    // ONE-SHOT le champion
+                    degatsRestants -= champ->getVie();
+                    partie->getTourCourant()->utiliserDegats(champ->getVie());
+                    
+                    std::cout << "⚔️ " << champ->getVie() << " dégâts → " << champ->getNom() << std::endl;
+                    std::cout << "💀 " << champ->getNom() << " éliminé !" << std::endl;
+                    
+                    cible.assomerChampion(champ);
+                    
+                    // Demander si continuer
+                    if (degatsRestants > 0 && !cible.getChampions().empty()) {
+                        std::cout << "Reste " << degatsRestants << " dégâts. Attaquer un autre champion ? (o/n): ";
+                        char rep;
+                        std::cin >> rep;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        
+                        if (rep != 'o' && rep != 'O') break;
+                    }
                 }
             }
         }
-        else {
-            // Essayer d'attaquer le joueur
-            bool succes = cible.prendreDegats(partie->getTourCourant()->getDegats());
-            partie->getTourCourant()->utiliserDegats(partie->getTourCourant()->getDegats());
-            std::string message = "Attaque réussie contre " + cible.getNom() + " !";
+        // 3. Dégâts restants au joueur
+        if (degatsRestants > 0) {
+            bool succes = cible.prendreDegats(degatsRestants);
+            partie->getTourCourant()->utiliserDegats(degatsRestants);
+            
+            std::string message = "💔 " + cible.getNom() + " perd " 
+                                + std::to_string(degatsRestants) + " PV !";
             view->afficherMessage(message);
             return succes;
         }
+        
+        return true;
         
     } catch (const std::exception& e) {
         std::string message = "Erreur lors de l'attaque: " + std::string(e.what());
         view->afficherErreur(message);
         return false;
     }
-    return false;
 }
 
 bool GameController::consulterDefausse() {
