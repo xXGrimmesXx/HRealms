@@ -25,6 +25,7 @@ public:
     void melanger();
     Carte* piocher();
     void ajouterDessous(Carte* c);
+    void ajouterDessus(Carte* c);
     bool estVide() const;
     void rechargerDepuis(Pile& defausse);
     void retirerCarte(int idx);

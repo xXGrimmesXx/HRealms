@@ -43,7 +43,6 @@ public:
     int getNombreCartesJouables() const;
 
     
-    
     void choisirCarteDefausseAjouterDessusDeck(int montant);
     void choisirChampionDefausseAjouterDessusDeck(int montant);
 
@@ -62,6 +61,8 @@ public:
     const std::vector<Champion*>& getChampions() const { return champions; }
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }
+    bool getProchainAchatActionDessusDeck() const { return prochainAchatActionDessusDeck; }
+    bool getProchainAchatDansMain() const { return prochainAchatDansMain;}
 
     std::string toString() const {
         return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.getTaille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";

@@ -16,11 +16,25 @@ bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
     if (c==nullptr){
         return false;
     }
+
     if (partie.getTourCourant()->getOr() < c->getCout()) {
         return false;
     }
     ligne.erase(ligne.begin() + slot);
-    j.getDefausse().ajouter(c);
+    if (j.getProchainAchatActionDessusDeck()) {
+        if (dynamic_cast<CarteAction*>(c)) { // si la carte est bien une action
+            j.getDeck().ajouterDessus(c);
+            j.activerProchainAchatActionDessusDeck(); // reset le flag
+        }
+        
+    }
+    else if (j.getProchainAchatDansMain()) {
+        j.getMain().ajouter(c);
+        j.activerProchainAchatDansMain(); // reset le flag
+    }
+    else {
+        j.getDefausse().ajouter(c);
+    }
     partie.getTourCourant()->utiliserOr(c->getCout());
     remplirLigne();
     return true;

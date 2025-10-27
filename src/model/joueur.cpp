@@ -114,11 +114,13 @@ void Joueur::assomerChampion(Champion* c){
 }
 
 void Joueur::choisirCarteDefausseAjouterDessusDeck(int montant){
+    std::cout << "choisirCarteDefausseAjouterDessusDeck non implémenté encore dans joueur.cpp"<<std::endl;
     for(int i=0 ; i<montant; i++){
 
     }
 }
 void Joueur::choisirChampionDefausseAjouterDessusDeck(int montant){
+    std::cout << "choisirChampionDefausseAjouterDessusDeck non implémenté encore dans joueur.cpp"<<std::endl;
     for (int i=0; i<montant; i++){
 
     }

@@ -34,6 +34,10 @@ void Deck::ajouterDessous(Carte* c){
     c->setEstJouee(false);
     cartes.push_front(c);
 }
+void Deck::ajouterDessus(Carte* c){
+    c->setEstJouee(false);
+    cartes.push_back(c);
+}
 bool Deck::estVide() const{
     return cartes.empty();
 }

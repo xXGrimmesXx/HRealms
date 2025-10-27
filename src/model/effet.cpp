@@ -281,7 +281,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                     std::cout << "2 : " << montant2 << " vie par champion en jeu, soit " << montant2*nbChampions << std::endl;
                     int choix=-1;
 
-                    while (choix != 1 && choix != 2) {
+                    while (choix != 1 || choix != 2) {
                         std::cout << "Choisissez une option (1 ou 2) : ";
 
                         if(!(std::cin >> choix)){
@@ -304,35 +304,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
-            }
-            if (cible== TypeCible::SOI){
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr){
-                    std::cout << "1 : " << montant1 << " Or " << std::endl;
-                    std::cout << "2 : " << montant2 << " soin par champion en jeu " << std::endl;
-                    std::cout << "Choisissez une option (1 ou 2) : ";
-                    int choix;
-                    std::cin >> choix;
-                    while (choix != 1 && choix != 2) {
-                        std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
-                        std::cin >> choix;
-                    }
-                    if (choix == 1) {
-                        partie.getTourCourant()->ajouterOr(montant1);
-                    } else if (choix == 2) {
-                        int nbChampions = joueurTgt->getChampions().size();
-                        partie.getTourCourant()->ajouterDegats(montant2*nbChampions);
-                    } else {
-                        throw std::invalid_argument("Invalid choice for OR_OU_VIE_PAR_CHAMPION effect");
-                    }
-                }
-                else{
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
-                }
-            }
-            else{
-                    // Invalid target type for this effect
-                    throw std::invalid_argument("Invalid target type for OR_OU_VIE_PAR_CHAMPION effect");
             }
             break;
 

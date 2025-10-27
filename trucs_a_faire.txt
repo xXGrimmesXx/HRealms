@@ -1,11 +1,10 @@
 1) Fonctions importantes :
+- faire effet prendre un champion (de la defausse et ajouter au dessus du deck) A CODER DANS JOUEUR.CPP (varick the necromancer)
 - Si on joue un champion qui a un effet assomer un champion et qu'on le joue sur ce champion (Rake, Master Assassin par ex) alors ça fait une erreur.
 - proposer d'attaquer les champions d'un joueur et obliger a tuer les gardes
 - voir champ adversaires quand t'attaques et surtout faire en sorte que les gardes 
 prennent majoritairement les degats
 - sacrifier carte:JOUER un champion indice décalé
-- effets complexes, comme PROCHAIN_ACHAT_ACTION_DESSUS_DECK / PROCHAIN_ACHAT_DANS_MAIN
-(attention yen a peut être d'autres)
 - QUAND ON JOUE UNE CARTE QUI FAIT ENLEVER UNE AUTRE ON ENL7VE 1 A TOUTERS LES INDICES APRES LINDICE DE LA CARTE SUPPRIMER
 - si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
 --> Pour les 2 précédents, trier par ordre décroissant et appliquer dans cet ordre
