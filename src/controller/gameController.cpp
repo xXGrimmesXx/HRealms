@@ -490,30 +490,71 @@ bool GameController::acheterGemmeDeFeu() {
 
 bool GameController::attaquerJoueur() {
     std::vector<Joueur>& joueurs = partie->getJoueurs();
-    
-    // Demander quel joueur attaquer
-    int index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel()); // Réutiliser cette méthode
-    
-    // Valider l'index
-    if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
-        return false;
+    int idxActuel = partie->getIdxJoueurActuel();
+
+    // Filtrer les adversaires
+    std::vector<int> indicesAdversaires;
+    for (size_t i = 0; i < joueurs.size(); ++i) {
+        if ((int)i != idxActuel) {
+            indicesAdversaires.push_back((int)i);
+        }
     }
+    
+    // Afficher la liste détaillée
+    std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "Adversaires disponibles :" << std::endl;
+    for (int i : indicesAdversaires) {
+        Joueur& adv = joueurs[i];
+        std::cout << "[" << i << "] " << adv.getNom() << " (" << adv.getPv() << " ❤️)" << std::endl;
+
+        // Afficher les champions de l'adversaire
+        if (!adv.getChampions().empty()) {
+            view->afficherChampions(adv.getChampions());
+        }
+        std::cout << "-------------------------------------------------------------" << std::endl;
+    }
+    std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
+
+    int index = -1;
+    // Demander quel joueur attaquer
+    if (indicesAdversaires.size() > 1) {
+        index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel());
+        if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
+            return false;
+        }
+    }
+    // Sauf s'il y en a un seul
+    else{
+        index = indicesAdversaires[0];
+    }
+    
 
     Joueur& cible = partie->getJoueurs().at(index);
     int degatsRestants = partie->getTourCourant()->getDegats();
 
-    try {
-        // 🎯 AFFICHER L'ÉTAT DE LA CIBLE AVANT TOUT
-        std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
-        std::cout << "🎯 Cible : " << cible.getNom() << " (" << cible.getPv() << " ❤️)" << std::endl;
-        std::cout << "⚔️  Vos dégâts disponibles : " << degatsRestants << std::endl;
-        std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
+    // Afficher état cible
+    std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "🎯 Cible : " << cible.getNom() << " (" << cible.getPv() << " ❤️)" << std::endl;
+    std::cout << "⚔️  Vos dégâts disponibles : " << degatsRestants << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
 
-        // Afficher les CHAMPIONS s'il y en a
-        if (!cible.getChampions().empty()) {
-            view->afficherChampions(cible.getChampions());
-            std::cout << std::endl;
+    // Si le joueur n'a pas assez de dégâts pour tuer au moins un garde, on bloque l'action
+    if (cible.aGarde()) {
+        bool possible = false;
+        for (auto* garde : cible.getGardes()) {
+            if (degatsRestants >= garde->getVie()) {
+                possible = true;
+                break;
+            }
         }
+        if (!possible) {
+            std::string err = "❌ Vous n'avez pas assez de dégâts pour éliminer un garde. Action impossible.";
+            view->afficherErreur(err);
+            return false;
+        }
+    }
+
+    try {
         
         // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
         while (cible.aGarde() && degatsRestants > 0){
@@ -572,7 +613,6 @@ bool GameController::attaquerJoueur() {
             
             if (reponse == 'c' || reponse == 'C') {
                 while (degatsRestants > 0 && !cible.getChampions().empty()) {
-                    view->afficherChampions(cible.getChampions());
                     
                     std::vector<int> indexChamp = view->demanderIndexChampion(cible);
                     
@@ -808,8 +848,8 @@ void GameController::afficherMainAdversaire() {
         for (auto& j : joueurs) {
             if (j.getNom() == adversaires.at(index).getNom()) {
                 view->afficherMain(j);
-                
-                if (!j.getChampions().empty()) {
+
+                if (!(j.getChampions().empty())) {
                     view->afficherChampions(j.getChampions());
                 }
                 
@@ -822,6 +862,9 @@ void GameController::afficherMainAdversaire() {
     else{
         Joueur& j = adversaires.at(0);
         view->afficherMain(j);
+        if (!(j.getChampions().empty())) {
+                    view->afficherChampions(j.getChampions());
+        }
         view->attendreEntree();
     }
 }
