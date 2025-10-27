@@ -9,7 +9,9 @@
 #include "partie.h"
 #include "bibliothequeCartes.h"
 
+
 class Deck;
+class CardRenderer;
 
 class Joueur : public Attaquable {
 private:
@@ -41,11 +43,9 @@ public:
     std::vector<Champion*> getGardes()const;
     bool possedeAllie(Carte& carte);
     int getNombreCartesJouables() const;
-
-    
     void choisirCarteDefausseAjouterDessusDeck(int montant);
     void choisirChampionDefausseAjouterDessusDeck(int montant);
-
+    void retirerCarteDefausseVersDessusDeck(int index);
 
     // interface Attaquable
     bool prendreDegats(int m) override;

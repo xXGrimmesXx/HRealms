@@ -9,6 +9,7 @@ prennent majoritairement les degats
 - si on sacrifie une carte les indices sont décalés, donc qd on joue plusieurs cartes en mm temps les indices peuvent ne plus être justes
 --> Pour les 2 précédents, trier par ordre décroissant et appliquer dans cet ordre
 - DEFAUSSE (adversaire) FAIRE CHOISIR LA CARTE AU JOUEUR
+- pioche_sioui_defausse : affichae moche et marche pas pour 2
 
 
 2) Affichage/utilitaire :

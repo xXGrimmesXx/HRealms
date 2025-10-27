@@ -22,4 +22,5 @@ public:
     Carte* prendreDessus();
     void melanger();
     bool estVide() const;
+    Carte* retirerCarte(int idx);
 };

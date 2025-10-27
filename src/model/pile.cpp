@@ -44,3 +44,13 @@ const std::vector<Carte*>& Pile::getCartes() const {
 bool Pile::estVide() const {
     return cartes.empty();
 }
+
+Carte* Pile::retirerCarte(int index) {
+    // Double vérif
+    if (index < 0 || index >= (int)cartes.size()) {
+        return nullptr;
+    }
+    Carte* carte = cartes[index];
+    cartes.erase(cartes.begin() + index);
+    return carte;
+}
