@@ -14,10 +14,13 @@ public:
     void ajouterOr(int m);
     void ajouterDegats(int m);
     void reinitialiser();
+
+    // Getters et setters
     int getOr() const;
     int getDegats() const;
     Joueur* getJoueur() const;
     void setJoueur(Joueur* j);
+    
     void utiliserDegats(int m);
     void utiliserOr(int m);
 };

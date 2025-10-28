@@ -294,7 +294,7 @@ int Joueur::getNombreCartesJouables() const {
 
 std::vector<Champion*> Joueur::getDefausseChampions() const {
     std::vector<Champion*> champions;
-    for (Carte* carte : defausse.getCartes()) { // ou getDefausse().getCartes()
+    for (Carte* carte : defausse.getCartes()) {
         Champion* champ = dynamic_cast<Champion*>(carte);
         if (champ) {
             champions.push_back(champ);

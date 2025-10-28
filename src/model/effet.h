@@ -22,6 +22,7 @@ public:
     Effet(TypeEffet t, int m1, TypeCible c);
     void appliquer(Carte* src, void* tgt, Partie& partie,bool choix) const;
 
+    // Getters et setters
     TypeEffet getTypeEffet()const{return type;}
     int getMontant1()const{return montant1;}
     int getMontant2()const{return montant2;}
