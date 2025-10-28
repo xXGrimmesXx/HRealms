@@ -4,6 +4,7 @@
 #include <vector>
 #include "effet.h"
 #include "Faction.h"
+#include "choixEffet.h"
 
 class Joueur;
 class Partie;
@@ -43,7 +44,7 @@ public:
     bool setEstJouee(bool b) { return estJouee = b; }
 
     // Méthodes
-    void lorsDeJeu(Partie& p,std::vector<void*> target, std::vector<void*> allies,bool declencherAllie);
+    void lorsDeJeu(Partie& p,std::vector<ChoixEffet*> target, std::vector<ChoixEffet*> allies,bool declencherAllie);
     bool peutDeclencherAllie(Joueur& j);
     void activer(Partie& p,Joueur& joueurSource,void* target);
     void sacrifier(Joueur& j, Partie& p);

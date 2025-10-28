@@ -11,6 +11,7 @@ class Carte;
 class Pile;
 class Champion;
 class Deck;
+class Effet;
 
 class GameView {
 public:
@@ -29,6 +30,8 @@ public:
         virtual void afficherChampions(const std::vector<Champion*>& champions) = 0;
         virtual void afficherDefausse(const Joueur& joueur) = 0;
         virtual void afficherDeckMarche(Deck& deckMarche) = 0;
+        virtual void afficherDefausseChampion(const Joueur& joueur) = 0;
+
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
@@ -47,5 +50,4 @@ public:
     virtual int demanderIndexDeck(Deck& deckMarche) = 0;
     virtual std::string demanderMotDePasseGodMode() = 0;
     virtual bool demanderChoix(Effet effet) = 0;
-    
 };

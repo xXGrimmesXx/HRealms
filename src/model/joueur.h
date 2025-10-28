@@ -8,10 +8,12 @@
 #include "Attaquable.h"
 #include "partie.h"
 #include "bibliothequeCartes.h"
+#include "choixEffet.h"
 
 
 class Deck;
 class CardRenderer;
+class ChoixEffet;
 
 class Joueur : public Attaquable {
 private:
@@ -28,8 +30,8 @@ public:
     Joueur(std::string nom="");
     ~Joueur() = default;
     void piocher(int n);
-    bool jouerCarte(int idx,Partie& p,std::vector<void*> target,std::vector<void*> targetAllies);
-    bool mobiliserChampion(int idx, Partie& p,std::vector<void*> target);
+    bool jouerCarte(int idx,Partie& p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
+    bool mobiliserChampion(int idx, Partie& p,std::vector<ChoixEffet*> target);
     bool acheterDepuisMarche(int slot, Partie& p);
     void finTour();
     bool aGarde() const;
@@ -63,6 +65,7 @@ public:
     int getPv() const { return pv; }
     bool getProchainAchatActionDessusDeck() const { return prochainAchatActionDessusDeck; }
     bool getProchainAchatDansMain() const { return prochainAchatDansMain;}
+    std::vector<Champion*> getDefausseChampions() const;
 
     std::string toString() const {
         return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.getTaille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";

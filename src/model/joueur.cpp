@@ -31,7 +31,7 @@ void Joueur::piocher(int n){
         }
     }
 }
-bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<void*> targetAllies){
+bool Joueur::jouerCarte(int idx,Partie &p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies){
     if (idx < 0 || idx >= main.getTaille()) {
         throw std::out_of_range("Index de carte invalide");
         return false;
@@ -51,7 +51,7 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<void*> target,std::vector<
     }
     return false;
 }
-bool Joueur::mobiliserChampion(int idx,Partie &p,std::vector<void*> target){
+bool Joueur::mobiliserChampion(int idx,Partie &p,std::vector<ChoixEffet*> target){
     if (idx < 0 || idx >= (int)champions.size()) {
         throw std::out_of_range("Index de champion invalide");
         return false;
@@ -290,4 +290,15 @@ int Joueur::getNombreCartesJouables() const {
         }
     }
     return count;
+}
+
+std::vector<Champion*> Joueur::getDefausseChampions() const {
+    std::vector<Champion*> champions;
+    for (Carte* carte : defausse.getCartes()) { // ou getDefausse().getCartes()
+        Champion* champ = dynamic_cast<Champion*>(carte);
+        if (champ) {
+            champions.push_back(champ);
+        }
+    }
+    return champions;
 }

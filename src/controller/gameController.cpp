@@ -235,6 +235,7 @@ std::vector<ChoixEffet*> GameController::choisirCible(Carte* carte,std::vector<E
 }
 
 ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Carte* carteSource) {
+    (void)carteSource;
     TypeEffet tE = effet.getTypeEffet();
     switch (tE) {
         
@@ -250,7 +251,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::PIOCHER:
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-        case TypeEffet::DEFAUSSER:
+        case TypeEffet::DEFAUSSER:{
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
             if(j==nullptr){
@@ -259,8 +260,9 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexCarte = view->demanderIndexCarte().at(0);
             Carte* c = j->getMain().getCarte(indexCarte);
             return new ChoixEffet(c,0);
+        }
 
-        case TypeEffet::SACRIFIER:
+        case TypeEffet::SACRIFIER:{
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
             if(j==nullptr){
@@ -269,9 +271,9 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexCarte = view->demanderIndexCarte().at(0);
             Carte* c = j->getMain().getCarte(indexCarte);
             return new ChoixEffet(c,0);
+        }
 
-
-        case TypeEffet::ASSOMMER_CHAMPION:
+        case TypeEffet::ASSOMMER_CHAMPION:{
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
 
@@ -281,8 +283,9 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexCarte = view->demanderIndexCarte().at(0);
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
+        }
 
-        case TypeEffet::PREPARE_CHAMPION:
+        case TypeEffet::PREPARE_CHAMPION:{
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
 
@@ -292,14 +295,17 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexCarte = view->demanderIndexCarte().at(0);
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
+        }
 
-        case TypeEffet::COMBAT_OU_VIE:
+        case TypeEffet::COMBAT_OU_VIE:{
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(&partie.getJoueurActuel(),choix);
+        }
 
-        case TypeEffet::OR_OU_COMBAT:
+        case TypeEffet::OR_OU_COMBAT: {
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(&partie.getJoueurActuel(),choix);
+        }
 
         case TypeEffet::COMBAT_PAR_CHAMPION:
             return new ChoixEffet(&partie.getJoueurActuel(),0);
@@ -313,11 +319,11 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::VIE_PAR_CHAMPION:
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-        case TypeEffet::OR_OU_VIE_PAR_CHAMPION:
+        case TypeEffet::OR_OU_VIE_PAR_CHAMPION:{
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(&partie.getJoueurActuel(),choix);
-
-        case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:
+        }
+        case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:{
             view ->afficherDefausse(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
@@ -325,30 +331,30 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             }
             Carte* c = partie.getJoueurActuel().getDefausse().getCartes().at(indexCarte);
             return new ChoixEffet(c,0);
+        }
 
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
         {
             std::vector<Champion*> defausseChampions = partie.getJoueurActuel().getDefausseChampions();
-            view ->afficherDefausseChampion(partie.getJoueurActuel());
+            view -> afficherDefausseChampion(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausseChampions().size(),"champion de la défausse")){
                 return new ChoixEffet(nullptr,0);
             }
             Champion* c = partie.getJoueurActuel().getDefausseChampions().at(indexCarte);
-        }
             return new ChoixEffet(c,0);
-
+        }
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
         case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN:
-
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-        case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:
+        case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:{
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(&partie.getJoueurActuel(),choix);
-        case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:
+        }
+        case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
@@ -359,7 +365,9 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 return new ChoixEffet(c,choix);
             }
             return new ChoixEffet(nullptr,choix);
+        }
     }
+    return nullptr;
 }
 
 

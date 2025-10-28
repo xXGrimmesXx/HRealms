@@ -3,7 +3,7 @@
 #include "partie.h"
 
 
-void Champion::mobiliser(Partie& p,std::vector<void*> target) {
+void Champion::mobiliser(Partie& p,std::vector<ChoixEffet*> target) {
     if (!mobilise) {
         mobilise = true;
         if (target.size() != effetsActiver.size()) {
@@ -11,7 +11,7 @@ void Champion::mobiliser(Partie& p,std::vector<void*> target) {
             return;
         }
         for (size_t i = 0; i < effetsActiver.size(); ++i) {
-            effetsActiver.at(i).appliquer(this, target.at(i), p);
+            effetsActiver.at(i).appliquer(this, target.at(i), p, false);
         }
     } else {
         throw std::runtime_error("Champion already mobilized");

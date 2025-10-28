@@ -573,3 +573,14 @@ bool ConsoleView::demanderChoix(Effet effet) {
     return (choix == 2);
 }
 
+void ConsoleView::afficherDefausseChampion(const Joueur& joueur) {
+    std::vector<Champion*> champions = joueur.getDefausseChampions();
+    if (champions.empty()) {
+        std::cout << "Aucun champion dans la défausse." << std::endl;
+        return;
+    }
+    std::cout << "Champions dans la défausse :" << std::endl;
+    for (size_t i = 0; i < champions.size(); ++i) {
+        std::cout << "[" << i << "] " << champions[i]->getNom() << std::endl;
+    }
+}

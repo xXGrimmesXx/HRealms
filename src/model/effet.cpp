@@ -19,7 +19,7 @@ Effet::Effet(TypeEffet t, int m1,int m2, TypeCible c){
     cible = c;
 }
 
-void Effet::appliquer(Carte* source, void* target, Partie& partie,bool choix) const {
+void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) const {
     switch (type) {
         case TypeEffet::AJOUT_OR :
             if (cible == TypeCible::SOI) {
@@ -78,7 +78,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie,bool choix) co
             if (cible == TypeCible::CARTE) {
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr) {
-                    Joueur* joueurProprietaire = nullptr;
                     //on cherche le propriétaire de la carte à défausser
                     for (auto& j : partie.getJoueurs()){
                         //on cherche dans la main car si c'etait un champion c'est l'effet demobiliser
@@ -123,7 +122,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie,bool choix) co
             if (cible == TypeCible::CARTE) {
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr) {
-                    Joueur* joueurProprietaire = nullptr;
                     //on cherche le propriétaire de la carte à sacrifier
                     for (auto& j : partie.getJoueurs()){
                         //on cherche dans la main
@@ -378,7 +376,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie,bool choix) co
                             int indexCarteDefausse=-1;
                             //on cherche la carte dans la main du joueur
                             for (int i=0;i<joueurProprietaire.getMain().getTaille();i++){
-                                if (joueurProprietaire.getMain().getCarte(i) == carteTgt->at(i)){
+                                if (joueurProprietaire.getMain().getCarte(i) == c){
                                     indexCarteDefausse = i;
                                     break;
                                 }

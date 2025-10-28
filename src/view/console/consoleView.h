@@ -35,6 +35,7 @@ public:
         void afficherChampions(const std::vector<Champion*>& champions)override;
         void afficherDefausse(const Joueur& joueur)override;
         void afficherDeckMarche(Deck& deckMarche)override;
+        void afficherDefausseChampion(const Joueur& joueur)override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
