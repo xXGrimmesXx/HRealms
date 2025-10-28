@@ -7,7 +7,7 @@
 Effet::Effet(TypeEffet t, int m1, TypeCible c){
     type = t;
     montant1 = m1;
-    montant2 =0;
+    montant2 = -1;
     cible = c;
 }
 
@@ -19,7 +19,7 @@ Effet::Effet(TypeEffet t, int m1,int m2, TypeCible c){
     cible = c;
 }
 
-void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
+void Effet::appliquer(Carte* source, void* target, Partie& partie,bool choix) const {
     switch (type) {
         case TypeEffet::AJOUT_OR :
             if (cible == TypeCible::SOI) {
@@ -75,20 +75,23 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             }
             break;
         case TypeEffet::DEFAUSSER:
-            if (cible == TypeCible::ADVERSAIRE|| cible == TypeCible::SOI) {
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr) {
-                    for (int i = 0; i < montant1; i++) {
-                        if (joueurTgt->getMain().getTaille() == 0) {
-                            break; // Plus de cartes à défausser
+            if (cible == TypeCible::CARTE) {
+                Carte* carteTgt = static_cast<Carte*>(target);
+                if (carteTgt != nullptr) {
+                    Joueur* joueurProprietaire = nullptr;
+                    //on cherche le propriétaire de la carte à défausser
+                    for (auto& j : partie.getJoueurs()){
+                        //on cherche dans la main car si c'etait un champion c'est l'effet demobiliser
+                        for (int i=0;i<j.getMain().getTaille();i++){
+                            if (j.getMain().getCarte(i) == carteTgt){
+                                //si on trouve la bonne carte on la défausse
+                                j.getMain().defausser(i);
+                                break;
+                            }
                         }
-                        // TODO: Demander à l'utilisateur quel index défausser
-                        // Pour l'instant, on défausse toujours l'index 0
-                        joueurTgt->defausser(0);
                     }
-                } else {
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
+                //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas faire défausser de carte
             }
             else{
                 throw std::invalid_argument("Invalid target type for DEFAUSSE_CIBLE effect");
@@ -98,9 +101,11 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::CHAMPION) {
                 Champion* championTgt = static_cast<Champion*>(target);
                 if (championTgt != nullptr) {
+                    //on cherche le champion dans tous les champions de tous les joueurs
                     for (auto j : partie.getJoueurs()){
                         for (auto champ : j.getChampions()){
                             if (champ==championTgt){
+                                //si on le trouve on l'assome
                                 j.assomerChampion(championTgt);
                             }
                         }
@@ -115,13 +120,22 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::SACRIFIER:
-            if (cible == TypeCible::ADVERSAIRE|| cible == TypeCible::SOI) {
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr) {
-                    joueurTgt->sacrifier(montant1,partie);
-                } else {
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
+            if (cible == TypeCible::CARTE) {
+                Carte* carteTgt = static_cast<Carte*>(target);
+                if (carteTgt != nullptr) {
+                    Joueur* joueurProprietaire = nullptr;
+                    //on cherche le propriétaire de la carte à sacrifier
+                    for (auto& j : partie.getJoueurs()){
+                        //on cherche dans la main
+                        for (int i=0;i<j.getMain().getTaille();i++){
+                            if (j.getMain().getCarte(i) == carteTgt){
+                                carteTgt->sacrifier(j,partie);
+                                break;
+                            }
+                        }
+                    }
                 }
+                //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas sacrifier de carte
             }
             else{
                 // Invalid target type for this effect
@@ -133,31 +147,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    std::cout << "1 : " << montant1 << " degats " << std::endl;
-                    std::cout << "2 : " << montant2 << " vie " << std::endl;
-                    int choix=-1;
-
-                    while (choix != 1 && choix != 2) {
-                        std::cout << "Choisissez une option (1 ou 2) : ";
-
-                        if(!(std::cin >> choix)){
-                            std::cin.clear();
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            std::cout << "Entrée invalide." << std::endl;
-                            choix=-1;
-                        }else {
-                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        }
-                    }
-                    if (choix == 1) {
-                        partie.getTourCourant()->ajouterDegats(montant1);
-                    } else if (choix == 2) {
+                    if (choix) {
                         joueurTgt->soigner(montant2);
                     } else {
-                        throw std::invalid_argument("Invalid choice for COMBAT_OU_VIE effect");
+                        partie.getTourCourant()->ajouterDegats(montant1);
                     }
                 } else {
+                    // le joueur est obligé d'appliquer cet effet
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
             }
@@ -171,31 +167,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    std::cout << "1 : " << montant1 << " or " << std::endl;
-                    std::cout << "2 : " << montant2 << " dégâts " << std::endl;
-                    int choix=-1;
-
-                    while (choix != 1 && choix != 2) {
-                        std::cout << "Choisissez une option (1 ou 2) : ";
-
-                        if(!(std::cin >> choix)){
-                            std::cin.clear();
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            std::cout << "Entrée invalide." << std::endl;
-                            choix=-1;
-                        }else {
-                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        }
-                    }
-                    if (choix == 1) {
-                        partie.getTourCourant()->ajouterOr(montant1);
-                    } else if (choix == 2) {
+                    if (choix) {
                         partie.getTourCourant()->ajouterDegats(montant2);
                     } else {
-                        throw std::invalid_argument("Invalid choice for OR_OU_COMBAT effect");
+                        partie.getTourCourant()->ajouterOr(montant1);                        
                     }
                 } else {
+                    //le joueur est obligé d'appliquer cet effet
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
             }
@@ -214,6 +192,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
 
                 }
                 else{
+                    //le joueur est obligé d'appliquer cet effet
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
             }
@@ -275,31 +254,12 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
         case TypeEffet::OR_OU_VIE_PAR_CHAMPION:
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
-                int nbChampions = joueurTgt->getChampions().size();
                 if (joueurTgt != nullptr) {
-                    std::cout << "1 : " << montant1 << " or " << std::endl;
-                    std::cout << "2 : " << montant2 << " vie par champion en jeu, soit " << montant2*nbChampions << std::endl;
-                    int choix=-1;
-
-                    while (choix != 1 || choix != 2) {
-                        std::cout << "Choisissez une option (1 ou 2) : ";
-
-                        if(!(std::cin >> choix)){
-                            std::cin.clear();
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            std::cout << "Entrée invalide." << std::endl;
-                            choix=-1;
-                        }else {
-                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        }
-                    }
-                    if (choix == 1) {
-                        partie.getTourCourant()->ajouterOr(montant1);
-                    } else if (choix == 2) {
-                        partie.getTourCourant()->ajouterDegats(montant2*nbChampions);
+                    if (choix) {
+                        int nbChampions = joueurTgt->getChampions().size();
+                        joueurTgt->soigner(montant2*nbChampions);
                     } else {
-                        throw std::invalid_argument("Invalid choice for OR_OU_VIE_PAR_CHAMPION effect");
+                        partie.getTourCourant()->ajouterOr(montant1); 
                     }
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
@@ -325,13 +285,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK :
-            if (cible == TypeCible::SOI){
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr){
-                    joueurTgt->choisirCarteDefausseAjouterDessusDeck(montant1);
+            if (cible == TypeCible::CARTE){
+                Carte* carteTgt = static_cast<Carte*>(target);
+                if (carteTgt != nullptr){
+                    partie.getJoueurActuel().getDeck().ajouterDessus(carteTgt);
                 }
                 else{
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
+                    throw std::invalid_argument("Target is not a valid Carte pointer");
                 }
                 
             }else{
@@ -341,16 +301,14 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK :
-            if (cible == TypeCible::SOI){
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                if (joueurTgt != nullptr){
-                    joueurTgt->choisirChampionDefausseAjouterDessusDeck(montant1);
+            if (cible == TypeCible::CHAMPION){
+                Champion* championTgt = static_cast<Champion*>(target);
+                if (championTgt != nullptr){
+                    partie.getJoueurActuel().getDeck().ajouterDessus(championTgt);
                 }
                 else{
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
+                    throw std::invalid_argument("Target is not a valid Champion pointer");
                 }
-                
-
             }else{
                 // Invalid target type for this effect
                     throw std::invalid_argument("Invalid target type for CHAMPION_DEFAUSSE_AU_DESSUS_DECK effect");
@@ -392,140 +350,46 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie) const {
             break;
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT :
-            if (cible == TypeCible::SOI) {
-                    Joueur* joueurTgt = static_cast<Joueur*>(target);
-                    if (joueurTgt != nullptr) {
-                        std::cout << "Voulez vous sacrifier 1 carte et ensuite gagner "<<montant2 <<" combats ?"<<std::endl;
-                        std::cout << "1 : oui" << std::endl;
-                        std::cout << "2 : non" << std::endl;
-                        int choix=-1;
-
-                        while (choix != 1 && choix != 2) {
-                            std::cout << "Choisissez une option (1 ou 2) : ";
-
-                            if(!(std::cin >> choix)){
-                                std::cin.clear();
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                std::cout << "Entrée invalide." << std::endl;
-                                choix=-1;
-                            }else {
-                                std::cout << "Choix invalide. Veuillez choisir 1 ou 2." << std::endl;
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            }
-                        }
-                        if (choix == 1) {
-                            return;
-                        } else if (choix == 2) {
-                            joueurTgt->sacrifier(1,partie);
-                            partie.getTourCourant()->ajouterDegats(montant2);                            
-                        } else {
-                            throw std::invalid_argument("Invalid choice for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
-                        }
-                    } else {
-                        throw std::invalid_argument("Target is not a valid Joueur pointer");
+            if (cible == TypeCible::CARTE) {
+                    Carte * carteTgt = static_cast<Carte*>(target);
+                    if (carteTgt != nullptr) {
+                        //le joueur qui applique l'effet est forcément le joueur actuel
+                        Joueur joueurProprietaire = partie.getJoueurActuel();
+                        carteTgt->sacrifier(joueurProprietaire,partie);
                     }
+                    //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas sacrifier de carte
                 }
                 else{
                     // Invalid target type for this effect
                     throw std::invalid_argument("Invalid target type for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
                 }
-                break;
-
-            if (cible == TypeCible::SOI){
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                    if (joueurTgt != nullptr){
-                        std::cout << "Voulez vous sacrifier 1 carte et ensuite gagner "<<montant2 <<" combats ?"<<std::endl;
-                        std::cout << "1 : oui" << std::endl;
-                        std::cout << "2 : non" << std::endl;
-                        std::cout << "Choisissez une option (1 ou 2) : ";
-                        int choix;
-                        std::cin >> choix;
-                        while (choix !=1 && choix !=2) {
-                            std::cout << "Choix invalide. Veuillez choisir 1 ou 2 : ";
-                            std::cin >> choix;
-                        }
-                        if (choix == 1) {
-                            return;
-                        } else if (choix == 2) {
-                            joueurTgt->sacrifier(1,partie);
-                            partie.getTourCourant()->ajouterDegats(montant2);
-                        } else {
-                            throw std::invalid_argument("Invalid choice for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
-                        }
-                    }
-                else{
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
-                }
-            }else{
-                // Invalid target type for this effect
-                    throw std::invalid_argument("Invalid target type for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
-            }
             break;
 
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE :
-            if (cible == TypeCible::SOI){
-                Joueur* joueurTgt = static_cast<Joueur*>(target);
-                    if (joueurTgt != nullptr){
-                        std::cout << "Voulez vous piocher "<<montant1<<" carte(s) et ensuite defausser "<<montant1 <<" carte(s) ?"<<std::endl;
-                        for (int i=0;i<=montant1;i++){
-                            std::cout << i+1 << ") Piocher " << i << " carte(s) et defausser " << i << " carte(s)" << std::endl;
-                        }
-                        std::cout << "Choisissez une option : ";
-                        int choix;
+            if (cible == TypeCible::CARTE){
+                std::vector<Carte*>* carteTgt = static_cast<std::vector<Carte*>*>(target);
+                    if (carteTgt != nullptr){
+                        //si on applique l'effet c'est que le joueur veut bien piocher et a choisi sa carte à defausser
 
-                        if (!(std::cin >> choix)) {
-                            std::cin.clear();
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            std::cout << "Entrée invalide." << std::endl;
-                            return;
-                        }
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-                        while (choix < 1 || choix > montant1+1) {
-                            std::cout << "Choix invalide. Veuillez choisir entre 1 et " << montant1+1 << " : ";
-
-                            if (!(std::cin >> choix)) {
-                                std::cin.clear();
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                std::cout << "Entrée invalide." << std::endl;
-                                return;
-                            }
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        }
-
-                        if (choix == 1) {
-                            return;
-                        } else if (choix <= montant1+1) {
-                            int indexDefausse=-1;
-                            joueurTgt->piocher(choix-1);
-                            std::cout <<joueurTgt->getMain().toString()<<std::endl;
-
-                            for (int i=0;i<choix-1;i++){
-                                std::cout << " Quelle carte voulez vous defausser ? (1-" << joueurTgt->getMain().getTaille() << ") : ";
-
-                                while (indexDefausse < 1 || indexDefausse > joueurTgt->getMain().getTaille()) {
-                                    std::cout << " Quelle carte voulez-vous défausser ? (1-" << joueurTgt->getMain().getTaille() << ") : ";
-                                    
-                                    if (!(std::cin >> indexDefausse)) {
-                                        std::cin.clear();
-                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                        std::cout << "❌ Entrée invalide." << std::endl;
-                                        indexDefausse = -1; // Force à redemander
-                                    } else {
-                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                    }
+                        //le joueur qui applique l'effet est forcément le joueur actuel
+                        Joueur joueurProprietaire = partie.getJoueurActuel();
+                        joueurProprietaire.piocher(montant1);
+                        for (auto c : *carteTgt){
+                            int indexCarteDefausse=-1;
+                            //on cherche la carte dans la main du joueur
+                            for (int i=0;i<joueurProprietaire.getMain().getTaille();i++){
+                                if (joueurProprietaire.getMain().getCarte(i) == carteTgt->at(i)){
+                                    indexCarteDefausse = i;
+                                    break;
                                 }
-                                
-                                joueurTgt->defausser(indexDefausse - 1);
                             }
+                            joueurProprietaire.defausser(indexCarteDefausse);
                         }
                     }
-                else{
-                    throw std::invalid_argument("Target is not a valid Joueur pointer");
-                }
+                    //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas défausser de carte
             }else{
                 // Invalid target type for this effect
-                    throw std::invalid_argument("Invalid target type for PIOCHE_SIOUI_DEFAUSSE effect");
+                throw std::invalid_argument("Invalid target type for PIOCHE_SIOUI_DEFAUSSE effect");
             }
             break;
         

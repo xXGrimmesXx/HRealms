@@ -2,6 +2,7 @@
 #include "../model/partie.h"
 #include "../view/gameView.h"
 #include "../model/tour.h"
+#include "../model/choixEffet.h"
 #include <memory>
 
 class GameController {
@@ -32,9 +33,8 @@ public:
     bool attaquerJoueur();
     bool consulterDefausse();
     void finirTour();
-    std::vector<void*> choisirCiblePrimaires(Carte* carte);
-    std::vector<void*> choisirCibleAllie(Carte* carte);
-    std::vector<void*> choisirCibleMobiliser(Champion* champion);
+    std::vector<ChoixEffet*> choisirCible(Carte* carte,std::vector<Effet> effets);
+    ChoixEffet* demanderChoixEffet(Effet effet, Partie& partie, Carte* carteSource);
     
     // Actions d'affichage
     void afficherEtatJeu();
@@ -45,6 +45,7 @@ public:
     void afficherMainAdversaire();
     
     // Utilitaires
+    Joueur* getJoueurParIndex(int index);
     bool validerIndex(int index, int max, const std::string& type);
     void gererErreur(std::string& erreur);
     void toggleGodMode();

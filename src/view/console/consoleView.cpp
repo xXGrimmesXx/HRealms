@@ -559,3 +559,17 @@ void ConsoleView::afficherChampions(const std::vector<Champion*>& champions) {
         std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     }  
 }
+
+bool ConsoleView::demanderChoix(Effet effet) {
+    int choix;
+    std::cout << "❓ Choisir l'option pour l'effet (" << typeEffetToString(effet.getTypeEffet()) << ") (1/2): ";
+    std::cout << "[1] oui" << std::endl << "[2] non" << std::endl;
+    std::cin >> choix;
+
+    while (choix != 1 && choix != 2) {
+        std::cout << "❌ ERREUR: Choix invalide. Veuillez choisir 1 ou 2: ";
+        std::cin >> choix;
+    }
+    return (choix == 2);
+}
+

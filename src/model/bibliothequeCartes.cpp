@@ -300,7 +300,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new CarteAction("Dark Reward", 5, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_OR, 3, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
     );
 
@@ -317,21 +317,21 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new CarteAction("Death Touch", 1, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Death Touch", 1, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Death Touch", 1, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
@@ -362,46 +362,46 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new Champion("Krythos, Master Vampire", 7, Faction::NECROS, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
-            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 3, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 3, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Life Drain", 6, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 8, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new Champion("Lys, the Unseen", 6, Faction::NECROS, true, 5))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
-            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 2, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT, 1, 2, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
         (new CarteAction("The Rot", 3, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("The Rot", 3, Faction::NECROS))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::SACRIFIER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new Champion("Tyrannor, the Devourer", 8, Faction::NECROS, true, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
-            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER, 2, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::SACRIFIER, 2, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new Champion("Varrick, the Necromancer", 5, Faction::NECROS, false, 3))
-            ->ajouterEffetActiver(Effet(TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK, 1, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK, 1, TypeCible::CHAMPION))
             ->ajouterEffetAllie(Effet(TypeEffet::PIOCHER, 1, TypeCible::SOI))
     );
 
@@ -409,7 +409,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new Champion("Broelyn, Loreweaver", 4, Faction::SAUVAGE, false, 6))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
-            ->ajouterEffetAllie(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetAllie(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
@@ -427,49 +427,49 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new CarteAction("Elven Curse", 3, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Elven Curse", 3, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Elven Gift", 2, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Elven Gift", 2, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Elven Gift", 2, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_OR, 2, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new Champion("Grak, Storm Giant", 8, Faction::SAUVAGE, true, 7))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
-            ->ajouterEffetActiver(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
-            ->ajouterEffetAllie(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::SOI))
+            ->ajouterEffetActiver(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::CARTE))
+            ->ajouterEffetAllie(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 1, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Nature's Bounty", 4, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_OR, 4, TypeCible::SOI))
-            ->ajouterEffetAllie(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetAllie(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetSacrifice(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
     );
 
@@ -488,41 +488,41 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
         (new CarteAction("Rampage", 6, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 2, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::PIOCHE_SIOUI_DEFAUSSE, 2, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
         (new Champion("Torgen Rocksplitter", 7, Faction::SAUVAGE, true, 7))
             ->ajouterEffetActiver(Effet(TypeEffet::AJOUT_COMBAT, 4, TypeCible::SOI))
-            ->ajouterEffetActiver(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetActiver(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Spark", 1, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Spark", 1, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Spark", 1, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 3, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
             ->ajouterEffetAllie(Effet(TypeEffet::AJOUT_COMBAT, 2, TypeCible::SOI))
     );
 
     deck.ajouterDessous(
         (new CarteAction("Wolf Form", 5, Faction::SAUVAGE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 8, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
-            ->ajouterEffetSacrifice(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::ADVERSAIRE))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
+            ->ajouterEffetSacrifice(Effet(TypeEffet::DEFAUSSER, 1, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(

@@ -166,9 +166,9 @@ bool GameController::jouerCarte() {
             return false;
         }
         Carte* c = joueurActuel.getMain().getCarte(ind);
-        std::vector<void*> cibles = choisirCiblePrimaires(c);
-        std::vector<void*> ciblesAllies = choisirCibleAllie(c);    
-    
+        std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
+        std::vector<ChoixEffet*> ciblesAllies = choisirCible(c,c->getEffetsAllie());
+
         // Essayer de jouer la carte
         try {
             bool succes = joueurActuel.jouerCarte(ind, *partie, cibles, ciblesAllies);
@@ -201,7 +201,7 @@ bool GameController::mobiliserChampion() {
             return false;
         }
         Champion* c = joueurActuel.getChampions().at(ind);
-        std::vector<void*> cibles = choisirCibleMobiliser(c);
+        std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
     
         // Essayer de jouer la carte
         try {
@@ -225,230 +225,143 @@ bool GameController::mobiliserChampion() {
 
 }
 
-std::vector<void*> GameController::choisirCiblePrimaires(Carte* carte) {
-    std::vector<void*> targets;
-    for(size_t i=0;i<carte->getEffetsPrimaire().size();i++){
-        switch(carte->getEffetsPrimaire().at(i).getTypeCible()){
-            case TypeCible::SOI :
-                targets.push_back(&partie->getJoueurActuel());
-                break;
-
-            case TypeCible::ADVERSAIRE:
-                // Demander quel joueur attaquer
-                {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                targets.push_back(&partie->getJoueurs().at( index ));
-                }
-                break;
-
-            case TypeCible::CHAMPION_ALLIE:
-                {
-                int index = view->demanderIndexChampion(partie->getJoueurActuel()).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurActuel().getChampions().at(index));
-                }
-                break;
-
-            case TypeCible::CHAMPION_ENNEMI:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                break;
-
-            case TypeCible::TOUS_CHAMPIONS:
-            {
-                for(auto j : partie->getJoueurs()){
-                    for(auto c : j.getChampions()){
-                        targets.push_back(c);
-                    }
-                }
-            }
-                break;
-
-            case TypeCible::CARTE:
-                // Pour l'instant, on ne gère pas les cartes sur le terrain
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::NIMPORTE:
-                targets.push_back(nullptr); // Ou une autre logique pour "n'importe"
-                break;
-
-            case TypeCible::AUCUNE:
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::CHAMPION:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                if (validerIndex(index,j.getChampions().size(), "champion")) {
-                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                else {
-                    targets.push_back(nullptr);
-                }
-                }
-                break;
-
-            default:
-                targets.push_back(nullptr);
-                break;
-        }
+std::vector<ChoixEffet*> GameController::choisirCible(Carte* carte,std::vector<Effet> effets) {
+    std::vector<ChoixEffet*> targets;
+    for(size_t i=0;i<effets.size();i++){
+            
+        targets.push_back(demanderChoixEffet(effets[i],*partie,carte));
     }
     return targets;
-
 }
 
-std::vector<void*> GameController::choisirCibleAllie(Carte* carte) {
-    std::vector<void*> targets;
-    for(size_t i=0;i<carte->getEffetsAllie().size();i++){
-        switch(carte->getEffetsAllie().at(i).getTypeCible()){
-            case TypeCible::SOI :
-                targets.push_back(&partie->getJoueurActuel());
-                break;
+ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Carte* carteSource) {
+    TypeEffet tE = effet.getTypeEffet();
+    switch (tE) {
+        
+        case TypeEffet::AJOUT_OR:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-            case TypeCible::ADVERSAIRE:
-                // Demander quel joueur attaquer
-                {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                targets.push_back(&partie->getJoueurs().at( index ));
-                }
-                break;
+        case TypeEffet::AJOUT_COMBAT:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-            case TypeCible::CHAMPION_ALLIE:
-                {
-                int index = view->demanderIndexChampion(partie->getJoueurActuel()).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurActuel().getChampions().at(index));
-                }
-                break;
+        case TypeEffet::AJOUT_VIE:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-            case TypeCible::CHAMPION_ENNEMI:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                break;
+        case TypeEffet::PIOCHER:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
 
-            case TypeCible::TOUS_CHAMPIONS:
-            {
-                for(auto j : partie->getJoueurs()){
-                    for(auto c : j.getChampions()){
-                        targets.push_back(c);
-                    }
-                }
+        case TypeEffet::DEFAUSSER:
+            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
+            Joueur* j = getJoueurParIndex(indexJoueur);
+            if(j==nullptr){
+                return new ChoixEffet(nullptr,0);
             }
-                break;
+            int indexCarte = view->demanderIndexCarte().at(0);
+            Carte* c = j->getMain().getCarte(indexCarte);
+            return new ChoixEffet(c,0);
 
-            case TypeCible::CARTE:
-                // Pour l'instant, on ne gère pas les cartes sur le terrain
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::NIMPORTE:
-                targets.push_back(nullptr); // Ou une autre logique pour "n'importe"
-                break;
-
-            case TypeCible::AUCUNE:
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::CHAMPION:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs());
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                if (validerIndex(index,j.getChampions().size(), "champion")) {
-                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                else {
-                    targets.push_back(nullptr);
-                }
-                break;
-                }
+        case TypeEffet::SACRIFIER:
+            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
+            Joueur* j = getJoueurParIndex(indexJoueur);
+            if(j==nullptr){
+                return new ChoixEffet(nullptr,0);
             }
+            int indexCarte = view->demanderIndexCarte().at(0);
+            Carte* c = j->getMain().getCarte(indexCarte);
+            return new ChoixEffet(c,0);
+
+
+        case TypeEffet::ASSOMMER_CHAMPION:
+            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
+            Joueur* j = getJoueurParIndex(indexJoueur);
+
+            if(j==nullptr){
+                return new ChoixEffet(nullptr,0);
+            }
+            int indexCarte = view->demanderIndexCarte().at(0);
+            Champion* c = j->getChampions().at(indexCarte);
+            return new ChoixEffet(c,0);
+
+        case TypeEffet::PREPARE_CHAMPION:
+            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
+            Joueur* j = getJoueurParIndex(indexJoueur);
+
+            if(j==nullptr){
+                return new ChoixEffet(nullptr,0);
+            }
+            int indexCarte = view->demanderIndexCarte().at(0);
+            Champion* c = j->getChampions().at(indexCarte);
+            return new ChoixEffet(c,0);
+
+        case TypeEffet::COMBAT_OU_VIE:
+            bool choix = view->demanderChoix(effet);
+            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+
+        case TypeEffet::OR_OU_COMBAT:
+            bool choix = view->demanderChoix(effet);
+            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+
+        case TypeEffet::COMBAT_PAR_CHAMPION:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::COMBAT_PAR_GARDE:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::COMBAT_PAR_ALLIE:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::VIE_PAR_CHAMPION:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::OR_OU_VIE_PAR_CHAMPION:
+            bool choix = view->demanderChoix(effet);
+            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+
+        case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:
+            view ->afficherDefausse(partie.getJoueurActuel());
+            int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
+                return new ChoixEffet(nullptr,0);
+            }
+            Carte* c = partie.getJoueurActuel().getDefausse().getCartes().at(indexCarte);
+            return new ChoixEffet(c,0);
+
+        case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
+        {
+            std::vector<Champion*> defausseChampions = partie.getJoueurActuel().getDefausseChampions();
+            view ->afficherDefausseChampion(partie.getJoueurActuel());
+            int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausseChampions().size(),"champion de la défausse")){
+                return new ChoixEffet(nullptr,0);
+            }
+            Champion* c = partie.getJoueurActuel().getDefausseChampions().at(indexCarte);
         }
-    return targets;
+            return new ChoixEffet(c,0);
+
+        case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN:
+
+            return new ChoixEffet(&partie.getJoueurActuel(),0);
+
+        case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:
+            bool choix = view->demanderChoix(effet);
+            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+        case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:
+            bool choix = view->demanderChoix(effet);
+            if (choix == true){
+                int indexCarte = view->demanderIndexCarte().at(0);
+                if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
+                    return new ChoixEffet(nullptr,0);
+                }
+                Carte* c = partie.getJoueurActuel().getDefausse().getCartes().at(indexCarte);
+                return new ChoixEffet(c,choix);
+            }
+            return new ChoixEffet(nullptr,choix);
+    }
 }
 
-std::vector<void*> GameController::choisirCibleMobiliser(Champion* carte) {
-    std::vector<void*> targets;
-    for(size_t i=0;i<carte->getEffetsActiver().size();i++){
-        switch(carte->getEffetsActiver().at(i).getTypeCible()){
-            case TypeCible::SOI :
-                targets.push_back(&partie->getJoueurActuel());
-                break;
-
-            case TypeCible::ADVERSAIRE:
-                // Demander quel joueur attaquer
-                {
-                int index = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                targets.push_back(&partie->getJoueurs().at( index ));
-                }
-                break;
-
-            case TypeCible::CHAMPION_ALLIE:
-                {
-                int index = view->demanderIndexChampion(partie->getJoueurActuel()).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurActuel().getChampions().at(index));
-                }
-                break;
-
-            case TypeCible::CHAMPION_ENNEMI:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs()); // Réutiliser cette méthode
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                break;
-
-            case TypeCible::TOUS_CHAMPIONS:
-            {
-                for(auto j : partie->getJoueurs()){
-                    for(auto c : j.getChampions()){
-                        targets.push_back(c);
-                    }
-                }
-            }
-                break;
-
-            case TypeCible::CARTE:
-                // Pour l'instant, on ne gère pas les cartes sur le terrain
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::NIMPORTE:
-                targets.push_back(nullptr); // Ou une autre logique pour "n'importe"
-                break;
-
-            case TypeCible::AUCUNE:
-                targets.push_back(nullptr);
-                break;
-
-            case TypeCible::CHAMPION:
-                {
-                int indexJoueur = view->demanderIndexJoueur(partie->getJoueurs());
-                Joueur j = partie->getJoueurs().at( indexJoueur );
-                int index = view->demanderIndexChampion(j).at(0); // Réutiliser cette méthode
-                if (validerIndex(index,j.getChampions().size(), "champion")) {
-                    targets.push_back(partie->getJoueurs().at(indexJoueur).getChampions().at(index));
-                }
-                else {
-                    targets.push_back(nullptr);
-                }
-                
-                break;
-                }
-            }
-        }
-    return targets;
-}
 
 bool GameController::acheterCarte() {
 
@@ -888,6 +801,14 @@ void GameController::finirPartie() {
     }
     
     
+}
+
+Joueur* GameController::getJoueurParIndex(int index){
+    std::vector<Joueur>& joueurs = partie->getJoueurs();
+    if (!validerIndex(index, joueurs.size(), "joueur")) {
+        return nullptr;
+    }
+    return &joueurs.at(index);
 }
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {

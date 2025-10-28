@@ -6,6 +6,7 @@
 #include "../../model/typeEffet.h"
 #include "../../model/typeCible.h"
 #include "../../model/deck.h"
+#include "../../model/choixEffet.h"
 
 
 #include <iostream>
@@ -55,6 +56,7 @@ public:
     int demanderChoixGodMode()override;
     int demanderIndexDeck(Deck& deckMarche)override;
     std::string demanderMotDePasseGodMode()override;
+    bool demanderChoix(Effet effet) override;
     
 
 

@@ -11,6 +11,7 @@ pioche_sioui_defausse - affichage moche et marche pas pour 2
 - vie par champion semble pas marcher (ex : recruit)
 - effetAllie marche pas sur un champion (ex : dire wolf)
 - defausser propose soit même alors que c'est pas censé être le cas
+- sacrifier si oui combat ne fait pas sacrifier de cartes
 
 ---------- AUTRES ----------
 - attaquer joueur : moche. 
@@ -18,6 +19,9 @@ pioche_sioui_defausse - affichage moche et marche pas pour 2
 - dans afficherMainAdversaire, afficher aussi les champions/gardes
 - carte décalée quand mobilisée --> régler juste le nb d'espaces.
 - quand je consulte 2x de suite afficher main adversaire ça segmentation fault ?
+- consuleter defausse segmentation faulte
+- si on choisi soit même comme joueur quand on attaque ça nous vide notre attaque
+- quand on attaque indices décalé entre jolie présentation et le truc pour le choix juste en dessous
 
 2) Affichage/utilitaire :
 - acheter plusieurs cartes en mm temps
