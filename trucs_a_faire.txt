@@ -1,6 +1,18 @@
 VIE PAR CHAMPION
 + VIE 
 
+TODO LIST APRES CALL :
+
+G - Check les effets + effetSacrifice
+L - Se renseigner trucs de sauvegarde.
+G - Faire -1 aux indexs > aux champions joués
+G - Voir pour sacrifier.
+G - Améliorer attaquer joueur. i+1 et i-1[nbJoueurs]
+L - 0 pour annuler une action.
+L - pioche_sioui_defausse std::vector<Carte*>*
+
+
+
 1) Fonctions importantes :
 ---------- EFFETS ----------
 ASSOMMER - Si on joue un champion qui a un effet assomer un champion et qu'on le joue sur ce champion (Rake, Master Assassin par ex) alors ça fait une erreur.
@@ -17,7 +29,7 @@ pioche_sioui_defausse - affichage moche et marche pas pour 2
 - sacrifier si oui combat ne fait pas sacrifier de cartes
 
 ---------- AUTRES ----------
-- attaquer joueur : moche. 
+- attaquer joueur : moche
 - en fait, je pense devrait afficher champion et gardes avant de demander quoique ce soit
 - dans afficherMainAdversaire, afficher aussi les champions/gardes
 - carte décalée quand mobilisée --> régler juste le nb d'espaces.

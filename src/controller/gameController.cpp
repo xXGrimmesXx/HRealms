@@ -241,7 +241,6 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
     (void)carteSource;
     TypeEffet tE = effet.getTypeEffet();
     switch (tE) {
-        
         case TypeEffet::AJOUT_OR:
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
