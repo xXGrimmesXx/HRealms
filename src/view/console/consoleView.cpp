@@ -315,7 +315,8 @@ std::vector<int> ConsoleView::demanderIndexCarte() {
     char * line;
     std::string input;
     std::cout << "🎴 Numéro de la carte (séparer les numeros pas des espaces): ";
-    std::getline(std::cin, input, '\n');
+    std::cin >> input;
+    //std::getline(std::cin, input, '\n');
     if (!input.empty()) {
         line = trimString(input).data();
         char * p;
@@ -529,7 +530,7 @@ void ConsoleView::afficherMarche(Marche& marche) {
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     
     const auto& ligne = marche.getLigne();
-    std::vector<std::vector<std::string>> cardsToRender;
+    std::cout << "Ligne du marché récupérée." << std::endl;
     
    CardRenderer::printCards(ligne, 5);
 
@@ -562,8 +563,24 @@ void ConsoleView::afficherChampions(const std::vector<Champion*>& champions) {
 
 bool ConsoleView::demanderChoix(Effet effet) {
     int choix;
-    std::cout << "❓ Choisir l'option pour l'effet (" << typeEffetToString(effet.getTypeEffet()) << ") (1/2): ";
-    std::cout << "[1] oui" << std::endl << "[2] non" << std::endl;
+    std::cout << "❓ Choisir l'option pour l'effet (" << typeEffetToString(effet.getTypeEffet()) << ") (1/2): "<< std::endl;
+    TypeEffet t = effet.getTypeEffet();
+    if (t== TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT || t== TypeEffet::PIOCHE_SIOUI_DEFAUSSE) {
+        std::cout << "[1] non" << std::endl << "[2] oui" << std::endl;
+    }
+    else if (t== TypeEffet::COMBAT_OU_VIE) {
+        std::cout << "[1] Ajouter " << effet.getMontant1() << " combat" << std::endl << "[2] Ajouter " << effet.getMontant2() << " points de vie" << std::endl;
+    }
+    else if (t== TypeEffet::OR_OU_COMBAT) {
+        std::cout << "[1] Ajouter " << effet.getMontant1() << " or" << std::endl << "[2] Ajouter " << effet.getMontant2() << " combat" << std::endl;
+    }
+    else if (t== TypeEffet::OR_OU_VIE_PAR_CHAMPION) {
+        std::cout << "[1] Ajouter " << effet.getMontant1() << " or" << std::endl << "[2] Ajouter " << effet.getMontant2() << " vie par champion" << std::endl;
+    }
+    else {
+        std::cout << "[1] Option 1" << std::endl << "[2] Option 2" << std::endl;
+    }
+    
     std::cin >> choix;
 
     while (choix != 1 && choix != 2) {
@@ -575,12 +592,24 @@ bool ConsoleView::demanderChoix(Effet effet) {
 
 void ConsoleView::afficherDefausseChampion(const Joueur& joueur) {
     std::vector<Champion*> champions = joueur.getDefausseChampions();
+    std::cout << "👑 CHAMPIONS DÉFAUSSÉS:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    
     if (champions.empty()) {
-        std::cout << "Aucun champion dans la défausse." << std::endl;
+        std::cout << "Aucun champion dans la defausse." << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
         return;
     }
-    std::cout << "Champions dans la défausse :" << std::endl;
-    for (size_t i = 0; i < champions.size(); ++i) {
-        std::cout << "[" << i << "] " << champions[i]->getNom() << std::endl;
-    }
+    else{
+        const int CARDS_PER_ROW = 5;
+        // Convert Champion* vector to Carte* vector because CardRenderer expects Carte*
+        std::vector<Carte*> cartes;
+        cartes.reserve(champions.size());
+        for (Champion* c : champions) {
+            cartes.push_back(static_cast<Carte*>(c));
+        }
+        CardRenderer::printCards(cartes, CARDS_PER_ROW);
+        std::cout << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    }  
 }

@@ -265,7 +265,7 @@ Deck BibliothequeCartes::creerDeckMarche() {
     deck.ajouterDessous(
        (new CarteAction("Smash and Grab", 6, Faction::GUILDE))
             ->ajouterEffetPrimaire(Effet(TypeEffet::AJOUT_COMBAT, 6, TypeCible::SOI))
-            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK, 1, TypeCible::SOI))
+            ->ajouterEffetPrimaire(Effet(TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK, 1, TypeCible::CARTE))
     );
 
     deck.ajouterDessous(

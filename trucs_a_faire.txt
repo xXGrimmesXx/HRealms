@@ -1,3 +1,6 @@
+VIE PAR CHAMPION
++ VIE 
+
 1) Fonctions importantes :
 ---------- EFFETS ----------
 ASSOMMER - Si on joue un champion qui a un effet assomer un champion et qu'on le joue sur ce champion (Rake, Master Assassin par ex) alors ça fait une erreur.

@@ -255,8 +255,11 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 if (joueurTgt != nullptr) {
                     if (choix) {
                         int nbChampions = joueurTgt->getChampions().size();
+                        std::cout << "Nombre de champions pour le calcul de vie : " << nbChampions << std::endl;
+                        std::cout << "Montant2 : " << montant2 << " total : " << montant2 * nbChampions << std::endl;
                         joueurTgt->soigner(montant2*nbChampions);
                     } else {
+                        std::cout << "Ajout d'or : " << montant1 << std::endl;
                         partie.getTourCourant()->ajouterOr(montant1); 
                     }
                 } else {
@@ -270,7 +273,9 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
                     int nbChampions = joueurTgt->getChampions().size();
-                    joueurTgt->soigner(montant2*nbChampions);
+                    std::cout << "Nombre de champions pour le calcul de vie : " << nbChampions << std::endl;
+                    std::cout << "Montant2 : " << montant2 << " total : " << montant1 * nbChampions << std::endl;
+                    joueurTgt->soigner(montant1*nbChampions);
                 }
                 else{
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
@@ -388,6 +393,18 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
             }else{
                 // Invalid target type for this effect
                 throw std::invalid_argument("Invalid target type for PIOCHE_SIOUI_DEFAUSSE effect");
+            }
+            break;
+
+        case TypeEffet::PREPARE_CHAMPION:
+            if (cible == TypeCible::CHAMPION){
+                Champion* championTgt = static_cast<Champion*>(target);
+                if (championTgt != nullptr){
+                    championTgt->demobiliser();
+                }
+            }else{
+                // Invalid target type for this effect
+                    throw std::invalid_argument("Invalid target type for PREPARE_CHAMPION effect");
             }
             break;
         

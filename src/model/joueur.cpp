@@ -41,12 +41,13 @@ bool Joueur::jouerCarte(int idx,Partie &p,std::vector<ChoixEffet*> target,std::v
         if (c->getEstJouee()) {
             return false;
         }
-        c->lorsDeJeu(p,target,targetAllies,possedeAllie(*c));
         if (dynamic_cast<Champion*>(c)) {
             champions.push_back(dynamic_cast<Champion*>(c));
             main.defausser(idx); // Retirer de la main sans aller dans la défausse
-            champions.back()->setEstJouee(true);
         }
+        c->lorsDeJeu(p,target,targetAllies,possedeAllie(*c));
+        c->setEstJouee(true);
+        
         return true;
     }
     return false;
@@ -103,114 +104,12 @@ void Joueur::assomerChampions(){
     champions.clear();
 }
 void Joueur::assomerChampion(Champion* c){
-    std::cout << "Recherche du champion " << c->getNom() << " à assommer." << std::endl;
-    std::cout << "Nombre de champions en jeu: " << champions.size() << std::endl;
+
     for (int i=0; i<(int)champions.size();i++){
-        std::cout << "Vérification du champion " << champions.at(i)->getNom() <<" : "<<c->getNom() << std::endl;
         if (champions.at(i)==c){
-            std::cout << "Assommer le champion " << c->getNom() << std::endl;
             defausse.ajouter(c);
             champions.erase(std::next(champions.begin(),i));
         }
-    }
-}
-
-void Joueur::choisirCarteDefausseAjouterDessusDeck(int montant){
-    if (defausse.getTaille() == 0) {
-        std::cout << "❌ Votre défausse est vide." << std::endl;
-        return;
-    }
-
-    for(int i = 0; i < montant && defausse.getTaille() > 0; i++){
-        std::cout << "\n🗂️ Défausse (" << (i + 1) << "/" << montant << "):" << std::endl;
-        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-        
-        const int CARDS_PER_ROW = 5;
-        CardRenderer::printCards(defausse.getCartes(), CARDS_PER_ROW);
-        
-        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-        
-        int choix = -1;
-        while (choix < 1 || choix > defausse.getTaille()) {
-            std::cout << "\nChoisissez une carte à placer au-dessus du deck (1-" << defausse.getTaille() << "): ";
-            
-            if (!(std::cin >> choix)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "❌ Entrée invalide." << std::endl;
-                choix = -1;
-            } else {
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                
-                if (choix < 1 || choix > defausse.getTaille()) {
-                    std::cout << "❌ Index invalide." << std::endl;
-                }
-            }
-        }
-        
-        retirerCarteDefausseVersDessusDeck(choix - 1);
-        std::cout << "✅ Carte placée au-dessus du deck." << std::endl;
-    }
-}
-void Joueur::choisirChampionDefausseAjouterDessusDeck(int montant){
-    // Filtrer les champions dans la défausse
-    std::vector<Champion*> championsDefausse;
-    std::vector<int> indicesChampions;
-    
-    const auto& cartes = defausse.getCartes();
-    for (int i = 0; i < defausse.getTaille(); ++i) {
-        if (Champion* champ = dynamic_cast<Champion*>(cartes[i])) {
-            championsDefausse.push_back(champ);
-            indicesChampions.push_back(i);
-        }
-    }
-    
-    if (championsDefausse.empty()) {
-        std::cout << "❌ Aucun champion dans votre défausse." << std::endl;
-        return;
-    }
-    
-    for(int i = 0; i < montant && !championsDefausse.empty(); i++){
-        std::cout << "\n👑 Champions dans la défausse (" << (i + 1) << "/" << montant << "):" << std::endl;
-        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-        
-        const int CARDS_PER_ROW = 5;
-        std::vector<Carte*> cartesChampions;
-        for (auto c : championsDefausse) {
-            cartesChampions.push_back(static_cast<Carte*>(c));
-        }
-        CardRenderer::printCards(cartesChampions, CARDS_PER_ROW);
-        
-        std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-        
-        int choix = -1;
-        while (choix < 1 || choix > (int)championsDefausse.size()) {
-            std::cout << "\nChoisissez un champion à placer au-dessus du deck (1-" << championsDefausse.size() << "): ";
-            
-            if (!(std::cin >> choix)) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "❌ Entrée invalide." << std::endl;
-                choix = -1;
-            } else {
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                
-                if (choix < 1 || choix > (int)championsDefausse.size()) {
-                    std::cout << "❌ Index invalide." << std::endl;
-                }
-            }
-        }
-        
-        int indexDansDefausse = indicesChampions[choix - 1];
-        Champion* champion = championsDefausse[choix - 1];
-        
-        retirerCarteDefausseVersDessusDeck(indexDansDefausse);
-        
-        std::cout << "✅ " << champion->getNom() << " placé au-dessus du deck." << std::endl;
-        
-        // Mettre à jour les listes
-        championsDefausse.erase(championsDefausse.begin() + (choix - 1));
-        indicesChampions.erase(indicesChampions.begin() + (choix - 1));
     }
 }
 
@@ -227,24 +126,7 @@ void Joueur::retirerCarteDefausseVersDessusDeck(int index) {
     deck.ajouterDessous(carte);
 }
 
-void Joueur::sacrifier(int montant, Partie& p){
-    for(int i=0; i<montant; i++){
-        std::cout << "choisissez une carte à sacrifier"<<std::endl;
-        for (int j =1; j<=(int)main.getCartes().size();j++){
-            std::cout<<j<<")   ";
-        }
-        std::cout <<std::endl;
-        int choix;
-        std::cin >>choix;
-        while(choix<1 || choix >(int)main.getCartes().size()){
-            std::cout<<"choisissez un indice valide"<<std::endl;
-            std::cin >> choix;
-        }
-        Carte* c = main.getCarte(choix-1);
-        main.sacrifier(c);
-        p.getCartesSacrifie().ajouter(c);
-    }
-}
+
 std::vector<Champion*> Joueur::getGardes()const{
     std::vector<Champion*> res;
     for (auto c : champions){

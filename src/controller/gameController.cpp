@@ -165,7 +165,9 @@ bool GameController::jouerCarte() {
         if (!validerIndex(ind,joueurActuel.getMain().getTaille(), "carte")) {
             return false;
         }
+        std::cout << "Index de la carte à jouer: " << ind << std::endl;
         Carte* c = joueurActuel.getMain().getCarte(ind);
+        std::cout << "Carte à jouer: " << c->getNom() << std::endl;
         std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
         std::vector<ChoixEffet*> ciblesAllies = choisirCible(c,c->getEffetsAllie());
 
@@ -202,10 +204,11 @@ bool GameController::mobiliserChampion() {
         }
         Champion* c = joueurActuel.getChampions().at(ind);
         std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
-    
+        std::cout << "Cibles choisies: " << cibles.size() << std::endl;
         // Essayer de jouer la carte
         try {
             bool succes = joueurActuel.mobiliserChampion(ind, *partie, cibles);
+            std::cout << "champion mobilisé dans le joueur " << joueurActuel.getNom() << std::endl;
             if (succes) {
                 std::string message = "Champion mobilisé avec succès !";
                 view->afficherMessage(message);
@@ -249,6 +252,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
         case TypeEffet::PIOCHER:
+            std::cout << "Demande de choix de cible pour l'effet PIOCHER." << std::endl;
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
         case TypeEffet::DEFAUSSER:{
@@ -257,18 +261,21 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
             }
+            view->afficherMain(*j);
             int indexCarte = view->demanderIndexCarte().at(0);
             Carte* c = j->getMain().getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
 
         case TypeEffet::SACRIFIER:{
-            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
-            Joueur* j = getJoueurParIndex(indexJoueur);
-            if(j==nullptr){
-                return new ChoixEffet(nullptr,0);
+            Joueur* j = &partie.getJoueurActuel();
+
+            int indexCarte =-1;
+            
+            while (!validerIndex(indexCarte,j->getMain().getTaille(),"carte de la main")){
+                indexCarte = view->demanderIndexCarte().at(0);
             }
-            int indexCarte = view->demanderIndexCarte().at(0);
+
             Carte* c = j->getMain().getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
@@ -280,19 +287,28 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
             }
+            if (j->getChampions().empty()){
+                return new ChoixEffet(nullptr,0);
+            }
+            view->afficherChampions(j->getChampions());
             int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
+                return new ChoixEffet(nullptr,0);
+            }
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
         }
 
         case TypeEffet::PREPARE_CHAMPION:{
-            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
-            Joueur* j = getJoueurParIndex(indexJoueur);
-
+            Joueur* j = &partie.getJoueurActuel();
+            view->afficherChampions(j->getChampions());
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
             }
             int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
+                return new ChoixEffet(nullptr,0);
+            }
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
         }
@@ -336,32 +352,47 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
         {
             std::vector<Champion*> defausseChampions = partie.getJoueurActuel().getDefausseChampions();
-            view -> afficherDefausseChampion(partie.getJoueurActuel());
-            int indexCarte = view->demanderIndexCarte().at(0);
-            if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausseChampions().size(),"champion de la défausse")){
-                return new ChoixEffet(nullptr,0);
+            if (defausseChampions.empty()) {
+                return new ChoixEffet(nullptr, 0);
             }
-            Champion* c = partie.getJoueurActuel().getDefausseChampions().at(indexCarte);
-            return new ChoixEffet(c,0);
+            view->afficherDefausseChampion(partie.getJoueurActuel());
+            int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte, defausseChampions.size(), "champion de la défausse")) {
+                return new ChoixEffet(nullptr, 0);
+            }
+            Champion* c = defausseChampions.at(indexCarte);
+            return new ChoixEffet(c, 0);
         }
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(&partie.getJoueurActuel(), 0);
 
         case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(&partie.getJoueurActuel(), 0);
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:{
             bool choix = view->demanderChoix(effet);
-            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+            if (choix == true){
+                int indexCarte = view->demanderIndexCarte().at(0);
+                if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
+                    return new ChoixEffet(nullptr,0);
+                }
+                else{
+                    Carte* c = partie.getJoueurActuel().getMain().getCartes().at(indexCarte);
+                    return new ChoixEffet(c,choix);
+                }
+            }
+
+            return new ChoixEffet(nullptr,choix);
         }
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
-                if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
+                std::cout << "Index de la carte à défausser: " << indexCarte << std::endl;
+                if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
                     return new ChoixEffet(nullptr,0);
                 }
-                Carte* c = partie.getJoueurActuel().getDefausse().getCartes().at(indexCarte);
+                Carte* c = partie.getJoueurActuel().getMain().getCartes().at(indexCarte);
                 return new ChoixEffet(c,choix);
             }
             return new ChoixEffet(nullptr,choix);
@@ -730,6 +761,7 @@ void GameController::afficherMain() {
 
 void GameController::afficherMarche() {
     Marche* marche = partie->getMarche();
+    std::cout << "marche recupéré dans game controller" << std::endl;
     view->afficherMarche(*marche);
 }
 
@@ -821,7 +853,7 @@ Joueur* GameController::getJoueurParIndex(int index){
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {
     if (index < 0 || index >= max) {
-        std::string message = "Index de " + type + " invalide. Doit être entre 0 et " + std::to_string(max) + ".";
+        std::string message = "Index de " + type + " invalide. Doit être entre 0 et " + std::to_string(max-1) + ".";
         view->afficherErreur(message);
         return false;
     }

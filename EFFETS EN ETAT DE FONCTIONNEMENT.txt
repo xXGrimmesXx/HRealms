@@ -1,0 +1,38 @@
+// Effets basiques
+      AJOUT_OR,		XXXXX
+      AJOUT_COMBAT, 	XXXXX
+      AJOUT_VIE,	XXXXX
+
+      // Effets cartes
+      PIOCHER,		XXXXX
+      DEFAUSSER,	XXXXX
+      SACRIFIER,	XXXXX
+
+      // EFfets champions
+      ASSOMMER_CHAMPION,XXXXXX
+      PREPARE_CHAMPION, XXXXX
+
+      // Effets "or"
+      COMBAT_OU_VIE,    XXXXX
+      OR_OU_COMBAT,	XXXXX
+
+      // Effets "per"
+      COMBAT_PAR_CHAMPION, XXXXXX
+      COMBAT_PAR_GARDE,  XXXXX
+      COMBAT_PAR_ALLIE,	XXXXX
+      VIE_PAR_CHAMPION,	 XXXX
+
+      // Effets "or" et "per"
+      OR_OU_VIE_PAR_CHAMPION, XXXXX
+
+      // Effets "defausse au dessus du deck"
+      DEFAUSSE_AU_DESSUS_DU_DECK,  XXXXX
+      CHAMPION_DEFAUSSE_AU_DESSUS_DECK, XXXX
+
+      // Effets "prochain achat"
+      PROCHAIN_ACHAT_ACTION_DESSUS_DECK, XXXX
+      PROCHAIN_ACHAT_DANS_MAIN, XXXX
+
+      // Effets "si oui"
+      SACRIFIER_SIOUI_AJOUT_COMBAT, XXXXX a tester
+      PIOCHE_SIOUI_DEFAUSSE, ELVEN GIFT
