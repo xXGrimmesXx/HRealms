@@ -17,12 +17,12 @@ public:
 
     // Getters
     Carte* getCarte(int idx) const;
-    const std::vector<Carte*>& getCartes() const { return cartes; }
+    const std::vector<Carte*> getCartes() const { return cartes; }
     int getTaille() const { return cartes.size(); }
 
     // Méthodes
     void ajouter(Carte* c);
-    void defausser(int idx);
+    void defausser(Carte* c);
     void viderMain(Joueur* j);
     
     bool contientCarteDeFaction(Faction f);

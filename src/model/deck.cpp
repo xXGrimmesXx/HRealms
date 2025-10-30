@@ -41,8 +41,8 @@ void Deck::ajouterDessus(Carte* c){
 bool Deck::estVide() const{
     return cartes.empty();
 }
-void Deck::rechargerDepuis(Pile& defausse){
-    for (auto c : defausse.getCartes()){
+void Deck::rechargerDepuis(Pile* defausse){
+    for (auto c : defausse->getCartes()){
         c->setEstJouee(false);
         cartes.push_front(c);
     }

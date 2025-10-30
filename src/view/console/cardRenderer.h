@@ -28,13 +28,13 @@ public:
     static std::vector<std::string> renderCard(const Carte* carte, int index = -1);
     static std::vector<std::string> renderEmptySlot(int index);
     static void printCardsRow(const std::vector<std::vector<std::string>>& cards);
-    static void printCards(const std::vector<Carte*>& cartes, const int cardsPerRow = 5);
+    static void printCards(const std::vector<Carte*> cartes, const int cardsPerRow = 5);
     
 private:
     static std::string getFactionColor(Faction faction);
     static std::string getTypeSymbol(const Carte* carte);
     static std::vector<std::string> truncateText(const std::string& text, int maxLength);
     static std::string centerText(const std::string& text, int width);
-    static std::string formatEffect(const Effet& effet);
+    static std::string formatEffect(const Effet effet);
     static std::string getFactionSymbol(Faction faction);
 };

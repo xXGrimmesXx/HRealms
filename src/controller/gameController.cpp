@@ -93,7 +93,7 @@ void GameController::jouerTour() {
 }
 
 void GameController::gererActionJoueur() {
-    int choix = view->demanderChoixAction(*partie);
+    int choix = view->demanderChoixAction(partie.get());
     
     switch (choix) {
         case 1: // Jouer une carte
@@ -169,23 +169,25 @@ void GameController::gererActionJoueur() {
 }
 
 bool GameController::jouerCarte() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
+    Joueur* joueurActuel = partie->getJoueurActuel();
     
     // Demander quelle carte jouer
     int index = view->demanderIndexCarte();
 
-    if (!validerIndex(index,joueurActuel.getMain().getTaille(), "carte")) {
+    if (!validerIndex(index,joueurActuel->getMain()->getTaille(), "carte")) {
         return false;
     }
-    std::cout << "Index de la carte à jouer: " << index << std::endl;
-    Carte* c = joueurActuel.getMain().getCarte(index);
-    std::cout << "Carte à jouer: " << c->getNom() << std::endl;
-    std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
-    std::vector<ChoixEffet*> ciblesAllies = choisirCible(c,c->getEffetsAllie());
 
+    Carte* c = joueurActuel->getMain()->getCarte(index);
+
+    std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
+    std::vector<ChoixEffet*> ciblesAllies;
+    if (joueurActuel->possedeAllie(c)) {
+        ciblesAllies = choisirCible(c,c->getEffetsAllie());
+    }
     // Essayer de jouer la carte
     try {
-        bool succes = joueurActuel.jouerCarte(index, *partie, cibles, ciblesAllies);
+        bool succes = joueurActuel->jouerCarte(c, partie.get(), cibles, ciblesAllies);
         if (succes) {
             std::string message = "Carte jouée avec succès !";
             view->afficherMessage(message);
@@ -204,22 +206,22 @@ bool GameController::jouerCarte() {
 }
 
 bool GameController::mobiliserChampion() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
+    Joueur* joueurActuel = partie->getJoueurActuel();
     
     // Demander quelle carte jouer
     std::vector<int> index = view->demanderIndexChampion(joueurActuel);
 
     for (int ind : index) {
-        if (!validerIndex(ind,joueurActuel.getChampions().size(), "champion")) {
+        if (!validerIndex(ind,joueurActuel->getChampions().size(), "champion")) {
             return false;
         }
-        Champion* c = joueurActuel.getChampions().at(ind);
+        Champion* c = joueurActuel->getChampions().at(ind);
         std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
         std::cout << "Cibles choisies: " << cibles.size() << std::endl;
         // Essayer de jouer la carte
         try {
-            bool succes = joueurActuel.mobiliserChampion(ind, *partie, cibles);
-            std::cout << "champion mobilisé dans le joueur " << joueurActuel.getNom() << std::endl;
+            bool succes = joueurActuel->mobiliserChampion(ind, partie.get(), cibles);
+            std::cout << "champion mobilisé dans le joueur " << joueurActuel->getNom() << std::endl;
             if (succes) {
                 std::string message = "Champion mobilisé avec succès !";
                 view->afficherMessage(message);
@@ -253,18 +255,16 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
     TypeEffet tE = effet.getTypeEffet();
     switch (tE) {
         case TypeEffet::AJOUT_OR:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::AJOUT_COMBAT:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::AJOUT_VIE:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::PIOCHER:
-            // Chelou
-            std::cout << "Demande de choix de cible pour l'effet PIOCHER." << std::endl;
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::DEFAUSSER:{
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
@@ -272,22 +272,22 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
             }
-            view->afficherMain(*j);
+            view->afficherMain(j);
             int indexCarte = view->demanderIndexCarte();
-            Carte* c = j->getMain().getCarte(indexCarte);
+            Carte* c = j->getMain()->getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
 
         case TypeEffet::SACRIFIER:{
-            Joueur* j = &partie.getJoueurActuel();
+            Joueur* j = partie.getJoueurActuel();
 
-            int indexCarte =-1;
-            
-            while (!validerIndex(indexCarte,j->getMain().getTaille(),"carte de la main")){
+            int indexCarte = view->demanderIndexCarte();
+
+            while (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main")){
                 indexCarte = view->demanderIndexCarte();
             }
 
-            Carte* c = j->getMain().getCarte(indexCarte);
+            Carte* c = j->getMain()->getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
 
@@ -311,7 +311,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         }
 
         case TypeEffet::PREPARE_CHAMPION:{
-            Joueur* j = &partie.getJoueurActuel();
+            Joueur* j = partie.getJoueurActuel();
             view->afficherChampions(j->getChampions());
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
@@ -326,43 +326,43 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
 
         case TypeEffet::COMBAT_OU_VIE:{
             bool choix = view->demanderChoix(effet);
-            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+            return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
 
         case TypeEffet::OR_OU_COMBAT: {
             bool choix = view->demanderChoix(effet);
-            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+            return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
 
         case TypeEffet::COMBAT_PAR_CHAMPION:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::COMBAT_PAR_GARDE:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::COMBAT_PAR_ALLIE:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::VIE_PAR_CHAMPION:
-            return new ChoixEffet(&partie.getJoueurActuel(),0);
+            return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::OR_OU_VIE_PAR_CHAMPION:{
             bool choix = view->demanderChoix(effet);
-            return new ChoixEffet(&partie.getJoueurActuel(),choix);
+            return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:{
             view ->afficherDefausse(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte();
-            if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
+            if (!validerIndex(indexCarte,partie.getJoueurActuel()->getDefausse()->getTaille(),"carte de la défausse")){
                 return new ChoixEffet(nullptr,0);
             }
-            Carte* c = partie.getJoueurActuel().getDefausse().getCartes().at(indexCarte);
+            Carte* c = partie.getJoueurActuel()->getDefausse()->getCartes().at(indexCarte);
             return new ChoixEffet(c,0);
         }
 
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
         {
-            std::vector<Champion*> defausseChampions = partie.getJoueurActuel().getDefausseChampions();
+            std::vector<Champion*> defausseChampions = partie.getJoueurActuel()->getDefausseChampions();
             if (defausseChampions.empty()) {
                 return new ChoixEffet(nullptr, 0);
             }
@@ -375,20 +375,20 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(c, 0);
         }
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
-            return new ChoixEffet(&partie.getJoueurActuel(), 0);
+            return new ChoixEffet(partie.getJoueurActuel(), 0);
 
         case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN:
-            return new ChoixEffet(&partie.getJoueurActuel(), 0);
+            return new ChoixEffet(partie.getJoueurActuel(), 0);
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:{
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte();
-                if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
+                if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main")){
                     return new ChoixEffet(nullptr,0);
                 }
                 else{
-                    Carte* c = partie.getJoueurActuel().getMain().getCartes().at(indexCarte);
+                    Carte* c = partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte);
                     return new ChoixEffet(c,choix);
                 }
             }
@@ -396,17 +396,25 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(nullptr,choix);
         }
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
-            bool choix = view->demanderChoix(effet);
-            if (choix == true){
-                int indexCarte = view->demanderIndexCarte();
-                std::cout << "Index de la carte à défausser: " << indexCarte << std::endl;
-                if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
-                    return new ChoixEffet(nullptr,0);
+            std::vector<Carte*>* cartesADefausser = new std::vector<Carte*>();
+            for(int i=0; i<effet.getMontant1(); i++){
+                bool choix = view->demanderChoix(effet);
+                if (choix == true){
+                    int indexCarte = view->demanderIndexCarte();
+                    std::cout << "Index de la carte à défausser: " << indexCarte << std::endl;
+                    if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main")){
+                        cartesADefausser->push_back(nullptr);
+                    }
+                    Carte* c = partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte);
+                    cartesADefausser->push_back(c);
+
                 }
-                Carte* c = partie.getJoueurActuel().getMain().getCartes().at(indexCarte);
-                return new ChoixEffet(c,choix);
+                else {
+                    cartesADefausser->push_back(nullptr);
+                    return new ChoixEffet(cartesADefausser,false);
+                }
             }
-            return new ChoixEffet(nullptr,choix);
+            return new ChoixEffet(cartesADefausser,false);
         }
     }
     return nullptr;
@@ -425,7 +433,7 @@ bool GameController::acheterCarte() {
     
     // Essayer d'acheter la carte
     try {
-        bool succes = partie->getJoueurActuel().acheterDepuisMarche(slot, *partie);
+        bool succes = partie->getJoueurActuel()->acheterDepuisMarche(slot, partie.get());
         if (succes) {
             std::string message = "Carte achetée avec succès !";
             view->afficherMessage(message);
@@ -439,10 +447,10 @@ bool GameController::acheterCarte() {
 }
 
 bool GameController::acheterGemmeDeFeu() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
-    
-    bool succes = partie->getGemmeDeFeu().acheter(joueurActuel, *partie);
-    
+    Joueur* joueurActuel = partie.get()->getJoueurActuel();
+
+    bool succes = partie->getGemmeDeFeu()->acheter(joueurActuel, partie.get());
+
     if (succes) {
         std::string message = "Gemme de Feu achetée avec succès !";
         view->afficherMessage(message);
@@ -452,7 +460,7 @@ bool GameController::acheterGemmeDeFeu() {
 }
 
 bool GameController::attaquerJoueur() {
-    std::vector<Joueur>& joueurs = partie->getJoueurs();
+    std::vector<Joueur*> joueurs = partie.get()->getJoueurs();
     int idxActuel = partie->getIdxJoueurActuel();
 
     // Filtrer les adversaires
@@ -467,12 +475,12 @@ bool GameController::attaquerJoueur() {
     std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
     std::cout << "Adversaires disponibles :" << std::endl;
     for (int i : indicesAdversaires) {
-        Joueur& adv = joueurs[i];
-        std::cout << "[" << i << "] " << adv.getNom() << " (" << adv.getPv() << " ❤️)" << std::endl;
+        Joueur* adv = joueurs[i];
+        std::cout << "[" << i << "] " << adv->getNom() << " (" << adv->getPv() << " ❤️)" << std::endl;
 
         // Afficher les champions de l'adversaire
-        if (!adv.getChampions().empty()) {
-            view->afficherChampions(adv.getChampions());
+        if (!adv->getChampions().empty()) {
+            view->afficherChampions(adv->getChampions());
         }
         std::cout << "-------------------------------------------------------------" << std::endl;
     }
@@ -492,19 +500,19 @@ bool GameController::attaquerJoueur() {
     }
     
 
-    Joueur& cible = partie->getJoueurs().at(index);
+    Joueur* cible = partie->getJoueurs().at(index);
     int degatsRestants = partie->getTourCourant()->getDegats();
 
     // Afficher état cible
     std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
-    std::cout << "🎯 Cible : " << cible.getNom() << " (" << cible.getPv() << " ❤️)" << std::endl;
+    std::cout << "🎯 Cible : " << cible->getNom() << " (" << cible->getPv() << " ❤️)" << std::endl;
     std::cout << "⚔️  Vos dégâts disponibles : " << degatsRestants << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
 
     // Si le joueur n'a pas assez de dégâts pour tuer au moins un garde, on bloque l'action
-    if (cible.aGarde()) {
+    if (cible->aGarde()) {
         bool possible = false;
-        for (auto* garde : cible.getGardes()) {
+        for (auto* garde : cible->getGardes()) {
             if (degatsRestants >= garde->getVie()) {
                 possible = true;
                 break;
@@ -520,8 +528,8 @@ bool GameController::attaquerJoueur() {
     try {
         
         // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
-        while (cible.aGarde() && degatsRestants > 0){
-            std::string message = joueurs.at(index).getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
+        while (cible->aGarde() && degatsRestants > 0){
+            std::string message = joueurs.at(index)->getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
             view->afficherMessage(message);
 
             std::vector<int> indexGarde = view->demanderIndexGarde(cible);
@@ -534,11 +542,11 @@ bool GameController::attaquerJoueur() {
 
             int ind = indexGarde[0];
 
-            if (!validerIndex(ind, cible.getGardes().size(), "garde")) {
+            if (!validerIndex(ind, cible->getGardes().size(), "garde")) {
                 continue;
             }
 
-            Champion* garde = cible.getGardes().at(ind);
+            Champion* garde = cible->getGardes().at(ind);
 
             if (degatsRestants < garde->getVie()) {
                 std::string err = "❌ Pas assez de dégâts pour ce garde (" 
@@ -554,18 +562,18 @@ bool GameController::attaquerJoueur() {
             std::cout << "⚔️ " << garde->getVie() << " dégâts → " << garde->getNom() << std::endl;
             std::cout << "💀 " << garde->getNom() << " éliminé !" << std::endl;
             
-            cible.assomerChampion(garde);
+            cible->assomerChampion(garde);
 
             // Réafficher les gardes restants
-            if (cible.aGarde()) {
+            if (cible->aGarde()) {
                 std::cout << "\n🛡️ Gardes restants :" << std::endl;
-                view->afficherChampions(cible.getGardes());
+                view->afficherChampions(cible->getGardes());
                 std::cout << std::endl;
             }
         }
 
         // 2 : Attaquer les autres champions si le joueur le souhaite
-        if (degatsRestants > 0 && !cible.getChampions().empty()) {
+        if (degatsRestants > 0 && !cible->getChampions().empty()) {
             std::string choix = "Attaquer un champion (c) ou le joueur (j) ?";
             view->afficherMessage(choix);
             
@@ -575,7 +583,7 @@ bool GameController::attaquerJoueur() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             
             if (reponse == 'c' || reponse == 'C') {
-                while (degatsRestants > 0 && !cible.getChampions().empty()) {
+                while (degatsRestants > 0 && !cible->getChampions().empty()) {
                     
                     std::vector<int> indexChamp = view->demanderIndexChampion(cible);
                     
@@ -585,11 +593,11 @@ bool GameController::attaquerJoueur() {
                     
                     int ind = indexChamp[0];
                     
-                    if (!validerIndex(ind, cible.getChampions().size(), "champion")) {
+                    if (!validerIndex(ind, cible->getChampions().size(), "champion")) {
                         break;
                     }
                     
-                    Champion* champ = cible.getChampions().at(ind);
+                    Champion* champ = cible->getChampions().at(ind);
                     
                     if (degatsRestants < champ->getVie()) {
                         std::string err = "❌ Pas assez de dégâts pour ce champion (" 
@@ -611,11 +619,11 @@ bool GameController::attaquerJoueur() {
                     
                     std::cout << "⚔️ " << champ->getVie() << " dégâts → " << champ->getNom() << std::endl;
                     std::cout << "💀 " << champ->getNom() << " éliminé !" << std::endl;
-                    
-                    cible.assomerChampion(champ);
-                    
+
+                    cible->assomerChampion(champ);
+
                     // Demander si continuer
-                    if (degatsRestants > 0 && !cible.getChampions().empty()) {
+                    if (degatsRestants > 0 && !cible->getChampions().empty()) {
                         std::cout << "Reste " << degatsRestants << " dégâts. Attaquer un autre champion ? (o/n): ";
                         char rep;
                         std::cin >> rep;
@@ -628,10 +636,10 @@ bool GameController::attaquerJoueur() {
         }
         // 3. Dégâts restants au joueur
         if (degatsRestants > 0) {
-            bool succes = cible.prendreDegats(degatsRestants);
+            bool succes = cible->prendreDegats(degatsRestants);
             partie->getTourCourant()->utiliserDegats(degatsRestants);
             
-            std::string message = "💔 " + cible.getNom() + " perd " 
+            std::string message = "💔 " + cible->getNom() + " perd " 
                                 + std::to_string(degatsRestants) + " PV !";
             view->afficherMessage(message);
             return succes;
@@ -647,9 +655,9 @@ bool GameController::attaquerJoueur() {
 }
 
 bool GameController::consulterDefausse() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
-    
-    if (joueurActuel.getDefausse().getTaille() == 0) {
+    Joueur* joueurActuel = partie->getJoueurActuel();
+
+    if (joueurActuel->getDefausse()->getTaille() == 0) {
         std::string message = "Votre défausse est vide.";
         view->afficherMessage(message);
         return false;
@@ -662,29 +670,29 @@ bool GameController::consulterDefausse() {
 
 bool GameController::consulterPileSacrifice() {
 
-    if (partie->getCartesSacrifie().getTaille() == 0) {
+    if (partie->getCartesSacrifie()->getTaille() == 0) {
         std::string message = "Votre pile de sacrifice est vide.";
         view->afficherMessage(message);
         return false;
     }
 
-    view->afficherPileSacrifice(*partie);
+    view->afficherPileSacrifice(partie.get());
     view->attendreEntree();
     return true;
 }
 
 bool GameController::utiliserEffetSacrifice() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
+    Joueur* joueurActuel = partie->getJoueurActuel();
     std::vector<Carte*> cartesEffetSacrifice;
     // Cartes de la main
-    for (int i = 0; i < joueurActuel.getMain().getTaille(); ++i) {
-        Carte* c = joueurActuel.getMain().getCarte(i);
+    for (int i = 0; i < joueurActuel->getMain()->getTaille(); ++i) {
+        Carte* c = joueurActuel->getMain()->getCarte(i);
         if (!c->getEffetsSacrifice().empty()) {
             cartesEffetSacrifice.push_back(c);
         }
     }
     // Champions
-    for (Champion* champ : joueurActuel.getChampions()) {
+    for (Champion* champ : joueurActuel->getChampions()) {
         if (champ && !champ->getEffetsSacrifice().empty()) {
             cartesEffetSacrifice.push_back(static_cast<Carte*>(champ));
         }
@@ -700,15 +708,15 @@ bool GameController::utiliserEffetSacrifice() {
             return false;
         }
         Carte* carteChoisie = cartesEffetSacrifice[indexCarte];
-        carteChoisie->sacrifier(joueurActuel, *partie);
+        carteChoisie->sacrifier(joueurActuel, partie.get());
         std::string message = "Vous avez sacrifié la carte: " + carteChoisie->getNom();
         view->afficherMessage(message);
         return true;
 }
 
 void GameController::finirTour() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
-    if(joueurActuel.getNombreCartesJouables() > 0){
+    Joueur* joueurActuel = partie->getJoueurActuel();
+    if(joueurActuel->getNombreCartesJouables() > 0){
         std::string message = "Vous avez des cartes non jouées ou des ressources non utilisées. Êtes-vous sûr de vouloir finir votre tour ?";
         if (!view->confirmerAction(message)) {
             return;
@@ -733,7 +741,7 @@ void GameController::finirTour() {
 }
 
 void GameController::toggleGodMode() {
-    if (!partie->getGodMode().actif) {
+    if (!partie->getGodMode()->actif) {
         // GodMode inactif → demander mot de passe
         std::string motDePasse = view->demanderMotDePasseGodMode();
         
@@ -770,15 +778,15 @@ void GameController::executerActionGodMode(int choix) {
             break;
         case 2: // Acheter depuis deck
             {
-                Deck& deckMarche = partie->getMarche()->getDeckMarche();
-                if (deckMarche.getTaille() == 0) {
+                Deck* deckMarche = partie->getMarche()->getDeckMarche();
+                if (deckMarche->getTaille() == 0) {
                     std::string message = "Le deck du marché est vide.";
                     view->afficherErreur(message);
                     break;
                 }
                 
                 int idx = view->demanderIndexDeck(deckMarche);
-                if (idx >= 0 && idx < deckMarche.getTaille()) {
+                if (idx >= 0 && idx < deckMarche->getTaille()) {
                     partie->GOD_acheterDepuisDeckMarche(idx, partie->getJoueurActuel());
                     std::string message = "Carte achetée depuis le deck.";
                     view->afficherMessage(message);
@@ -800,45 +808,45 @@ void GameController::executerActionGodMode(int choix) {
 
 void GameController::afficherEtatJeu() {
     //view->viderEcran();
-    view->afficherPartie(*partie);
+    view->afficherPartie(partie.get());
     view->afficherScores(partie->getJoueurs());
     afficherMarche();
     afficherPileGemmeDeFeu();
     afficherMain();
-    if(!partie->getJoueurActuel().getChampions().empty()){
+    if(!partie->getJoueurActuel()->getChampions().empty()){
         afficherChampions();
     }
     
 }
 
 void GameController::afficherMain() {
-    Joueur& joueurActuel = partie->getJoueurActuel();
+    Joueur* joueurActuel = partie->getJoueurActuel();
     view->afficherMain(joueurActuel);
 }
 
 void GameController::afficherMarche() {
     Marche* marche = partie->getMarche();
     std::cout << "marche recupéré dans game controller" << std::endl;
-    view->afficherMarche(*marche);
+    view->afficherMarche(marche);
 }
 
 void GameController::afficherPileGemmeDeFeu() {
-    const std::vector<Carte*>& pileGemmes = partie->getGemmeDeFeu().getPile().getCartes();
+    std::vector<Carte*> pileGemmes = partie->getGemmeDeFeu()->getPile()->getCartes();
     view->afficherPileGemmeDeFeu(pileGemmes);
 }
 
 void GameController::afficherChampions() {
-    const Joueur& joueurActuel = partie->getJoueurActuel();
-    view->afficherChampions(joueurActuel.getChampions());
+    Joueur* joueurActuel = partie->getJoueurActuel();
+    view->afficherChampions(joueurActuel->getChampions());
 }
 
 void GameController::afficherMainAdversaire() {
-    std::vector<Joueur>& joueurs = partie->getJoueurs();
+    std::vector<Joueur*> joueurs = partie->getJoueurs();
     
     // Filtrer pour ne montrer que les adversaires
-    std::vector<Joueur> adversaires;
+    std::vector<Joueur*> adversaires;
     for (auto& j : joueurs) {
-        if (j.getNom() != partie->getJoueurActuel().getNom()) {
+        if (j->getNom() != partie->getJoueurActuel()->getNom()) {
             adversaires.push_back(j);
         }
     }
@@ -855,12 +863,12 @@ void GameController::afficherMainAdversaire() {
         }
         
         // Trouver le vrai joueur dans la liste complète
-        for (auto& j : joueurs) {
-            if (j.getNom() == adversaires.at(index).getNom()) {
+        for (auto* j : joueurs) {
+            if (j->getNom() == adversaires.at(index)->getNom()) {
                 view->afficherMain(j);
 
-                if (!(j.getChampions().empty())) {
-                    view->afficherChampions(j.getChampions());
+                if (!(j->getChampions().empty())) {
+                    view->afficherChampions(j->getChampions());
                 }
                 
                 view->attendreEntree();
@@ -870,10 +878,10 @@ void GameController::afficherMainAdversaire() {
     }
     // S'il n'y a qu'un seul adversaire
     else{
-        Joueur& j = adversaires.at(0);
+        Joueur* j = adversaires.at(0);
         view->afficherMain(j);
-        if (!(j.getChampions().empty())) {
-                    view->afficherChampions(j.getChampions());
+        if (!(j->getChampions().empty())) {
+            view->afficherChampions(j->getChampions());
         }
         view->attendreEntree();
     }
@@ -883,7 +891,7 @@ void GameController::finirPartie() {
     if (partie && partie->estTerminee()) {
         Joueur* gagnant = partie->getGagnant();
         if(gagnant!=nullptr){
-            view->afficherGagnant(*gagnant);
+            view->afficherGagnant(gagnant);
             std::string message = "Merci d'avoir joué à Hero Realms !";
             view->afficherMessage(message);
             jeuEnCours = false;
@@ -901,11 +909,11 @@ void GameController::finirPartie() {
 }
 
 Joueur* GameController::getJoueurParIndex(int index){
-    std::vector<Joueur>& joueurs = partie->getJoueurs();
+    std::vector<Joueur*> joueurs = partie->getJoueurs();
     if (!validerIndex(index, joueurs.size(), "joueur")) {
         return nullptr;
     }
-    return &joueurs.at(index);
+    return joueurs.at(index);
 }
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {

@@ -31,28 +31,27 @@ void Joueur::piocher(int n){
         }
     }
 }
-bool Joueur::jouerCarte(int idx,Partie &p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies){
-    if (idx < 0 || idx >= main.getTaille()) {
-        throw std::out_of_range("Index de carte invalide");
+bool Joueur::jouerCarte(Carte* c,Partie *p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies){
+    if (c == nullptr) {
+        throw std::invalid_argument("Carte invalide");
         return false;
     }
-    Carte* c = main.getCarte(idx);
-    if (c != nullptr) {
-        if (c->getEstJouee()) {
-            return false;
-        }
-        if (dynamic_cast<Champion*>(c)) {
-            champions.push_back(dynamic_cast<Champion*>(c));
-            main.defausser(idx); // Retirer de la main sans aller dans la défausse
-        }
-        c->lorsDeJeu(p,target,targetAllies,possedeAllie(*c));
-        c->setEstJouee(true);
-        
-        return true;
-    }
+    if (c->getEstJouee()) {
     return false;
+    }
+    if (dynamic_cast<Champion*>(c)) {
+        champions.push_back(dynamic_cast<Champion*>(c));
+        main.defausser(c); // Retirer de la main sans aller dans la défausse
+    }
+    c->jouerEffetPrimaires(p,target);
+    if (!targetAllies.empty()) {
+        c->jouerEffetsAllies(p,targetAllies);
+    }
+    c->setEstJouee(true);
+    
+    return true;
 }
-bool Joueur::mobiliserChampion(int idx,Partie &p,std::vector<ChoixEffet*> target){
+bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target){
     if (idx < 0 || idx >= (int)champions.size()) {
         throw std::out_of_range("Index de champion invalide");
         return false;
@@ -68,8 +67,8 @@ bool Joueur::mobiliserChampion(int idx,Partie &p,std::vector<ChoixEffet*> target
     return false;
 }
 
-bool Joueur::acheterDepuisMarche(int slot,Partie& p){
-    return p.getMarche()->acquerirDepuisLigne(slot,*this,p);
+bool Joueur::acheterDepuisMarche(int slot,Partie* p){
+    return p->getMarche()->acquerirDepuisLigne(slot,this,p);
 }
 
 void Joueur::finTour(){
@@ -91,11 +90,18 @@ void Joueur::soigner(int montant){
     pv+=montant;
 }
 
-void Joueur::defausser(int index){
-    if (index < 0 || index >= (int)main.getCartes().size()) {
-        throw std::out_of_range("Index de carte invalide");
+void Joueur::defausser(Carte * c){
+    if (c == nullptr) {
+        throw std::invalid_argument("Carte invalide");
     }
-    main.defausser(index);
+    main.defausser(c);
+}
+void Joueur::sacrifier(Carte* c,Partie* p){
+    if (c == nullptr) {
+        throw std::invalid_argument("Carte invalide");
+    }
+    main.sacrifier(c);
+    p->getCartesSacrifie()->ajouter(c);
 }
 void Joueur::assomerChampions(){
     for(auto c : champions){
@@ -109,6 +115,7 @@ void Joueur::assomerChampion(Champion* c){
         if (champions.at(i)==c){
             defausse.ajouter(c);
             champions.erase(std::next(champions.begin(),i));
+            std::cout << champions.size() << " champions restants pour le joueur joueur.cpp " << getNom() << std::endl;
         }
     }
 }
@@ -149,14 +156,14 @@ bool Joueur::prendreDegats(int m){
     
 }
 
-bool Joueur::possedeAllie(Carte& carte) {
+bool Joueur::possedeAllie(Carte* carte) {
     for (auto c:main.getCartes()) {
-        if (c->getFaction() == carte.getFaction() && c->getId() != carte.getId()) {
+        if (c->getFaction() == carte->getFaction() && c->getId() != carte->getId()) {
             return true;
         }
     }
     for (auto c:champions) {
-        if (c->getFaction() == carte.getFaction() && c->getId() != carte.getId()) {
+        if (c->getFaction() == carte->getFaction() && c->getId() != carte->getId()) {
             return true;
         }
     }

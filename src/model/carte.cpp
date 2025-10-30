@@ -13,23 +13,25 @@ Carte::Carte( const std::string nom, int cout, Faction f) : nom(nom), cout(cout)
 // Méthodes
 
 
-void Carte::sacrifier(Joueur& j, Partie& p) {
+void Carte::sacrifier(Joueur* j, Partie* p) {
     // Effet reste à définir
     for (const auto& effet : effetsSacrifice) {
-        effet.appliquer(this, &j, p, false);
+        effet.appliquer(this, j, p, false);
     }
-    j.getMain().sacrifier(this);
-    p.getCartesSacrifie().ajouter(this);
+    j->getMain()->sacrifier(this);
+    p->getCartesSacrifie()->ajouter(this);
 }
 
-void Carte::lorsDeJeu(Partie& p, std::vector<ChoixEffet*> target, std::vector<ChoixEffet*> allies,bool declencherAllie) {
+void Carte::jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target) {
     for (size_t i = 0; i < effetsPrimaire.size(); ++i) {
         effetsPrimaire.at(i).appliquer(this, target.at(i)->getCible(), p, target.at(i)->getChoix());
     }
-    if (declencherAllie) {
-        for (size_t i = 0; i < effetsAllie.size(); ++i) {
-            effetsAllie.at(i).appliquer(this, allies.at(i)->getCible(), p, allies.at(i)->getChoix());
-        }
+}
+void Carte::jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies){
+    if (allies.size() != effetsAllie.size()) {
+        throw std::invalid_argument("Le nombre de cibles alliées ne correspond pas au nombre d'effets alliés.");
     }
-    setEstJouee(true);
+    for (size_t i = 0; i < effetsAllie.size(); ++i) {
+        effetsAllie.at(i).appliquer(this, allies.at(i)->getCible(), p, allies.at(i)->getChoix());
+    }
 }

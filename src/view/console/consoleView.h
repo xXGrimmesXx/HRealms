@@ -25,19 +25,19 @@ public:
     // Implémentation des méthodes d'affichage
         void afficherMessage(std::string& message)override;
         void afficherErreur(std::string& erreur)override;
-        void afficherPartie(Partie& partie)override;
-        void afficherJoueur(Joueur& joueur)override;
-        void afficherMain(Joueur& joueur)override;
-        void afficherMarche(Marche& marche)override;
-        void afficherScores(std::vector<Joueur>& joueurs)override;
-        void afficherGagnant(Joueur& gagnant)override;
-        void afficherPileGemmeDeFeu(const std::vector<Carte*>& pile)override;
-        void afficherChampions(const std::vector<Champion*>& champions)override;
-        void afficherDefausse(const Joueur& joueur)override;
-        void afficherDeckMarche(Deck& deckMarche)override;
-        void afficherDefausseChampion(const Joueur& joueur)override;
-        void afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes) override;
-        void afficherPileSacrifice(const Partie& partie) override;
+        void afficherPartie(Partie* partie)override;
+        void afficherJoueur(Joueur* joueur)override;
+        void afficherMain(Joueur* joueur)override;
+        void afficherMarche(Marche* marche)override;
+        void afficherScores(std::vector<Joueur*> joueurs)override;
+        void afficherGagnant(Joueur* gagnant)override;
+        void afficherPileGemmeDeFeu(std::vector<Carte*> pile)override;
+        void afficherChampions(std::vector<Champion*> champions)override;
+        void afficherDefausse(Joueur* joueur)override;
+        void afficherDeckMarche(Deck* deckMarche)override;
+        void afficherDefausseChampion(Joueur* joueur)override;
+        void afficherCartesEffetSacrifice(std::vector<Carte*> cartes) override;
+        void afficherPileSacrifice(Partie* partie) override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
@@ -46,19 +46,19 @@ public:
     // Implémentation des méthodes de saisie
     int demanderNombreJoueurs() override;
     std::string demanderNomJoueur(int numero) override;
-    int demanderChoixAction(Partie& partie) override;
+    int demanderChoixAction(Partie* partie) override;
     int demanderIndexCarte() override;
-    int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
-    int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) override;
-    std::vector<int> demanderIndexChampion(Joueur& joueur) override;
-    std::vector<int> demanderIndexGarde(Joueur& joueur)override;
+    int demanderIndexJoueur(std::vector<Joueur*> joueurs) override;
+    int demanderIndexJoueur(std::vector<Joueur*> joueurs, int joueurActuelIndex) override;
+    std::vector<int> demanderIndexChampion(Joueur* joueur) override;
+    std::vector<int> demanderIndexGarde(Joueur* joueur)override;
     int demanderIndexCarteEffetSacrifice() override;
     int demanderSlotMarche() override;
     bool confirmerAction(std::string& action) override;
     void attendreEntree() override;
     void viderEcran() override;
     int demanderChoixGodMode()override;
-    int demanderIndexDeck(Deck& deckMarche)override;
+    int demanderIndexDeck(Deck* deckMarche)override;
     std::string demanderMotDePasseGodMode()override;
     bool demanderChoix(Effet effet) override;
     

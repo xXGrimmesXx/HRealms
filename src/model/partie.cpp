@@ -10,23 +10,23 @@ Partie::Partie():joueurs(),marche(new Marche()),tour_courant(nullptr),nb_tour(0)
 void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     // Initialisation de la partie
     for (size_t i = 0; i < nomsJoueurs.size(); i++) {
-        Joueur j(nomsJoueurs.at(i));
+        Joueur* j = new Joueur(nomsJoueurs.at(i));
         joueurs.push_back(j);
     }
     marche->remplirLigne();
     nb_tour = 1;
     idx_joueur_actuel = 0;
-    tour_courant = new Tour(&joueurs[0]);
+    tour_courant = new Tour(joueurs[0]);
 }
 
 void Partie::commencerTour() {
-    Joueur& joueurActuel = joueurs[idx_joueur_actuel];
-    tour_courant = new Tour(&joueurActuel);
+    Joueur* joueurActuel = joueurs[idx_joueur_actuel];
+    tour_courant = new Tour(joueurActuel);
 }
 
 void Partie::finTour() {
-    Joueur& joueurActuel = joueurs[idx_joueur_actuel];
-    joueurActuel.finTour();
+    Joueur* joueurActuel = joueurs[idx_joueur_actuel];
+    joueurActuel->finTour();
     idx_joueur_actuel = (idx_joueur_actuel + 1) % joueurs.size();
     if (idx_joueur_actuel == 0) {
         nb_tour++;
@@ -36,7 +36,7 @@ void Partie::finTour() {
 
 bool Partie::estTerminee() const {
     for (const auto& j : joueurs) {
-        if (j.getPv() <= 0) {
+        if (j->getPv() <= 0) {
             return true;
         }
     }
@@ -48,17 +48,17 @@ void Partie::toggleGodMode() {
 }
 
 void Partie::GOD_mettreTousJoueurs1PV() {
-    for (auto& j : joueurs) j.setPv(1);
+    for (auto& j : joueurs) j->setPv(1);
 }
 
-void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur& j) {
+void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur* j) {
     marche->acquerirDepuisDeck(idx, j);
 }
 
 Joueur* Partie::getGagnant() {
     for (int i = 0; i < (int)joueurs.size(); ++i) {
-        if (joueurs[i].getPv() <= 0) {
-            return &joueurs[(i - 1) % joueurs.size()]; // Le joueur suivant gagne
+        if (joueurs[i]->getPv() <= 0) {
+            return joueurs[(i - 1) % joueurs.size()]; // Le joueur suivant gagne
         }
     }
     return nullptr;
@@ -67,7 +67,7 @@ Joueur* Partie::getGagnant() {
 std::string Partie::toString() const {
     std::string res = "Partie avec " + std::to_string(joueurs.size()) + " joueurs, tour " + std::to_string(nb_tour) + "\n";
     for (const auto& j : joueurs) {
-        res += j.toString() + "\n";
+        res += j->toString() + "\n";
     }
     return res;
 }
@@ -75,10 +75,10 @@ std::string Partie::toString() const {
 std::string Partie::toStringDetail() const {
     std::string res = "Partie avec " + std::to_string(joueurs.size()) + " joueurs, tour " + std::to_string(nb_tour) + "\n";
     for (auto j : joueurs) {
-        res += j.toString() + "\n";
-        res += "  Defausse: " + std::to_string(j.getDefausse().getTaille()) + " cartes\n";
-        res += "  Main: " + std::to_string(j.getMain().getTaille()) + " cartes\n";
-        res += "  Champions: " + std::to_string(j.getChampions().size()) + " champions\n";
+        res += j->toString() + "\n";
+        res += "  Defausse: " + std::to_string(j->getDefausse()->getTaille()) + " cartes\n";
+        res += "  Main: " + std::to_string(j->getMain()->getTaille()) + " cartes\n";
+        res += "  Champions: " + std::to_string(j->getChampions().size()) + " champions\n";
     }
     return res;
 }

@@ -30,20 +30,21 @@ public:
     Joueur(std::string nom="");
     ~Joueur() = default;
     void piocher(int n);
-    bool jouerCarte(int idx,Partie& p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
-    bool mobiliserChampion(int idx, Partie& p,std::vector<ChoixEffet*> target);
-    bool acheterDepuisMarche(int slot, Partie& p);
+    bool jouerCarte(Carte* c,Partie* p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
+    bool mobiliserChampion(int idx, Partie* p,std::vector<ChoixEffet*> target);
+    bool acheterDepuisMarche(int slot, Partie* p);
     void finTour();
     bool aGarde() const;
     void soigner(int montant);
-    void defausser(int n);
+    void defausser(Carte * c);
+    void sacrifier(Carte*c,Partie* p);
     void assomerChampions();
     void assomerChampion(Champion* c);
     void activerProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=true;}
+    void desactiverProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=false;}
     void activerProchainAchatDansMain(){prochainAchatDansMain=true;}
-    bool possedeAllie(Carte& carte);
-    void choisirCarteDefausseAjouterDessusDeck(int montant);
-    void choisirChampionDefausseAjouterDessusDeck(int montant);
+    void desactiverProchainAchatDansMain(){prochainAchatDansMain=false;}
+    bool possedeAllie(Carte* carte);
     void retirerCarteDefausseVersDessusDeck(int index);
     Carte* retirerCarteAvecEffetSacrifice(int globalIdx, bool& fromChampions);
 
@@ -53,12 +54,10 @@ public:
 
     // getters et setters
     std::string getNom() const { return nom; }
-    Main& getMain() { return main; }
-    Deck& getDeck() { return deck; }
-    Pile& getDefausse() { return defausse; }
-    const Pile& getDefausse() const { return defausse; }
-    std::vector<Champion*>& getChampions() { return champions; }
-    const std::vector<Champion*>& getChampions() const { return champions; }
+    Main* getMain() { return &main; }
+    Deck* getDeck() { return &deck; }
+    Pile* getDefausse() { return &defausse; }
+    std::vector<Champion*> getChampions() { return champions; }
     std::vector<Champion*> getGardes()const;
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }

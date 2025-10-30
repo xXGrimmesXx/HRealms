@@ -6,14 +6,14 @@
 GemmeDeFeu::GemmeDeFeu(): pile(BibliothequeCartes::creerPileGemmeDeFeu()) {
 }
 
-bool GemmeDeFeu::acheter(Joueur& joueur, Partie& partie) {
+bool GemmeDeFeu::acheter(Joueur* joueur, Partie* partie) {
     if (!estDisponible()) return false;
-    if (partie.getTourCourant()->getOr() < COUT) return false;
-    
+    if (partie->getTourCourant()->getOr() < COUT) return false;
+
     Carte* gemme = pile.prendreDessus();
     if (gemme) {
-        joueur.getDefausse().ajouter(gemme);
-        partie.getTourCourant()->utiliserOr(COUT);
+        joueur->getDefausse()->ajouter(gemme);
+        partie->getTourCourant()->utiliserOr(COUT);
         return true;
     }
     return false;

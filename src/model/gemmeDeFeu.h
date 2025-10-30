@@ -13,10 +13,10 @@ public:
     GemmeDeFeu();
     ~GemmeDeFeu() = default;
     
-    bool acheter(Joueur& joueur, Partie& partie);
+    bool acheter(Joueur* joueur, Partie* partie);
     bool estDisponible() const;
     int getNombreDisponible() const;
     int getCout() const { return COUT; }
     
-    const Pile& getPile() const { return pile; }
+    Pile* getPile() { return &pile; }
 };

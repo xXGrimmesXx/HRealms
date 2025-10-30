@@ -19,13 +19,13 @@ Effet::Effet(TypeEffet t, int m1,int m2, TypeCible c){
     cible = c;
 }
 
-void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) const {
+void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) const {
     switch (type) {
         case TypeEffet::AJOUT_OR :
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    partie.getTourCourant()->ajouterOr(montant1);
+                    partie->getTourCourant()->ajouterOr(montant1);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -39,7 +39,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
             if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
-                    partie.getTourCourant()->ajouterDegats(montant1);
+                    partie->getTourCourant()->ajouterDegats(montant1);
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
                 }
@@ -79,12 +79,12 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr) {
                     //on cherche le propriétaire de la carte à défausser
-                    for (auto& j : partie.getJoueurs()){
+                    for (auto j : partie->getJoueurs()){
                         //on cherche dans la main car si c'etait un champion c'est l'effet demobiliser
-                        for (int i=0;i<j.getMain().getTaille();i++){
-                            if (j.getMain().getCarte(i) == carteTgt){
+                        for (int i=0;i<j->getMain()->getTaille();i++){
+                            if (j->getMain()->getCarte(i) == carteTgt){
                                 //si on trouve la bonne carte on la défausse
-                                j.getMain().defausser(i);
+                                j->defausser(carteTgt);
                                 break;
                             }
                         }
@@ -101,16 +101,19 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 Champion* championTgt = static_cast<Champion*>(target);
                 if (championTgt != nullptr) {
                     //on cherche le champion dans tous les champions de tous les joueurs
-                    for (auto j : partie.getJoueurs()){
-                        for (auto champ : j.getChampions()){
-                            if (champ==championTgt){
+                    for (Joueur* j : partie->getJoueurs()){
+                        for (Champion* champ : j->getChampions()){
+                            if (champ == championTgt){
                                 //si on le trouve on l'assome
-                                j.assomerChampion(championTgt);
+                                j->assomerChampion(championTgt);
+                                break;
                             }
                         }
                     }
                 }
-                
+                for (Joueur* j : partie->getJoueurs()){
+                    std::cout << j->getChampions().size() <<" champions dans effet.cpp pour "<< j->getNom() << std::endl;
+                }
             }
             else{
                 // Invalid target type for this effect
@@ -123,11 +126,11 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr) {
                     //on cherche le propriétaire de la carte à sacrifier
-                    for (auto& j : partie.getJoueurs()){
+                    for (Joueur* j : partie->getJoueurs()){
                         //on cherche dans la main
-                        for (int i=0;i<j.getMain().getTaille();i++){
-                            if (j.getMain().getCarte(i) == carteTgt){
-                                carteTgt->sacrifier(j,partie);
+                        for (int i=0;i<j->getMain()->getTaille();i++){
+                            if (j->getMain()->getCarte(i) == carteTgt){
+                                j->sacrifier(carteTgt,partie);
                                 break;
                             }
                         }
@@ -148,7 +151,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                     if (choix) {
                         joueurTgt->soigner(montant2);
                     } else {
-                        partie.getTourCourant()->ajouterDegats(montant1);
+                        partie->getTourCourant()->ajouterDegats(montant1);
                     }
                 } else {
                     // le joueur est obligé d'appliquer cet effet
@@ -166,9 +169,9 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
                     if (choix) {
-                        partie.getTourCourant()->ajouterDegats(montant2);
+                        partie->getTourCourant()->ajouterDegats(montant2);
                     } else {
-                        partie.getTourCourant()->ajouterOr(montant1);                        
+                        partie->getTourCourant()->ajouterOr(montant1);
                     }
                 } else {
                     //le joueur est obligé d'appliquer cet effet
@@ -187,9 +190,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 if (joueurTgt != nullptr){
                     int nbChampions = joueurTgt->getChampions().size();
                     int nbChampionsMain = joueurTgt->getChampionsMain().size();
-                    std::cout << "Nombre de champions actifs : " << nbChampions << " Nombre de champions dans la main : " << nbChampionsMain << std::endl;
-                    std::cout << "Montant1 : " << montant1 << " total : " << montant1 * (nbChampions + nbChampionsMain) << std::endl;
-                    partie.getTourCourant()->ajouterDegats(montant1*(nbChampions + nbChampionsMain));
+                    partie->getTourCourant()->ajouterDegats(montant1*(nbChampions + nbChampionsMain));
                 }
                 else{
                     //le joueur est obligé d'appliquer cet effet
@@ -208,7 +209,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 if (joueurTgt != nullptr){
                     int nbGardes = joueurTgt->getGardes().size();
                     int nbGardesMain = joueurTgt->getGardesMain().size();
-                    partie.getTourCourant()->ajouterDegats(montant1*(nbGardes + nbGardesMain));
+                    partie->getTourCourant()->ajouterDegats(montant1*(nbGardes + nbGardesMain));
 
                 }
                 else{
@@ -233,13 +234,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                             nbAllie++;
                         }
                     }
-                    for (auto carte : joueurTgt->getMain().getCartes()){
+                    for (auto carte : joueurTgt->getMain()->getCartes()){
                         if (carte->getFaction() == allie){
                             nbAllie++;
                         }
                     }
 
-                    partie.getTourCourant()->ajouterDegats(nbAllie*montant1);
+                    partie->getTourCourant()->ajouterDegats(nbAllie*montant1);
 
                 }
                 else{
@@ -259,12 +260,9 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                     if (choix) {
                         int nbChampions = joueurTgt->getChampions().size();
                         int nbChampionsMain = joueurTgt->getChampionsMain().size();
-                        std::cout << "Nombre de champions pour le calcul de vie : " << nbChampions + nbChampionsMain << std::endl;
-                        std::cout << "Montant2 : " << montant2 << " total : " << montant2 * (nbChampions + nbChampionsMain) << std::endl;
                         joueurTgt->soigner(montant2 * (nbChampions + nbChampionsMain));
                     } else {
-                        std::cout << "Ajout d'or : " << montant1 << std::endl;
-                        partie.getTourCourant()->ajouterOr(montant1); 
+                        partie->getTourCourant()->ajouterOr(montant1);
                     }
                 } else {
                     throw std::invalid_argument("Target is not a valid Joueur pointer");
@@ -278,8 +276,6 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 if (joueurTgt != nullptr){
                     int nbChampions = joueurTgt->getChampions().size();
                     int nbChampionsMain = joueurTgt->getChampionsMain().size();
-                    std::cout << "Nombre de champions pour le calcul de vie : " << nbChampions + nbChampionsMain << std::endl;
-                    std::cout << "Montant2 : " << montant2 << " total : " << montant1 * (nbChampions + nbChampionsMain) << std::endl;
                     joueurTgt->soigner(montant1 * (nbChampions + nbChampionsMain));
                 }
                 else{
@@ -296,7 +292,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
             if (cible == TypeCible::CARTE){
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr){
-                    partie.getJoueurActuel().getDeck().ajouterDessus(carteTgt);
+                    partie->getJoueurActuel()->getDeck()->ajouterDessus(carteTgt);
                 }
                 else{
                     throw std::invalid_argument("Target is not a valid Carte pointer");
@@ -312,7 +308,7 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
             if (cible == TypeCible::CHAMPION){
                 Champion* championTgt = static_cast<Champion*>(target);
                 if (championTgt != nullptr){
-                    partie.getJoueurActuel().getDeck().ajouterDessus(championTgt);
+                    partie->getJoueurActuel()->getDeck()->ajouterDessus(championTgt);
                 }
                 else{
                     throw std::invalid_argument("Target is not a valid Champion pointer");
@@ -361,19 +357,19 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                 if (cible == TypeCible::CARTE) {
                     Carte* carteTgt = static_cast<Carte*>(target);
                     if (carteTgt != nullptr) {
-                        Joueur& joueurProprietaire = partie.getJoueurActuel();
+                        Joueur* joueurProprietaire = partie->getJoueurActuel();
                         bool carteDansMain = false;
                         // On vérifie si la carte à sacrifier est dans la main du joueur actuel
                         // Pour éviter un segfault
-                        for (int i = 0; i < joueurProprietaire.getMain().getTaille(); ++i) {
-                            if (joueurProprietaire.getMain().getCarte(i) == carteTgt) {
+                        for (int i = 0; i < joueurProprietaire->getMain()->getTaille(); ++i) {
+                            if (joueurProprietaire->getMain()->getCarte(i) == carteTgt) {
                                 carteDansMain = true;
                                 break;
                             }
                         }
                         if (carteDansMain) {
                             carteTgt->sacrifier(joueurProprietaire, partie);
-                            partie.getTourCourant()->ajouterDegats(montant1);
+                            partie->getTourCourant()->ajouterDegats(montant1);
                         } else {
                             std::cerr << "Erreur : la carte à sacrifier n'est pas dans la main du joueur actuel." << std::endl;
                         }
@@ -393,18 +389,13 @@ void Effet::appliquer(Carte* source, void* target, Partie& partie, bool choix) c
                         //si on applique l'effet c'est que le joueur veut bien piocher et a choisi sa carte à defausser
 
                         //le joueur qui applique l'effet est forcément le joueur actuel
-                        Joueur joueurProprietaire = partie.getJoueurActuel();
-                        joueurProprietaire.piocher(montant1);
-                        for (auto c : *carteTgt){
-                            int indexCarteDefausse=-1;
-                            //on cherche la carte dans la main du joueur
-                            for (int i=0;i<joueurProprietaire.getMain().getTaille();i++){
-                                if (joueurProprietaire.getMain().getCarte(i) == c){
-                                    indexCarteDefausse = i;
-                                    break;
-                                }
+                        Joueur* joueurProprietaire = partie->getJoueurActuel();
+                        for (size_t i=0; i<carteTgt->size(); i++){
+                            //on vérifie que la carte n'est pas un nullptr (au cas où le joueur ne veut pas défausser de carte)
+                            if (carteTgt->at(i)!=nullptr){
+                                joueurProprietaire->piocher(1);
+                                joueurProprietaire->defausser(carteTgt->at(i));
                             }
-                            joueurProprietaire.defausser(indexCarteDefausse);
                         }
                     }
                     //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas défausser de carte

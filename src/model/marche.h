@@ -17,10 +17,10 @@ private:
 public:
     Marche();
     void remplirLigne();
-    bool acquerirDepuisLigne(int slot, Joueur& j, Partie& partie);
-    bool acquerirDepuisDeck(int idx, Joueur& j);
+    bool acquerirDepuisLigne(int slot, Joueur* j, Partie* partie);
+    bool acquerirDepuisDeck(int idx, Joueur* j);
     void retournerGemmeFeuDansPile(Carte* g);
 
-    const std::vector<Carte*>& getLigne() const { return ligne; }
-    Deck& getDeckMarche() { return deckMarche; }
+    const std::vector<Carte*> getLigne() const { return ligne; }
+    Deck* getDeckMarche() { return &deckMarche; }
 };

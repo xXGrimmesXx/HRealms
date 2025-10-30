@@ -3,7 +3,7 @@
 #include "partie.h"
 
 
-void Champion::mobiliser(Partie& p,std::vector<ChoixEffet*> target) {
+void Champion::mobiliser(Partie* p,std::vector<ChoixEffet*> target) {
     if (!mobilise) {
         mobilise = true;
         if (target.size() != effetsActiver.size()) {

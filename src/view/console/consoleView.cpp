@@ -31,26 +31,26 @@ void ConsoleView::afficherErreur(std::string& erreur) {
     std::cout << "❌ ERREUR: " << erreur << std::endl;
 }
 
-void ConsoleView::afficherPartie(Partie& partie) {
+void ConsoleView::afficherPartie(Partie* partie) {
     //viderEcran();
     std::cout << "═══════════════════════════════════════" << std::endl;
-    std::cout << "🏰 HERO REALMS - Tour " << partie.getNbTour() << std::endl;
+    std::cout << "🏰 HERO REALMS - Tour " << partie->getNbTour() << std::endl;
     std::cout << "═══════════════════════════════════════" << std::endl;
     
     // Afficher le joueur actuel
-     Joueur& joueurActuel = partie.getJoueurActuel();
-    std::cout << "🎮 Joueur actuel: " << joueurActuel.getNom() << std::endl;
-    std::cout << "❤️  Vie: " << joueurActuel.getPv() << " | ";
-    std::cout << "💰 Or: " << partie.getTourCourant()->getOr() << " | ";
-    std::cout << "⚔️  Combat: " << partie.getTourCourant()->getDegats() << std::endl;
-    std::cout << "📚 Pioche: " << joueurActuel.getDeck().getTaille() << " cartes | ";
-    std::cout << "🗂️  Défausse: " << joueurActuel.getDefausse().getTaille() << " cartes" << std::endl;
+    Joueur* joueurActuel = partie->getJoueurActuel();
+    std::cout << "🎮 Joueur actuel: " << joueurActuel->getNom() << std::endl;
+    std::cout << "❤️  Vie: " << joueurActuel->getPv() << " | ";
+    std::cout << "💰 Or: " << partie->getTourCourant()->getOr() << " | ";
+    std::cout << "⚔️  Combat: " << partie->getTourCourant()->getDegats() << std::endl;
+    std::cout << "📚 Pioche: " << joueurActuel->getDeck()->getTaille() << " cartes | ";
+    std::cout << "🗂️  Défausse: " << joueurActuel->getDefausse()->getTaille() << " cartes" << std::endl;
     std::cout << std::endl;
 }
 
-void ConsoleView::afficherJoueur( Joueur& joueur) {
-    std::cout << "👤 " << joueur.getNom() << " - ";
-    std::cout << "❤️ " << joueur.getPv() << " | ";
+void ConsoleView::afficherJoueur( Joueur* joueur) {
+    std::cout << "👤 " << joueur->getNom() << " - ";
+    std::cout << "❤️ " << joueur->getPv() << " | ";
 }
 
 std::string ConsoleView::typeEffetToString (TypeEffet t) {
@@ -93,7 +93,7 @@ std::string ConsoleView::typeCibleToString(TypeCible c) {
     }
 }
 
-void ConsoleView::afficherScores(std::vector<Joueur>& joueurs) {
+void ConsoleView::afficherScores(std::vector<Joueur*> joueurs) {
     std::cout << "🏆 SCORES ACTUELS:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
 
@@ -104,14 +104,14 @@ void ConsoleView::afficherScores(std::vector<Joueur>& joueurs) {
     std::cout << "\n" << std::endl;
 }
 
-void ConsoleView::afficherGagnant( Joueur& gagnant) {
+void ConsoleView::afficherGagnant( Joueur* gagnant) {
     std::cout << "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" << std::endl;
-    std::cout << "🏆 VICTOIRE DE " << gagnant.getNom() << " ! 🏆" << std::endl;
+    std::cout << "🏆 VICTOIRE DE " << gagnant->getNom() << " ! 🏆" << std::endl;
     std::cout << "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" << std::endl;
-    std::cout << "Score final: " << gagnant.getPv() << " points de vie" << std::endl;
+    std::cout << "Score final: " << gagnant->getPv() << " points de vie" << std::endl;
 }
 
-void ConsoleView::afficherPileGemmeDeFeu(const std::vector<Carte*>& pile) {
+void ConsoleView::afficherPileGemmeDeFeu(const std::vector<Carte*> pile) {
     std::cout << "💎 GEMMES DE FEU disponibles: " << pile.size() << std::endl;
     if (!pile.empty()) {
         CardRenderer::printCards(std::vector<Carte*>{pile.back()}, 1);
@@ -119,12 +119,12 @@ void ConsoleView::afficherPileGemmeDeFeu(const std::vector<Carte*>& pile) {
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
-void ConsoleView::afficherDefausse(const Joueur& joueur) {
-    std::cout << "🗂️ Défausse de " << joueur.getNom() << ":" << std::endl;
+void ConsoleView::afficherDefausse(Joueur* joueur) {
+    std::cout << "🗂️ Défausse de " << joueur->getNom() << ":" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
-    
-    const Pile& defausse = joueur.getDefausse();
-    int taille = defausse.getTaille();
+
+    Pile* defausse = joueur->getDefausse();
+    int taille = defausse->getTaille();
     
     if (taille == 0) {
         std::cout << "Défausse vide." << std::endl;
@@ -132,7 +132,7 @@ void ConsoleView::afficherDefausse(const Joueur& joueur) {
     }
     
     std::cout << "Nombre de cartes: " << taille << std::endl;
-    const auto& cartes = defausse.getCartes();
+    const auto& cartes = defausse->getCartes();
     
     const int CARDS_PER_ROW = 5;
     CardRenderer::printCards(cartes, CARDS_PER_ROW);
@@ -140,11 +140,11 @@ void ConsoleView::afficherDefausse(const Joueur& joueur) {
     std::cout << "───────────────────────────────────────" << std::endl;
 }
 
-void ConsoleView::afficherDeckMarche(Deck& deckMarche) {
+void ConsoleView::afficherDeckMarche(Deck* deckMarche) {
     std::cout << "🗂️ Deck du marché:" << std::endl;
     std::cout << "───────────────────────────────────────" << std::endl;
 
-    int taille = deckMarche.getTaille();
+    int taille = deckMarche->getTaille();
 
     if (taille == 0) {
         std::cout << "marché vide." << std::endl;
@@ -152,7 +152,7 @@ void ConsoleView::afficherDeckMarche(Deck& deckMarche) {
     }
     
     std::cout << "Nombre de cartes: " << taille << std::endl;
-    const auto& cartes = deckMarche.getCartes();
+    const auto& cartes = deckMarche->getCartes();
     const int CARDS_PER_ROW = 5;
 
     CardRenderer::printCards(cartes, CARDS_PER_ROW);
@@ -203,30 +203,30 @@ std::string ConsoleView::demanderNomJoueur(int numero) {
     return nom;
 }
 
-int ConsoleView::demanderChoixAction(Partie& partie) {
+int ConsoleView::demanderChoixAction(Partie* partie) {
     std::cout << "🎯 Choisissez votre action:" << std::endl;
     
     // Récupérer les informations nécessaires
-    Joueur& joueur = partie.getJoueurActuel();
-    Tour* tour = partie.getTourCourant();
-    Marche* marche = partie.getMarche();
+    Joueur* joueur = partie->getJoueurActuel();
+    Tour* tour = partie->getTourCourant();
+    Marche* marche = partie->getMarche();
     
     // Construire un mapping entre numéro affiché et action réelle
     std::vector<int> actionsDisponibles;
     int numeroAffiche = 1;
     
     // Seulement si le joueur a des cartes en main
-    if (joueur.getNombreCartesJouables() > 0) {
+    if (joueur->getNombreCartesJouables() > 0) {
         std::cout << "[" << numeroAffiche << "] Jouer une carte" << std::endl;
         actionsDisponibles.push_back(1);
         numeroAffiche++;
     }
     
     // Seulement s'il y a des champions
-    if (joueur.getChampions().size() > 0) {
+    if (joueur->getChampions().size() > 0) {
         bool aChampionMobilisable = std::any_of(
-            joueur.getChampions().begin(), 
-            joueur.getChampions().end(),
+            joueur->getChampions().begin(),
+            joueur->getChampions().end(),
             [](Champion* c) { return c && !c->estMobilise(); }
         );
         
@@ -256,7 +256,7 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
     }
 
     // Seulement si le joueur a au moins 2 d'or et qu'il y a des gemmes
-    if (tour && tour->getOr() >= 2 && partie.getGemmeDeFeu().getPile().getTaille() > 0) {
+    if (tour && tour->getOr() >= 2 && partie->getGemmeDeFeu()->getPile()->getTaille() > 0) {
         std::cout << "[" << numeroAffiche << "] Acheter une Gemme de Feu" << std::endl;
         actionsDisponibles.push_back(4);
         numeroAffiche++;
@@ -270,21 +270,21 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
     }
     
     // Seulement si une carte avec effet Sacrifice est jouable
-    if (joueur.getMain().contientCarteEffetSacrifice()) {
+    if (joueur->getMain()->contientCarteEffetSacrifice()) {
         std::cout << "[" << numeroAffiche << "] Utiliser un effet sacrifice" << std::endl;
         actionsDisponibles.push_back(6);
         numeroAffiche++;
     }
 
     // Seulement si le joueur à au moins une carte dans sa défausse
-    if (joueur.getDefausse().getTaille() > 0) {
+    if (joueur->getDefausse()->getTaille() > 0) {
         std::cout << "[" << numeroAffiche << "] Consulter sa défausse" << std::endl;
         actionsDisponibles.push_back(7);
         numeroAffiche++;
     }
 
     // Seulement si la pile des cartes sacrifiées n'est pas vide
-    if (partie.getCartesSacrifie().getTaille() > 0) {
+    if (partie->getCartesSacrifie()->getTaille() > 0) {
         std::cout << "[" << numeroAffiche << "] Consulter pile de sacrifice" << std::endl;
         actionsDisponibles.push_back(8);
         numeroAffiche++;
@@ -333,15 +333,15 @@ int ConsoleView::demanderIndexCarte() {
     return indice-1;
 }
 
-std::vector<int> ConsoleView::demanderIndexChampion(Joueur& joueur) {
+std::vector<int> ConsoleView::demanderIndexChampion(Joueur* joueur) {
     std::vector<int> indices;
     char * line;
     std::string input;
-    if (joueur.getChampions().empty()) {
+    if (joueur->getChampions().empty()) {
         indices.push_back(-1);
         return indices; // Retourner vide si pas de champions
     }
-    afficherChampions(joueur.getChampions());
+    afficherChampions(joueur->getChampions());
     std::cout << "🛡️ Numéro du champion (séparer les numeros pas des espaces): ";
     std::getline(std::cin, input, '\n');
     if (!input.empty()) {
@@ -357,14 +357,14 @@ std::vector<int> ConsoleView::demanderIndexChampion(Joueur& joueur) {
     
 }
 
-std::vector<int> ConsoleView::demanderIndexGarde(Joueur& joueur) {
+std::vector<int> ConsoleView::demanderIndexGarde(Joueur* joueur) {
     std::vector<int> indices;
     char * line;
     std::string input;
-    if (joueur.getGardes().empty()) {
+    if (joueur->getGardes().empty()) {
         return indices; // Retourner vide si pas de gardes
     }
-    afficherChampions(joueur.getGardes());
+    afficherChampions(joueur->getGardes());
     std::cout << "🛡️ Numéro du garde (séparer les numeros pas des espaces): ";
     std::getline(std::cin, input, '\n');
     if (!input.empty()) {
@@ -380,11 +380,11 @@ std::vector<int> ConsoleView::demanderIndexGarde(Joueur& joueur) {
     
 }
 
-int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs) {
+int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs) {
     int index;
     std::cout << "👤 Numéro du joueur: ";
     for(size_t i=0;i<joueurs.size();i++){
-        std::cout << "[" << i+1 << "] " << joueurs.at(i).getNom() << std::endl;
+        std::cout << "[" << i+1 << "] " << joueurs.at(i)->getNom() << std::endl;
     }
     if (!(std::cin >> index)) {
         std::cin.clear();
@@ -396,12 +396,12 @@ int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs) {
     return index - 1; // Convertir en index 0-based
 }
 
-int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs,int joueurActuelIndex) {
+int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs,int joueurActuelIndex) {
     int index;
     std::cout << "👤 Numéro du joueur: ";
     for(size_t i=0;i<joueurs.size();i++){
         if((int)i==joueurActuelIndex) continue; // ne pas afficher le joueur actuel
-        std::cout << "[" << i+1 << "] " << joueurs.at(i).getNom() << std::endl;
+        std::cout << "[" << i+1 << "] " << joueurs.at(i)->getNom() << std::endl;
     }
     if (!(std::cin >> index)) {
         std::cin.clear();
@@ -484,7 +484,7 @@ int ConsoleView::demanderChoixGodMode() {
     return choix;
 }
 
-int ConsoleView::demanderIndexDeck(Deck& deckMarche) {
+int ConsoleView::demanderIndexDeck(Deck* deckMarche) {
     afficherDeckMarche(deckMarche);
     int index;
     std::cout << "📚 Index de la carte dans le deck du marché: ";
@@ -516,12 +516,11 @@ std::string ConsoleView::getFactionSymbol(Faction faction)  {
     }
 }
 
-void ConsoleView::afficherMain( Joueur& joueur) {
-    std::cout << "🎴 Main de " << joueur.getNom() << ":" << std::endl;
+void ConsoleView::afficherMain( Joueur* joueur) {
+    std::cout << "🎴 Main de " << joueur->getNom() << ":" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-    
-    const auto& main = joueur.getMain();
-    int taille = main.getTaille();
+    auto main = joueur->getMain();
+    int taille = main->getTaille();
     
     if (taille == 0) {
         std::cout << "Main vide." << std::endl;
@@ -531,16 +530,16 @@ void ConsoleView::afficherMain( Joueur& joueur) {
 
     // Afficher les cartes par groupes de 5 pour éviter que ça déborde
     const int CARDS_PER_ROW = 5;
-    CardRenderer::printCards(main.getCartes(), CARDS_PER_ROW);
+    CardRenderer::printCards(main->getCartes(), CARDS_PER_ROW);
 
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
 
-void ConsoleView::afficherMarche(Marche& marche) {
+void ConsoleView::afficherMarche(Marche* marche) {
     std::cout << "🏪 MARCHÉ:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     
-    const auto& ligne = marche.getLigne();
+    const auto& ligne = marche->getLigne();
     std::cout << "Ligne du marché récupérée." << std::endl;
     
    CardRenderer::printCards(ligne, 5);
@@ -549,10 +548,10 @@ void ConsoleView::afficherMarche(Marche& marche) {
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
 
-void ConsoleView::afficherChampions(const std::vector<Champion*>& champions) {
+void ConsoleView::afficherChampions(const std::vector<Champion*> champions) {
     std::cout << "👑 CHAMPIONS EN JEU:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-    
+    std::cout << "Nombre de champions: " << champions.size() << std::endl;
     if (champions.empty()) {
         std::cout << "Aucun champion en jeu." << std::endl;
         std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
@@ -601,8 +600,8 @@ bool ConsoleView::demanderChoix(Effet effet) {
     return (choix == 2);
 }
 
-void ConsoleView::afficherDefausseChampion(const Joueur& joueur) {
-    std::vector<Champion*> champions = joueur.getDefausseChampions();
+void ConsoleView::afficherDefausseChampion(Joueur* joueur) {
+    std::vector<Champion*> champions = joueur->getDefausseChampions();
     std::cout << "👑 CHAMPIONS DÉFAUSSÉS:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     
@@ -625,7 +624,7 @@ void ConsoleView::afficherDefausseChampion(const Joueur& joueur) {
     }  
 }
 
-void ConsoleView::afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes) {
+void ConsoleView::afficherCartesEffetSacrifice(const std::vector<Carte*> cartes) {
     std::cout << "Cartes avec effetSacrifice disponibles :\n";
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     const int CARDS_PER_ROW = 5;
@@ -633,15 +632,15 @@ void ConsoleView::afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
 
-void ConsoleView::afficherPileSacrifice(const Partie& partie) {
+void ConsoleView::afficherPileSacrifice(Partie* partie) {
     std::cout << "🗂️ Pile de sacrifice:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 
-    const Pile& pile = partie.getCartesSacrifie();
-    int taille = pile.getTaille();
+    const Pile* pile = partie->getCartesSacrifie();
+    int taille = pile->getTaille();
 
     std::cout << "Nombre de cartes: " << taille << std::endl;
-    const auto& cartes = pile.getCartes();
+    const auto& cartes = pile->getCartes();
     const int CARDS_PER_ROW = 5;
 
     CardRenderer::printCards(cartes, CARDS_PER_ROW);

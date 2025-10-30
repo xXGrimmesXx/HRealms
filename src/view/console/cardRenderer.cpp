@@ -163,7 +163,7 @@ void CardRenderer::printCardsRow(const std::vector<std::vector<std::string>>& ca
     }
 }
 
-void CardRenderer::printCards(const std::vector<Carte*>& cartes, const int cardsPerRow) {
+void CardRenderer::printCards(const std::vector<Carte*> cartes, const int cardsPerRow) {
     int taille = cartes.size();
     
     if (taille == 0) {
@@ -244,7 +244,7 @@ std::string CardRenderer::centerText(const std::string& text, int width) {
     return std::string(padding, ' ') + text + std::string(width - text.length() - padding, ' ');
 }
 
-std::string CardRenderer::formatEffect(const Effet& effet) {
+std::string CardRenderer::formatEffect(const Effet effet) {
     std::string result;
     
     switch (effet.getTypeEffet()) {

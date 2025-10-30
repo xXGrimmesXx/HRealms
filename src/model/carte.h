@@ -44,10 +44,9 @@ public:
     bool setEstJouee(bool b) { return estJouee = b; }
 
     // Méthodes
-    void lorsDeJeu(Partie& p,std::vector<ChoixEffet*> target, std::vector<ChoixEffet*> allies,bool declencherAllie);
-    bool peutDeclencherAllie(Joueur& j);
-    void activer(Partie& p,Joueur& joueurSource,void* target);
-    void sacrifier(Joueur& j, Partie& p);
+    void jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target);
+    void jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies);
+    void sacrifier(Joueur* j, Partie* p);
 };
 
 #endif

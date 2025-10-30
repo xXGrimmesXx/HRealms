@@ -1,18 +1,17 @@
 // Effets basiques
       AJOUT_OR,		XXXXX YYYYY
       AJOUT_COMBAT, 	XXXXX YYYYY 
-      AJOUT_VIE,	XXXXX YYYYY
+      AJOUT_VIE,	XXXXX YYYYY 
 
       // Effets cartes
-      PIOCHER,		XXXXX  YYYYY (ça demande la cible en proposant que l'adversaire mais ça fait bien piocher nous (death threat))
-      --> ligne ~250 GameController.cpp
+      PIOCHER,		XXXXX  YYYYY
       DEFAUSSER,	XXXXX YYYYY (demande la cible même si ya qu'1 adversaire)
       --> Ce problème est présent dans beaucoup d'autres effets
-      SACRIFIER,	XXXXX YYYYY (affiche une erreur alors qu'il y en a pas mdr)
+      SACRIFIER,	XXXXX YYYYY
       /!\ peut sacrifier dans main, mais pas dans champions
 
       // EFfets champions
-      ASSOMMER_CHAMPION,XXXXXX YYYYY
+      ASSOMMER_CHAMPION, XXXXX YYYYY
       PREPARE_CHAMPION, XXXXX YYYYY
 
       // Effets "or"
@@ -43,4 +42,4 @@
       // Effets "si oui"
       SACRIFIER_SIOUI_AJOUT_COMBAT, XXXXX YYYYY
       me fait segm fault. j'ai entièrement refais l'effet dans effet.cpp et ça marche
-      PIOCHE_SIOUI_DEFAUSSE, ELVEN GIFT (pas fonctionnel)
+      PIOCHE_SIOUI_DEFAUSSE, XXXXX

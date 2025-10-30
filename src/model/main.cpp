@@ -7,18 +7,24 @@ void Main::ajouter(Carte* c){
     cartes.push_back(c);
 }
 
-void Main::defausser(int idx){
-    if(idx < 0 || idx >= (int)cartes.size()) {
-        throw std::out_of_range("Index hors limites");
+void Main::defausser(Carte * c){
+    if(c == nullptr) {
+        throw std::invalid_argument("Carte invalide");
     }
-    cartes.at(idx)->setEstJouee(false);
-    cartes.erase(cartes.begin() + idx);
+    for (auto carte : cartes) {
+        if (carte == c) {
+            carte->setEstJouee(false);
+            cartes.erase(std::remove(cartes.begin(), cartes.end(), carte), cartes.end());
+            return;
+        }
+    }
+    
 }
 
 void Main::viderMain(Joueur* j){
     for(Carte* c : cartes) {
         c->setEstJouee(false);
-        j->getDefausse().ajouter(c);
+        j->getDefausse()->ajouter(c);
 
     }
     cartes.clear();

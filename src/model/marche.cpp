@@ -11,42 +11,42 @@ void Marche::remplirLigne(){
         ligne.push_back(deckMarche.piocher());
     }
 }
-bool Marche::acquerirDepuisLigne(int slot, Joueur& j, Partie& partie){
+bool Marche::acquerirDepuisLigne(int slot, Joueur* j, Partie* partie){
     Carte* c = ligne.at(slot);
     if (c==nullptr){
         return false;
     }
 
-    if (partie.getTourCourant()->getOr() < c->getCout()) {
+    if (partie->getTourCourant()->getOr() < c->getCout()) {
         return false;
     }
     ligne.erase(ligne.begin() + slot);
-    if (j.getProchainAchatDansMain()) {
-        j.getMain().ajouter(c);
-        j.activerProchainAchatDansMain(); // reset le flag
+    if (j->getProchainAchatDansMain()) {
+        j->getMain()->ajouter(c);
+        j->desactiverProchainAchatDansMain(); // reset le flag
     }
-    else if (j.getProchainAchatActionDessusDeck()) {
+    else if (j->getProchainAchatActionDessusDeck()) {
         if (dynamic_cast<CarteAction*>(c)) { // si la carte est bien une action
-            j.getDeck().ajouterDessus(c);
-            j.activerProchainAchatActionDessusDeck(); // reset le flag
+            j->getDeck()->ajouterDessus(c);
+            j->desactiverProchainAchatActionDessusDeck(); // reset le flag
         }
         
     }
     else {
-        j.getDefausse().ajouter(c);
+        j->getDefausse()->ajouter(c);
     }
-    partie.getTourCourant()->utiliserOr(c->getCout());
+    partie->getTourCourant()->utiliserOr(c->getCout());
     remplirLigne();
     return true;
 }
 
 
-bool Marche::acquerirDepuisDeck(int idx, Joueur& j){
+bool Marche::acquerirDepuisDeck(int idx, Joueur* j){
     Carte* c = deckMarche.getCartes().at(idx);
     if (c==nullptr){
         return false;
     }
-    j.getMain().ajouter(c);
+    j->getMain()->ajouter(c);
     deckMarche.retirerCarte(idx);
     return true;
 }

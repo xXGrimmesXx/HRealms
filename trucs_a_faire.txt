@@ -4,7 +4,6 @@ TODO LIST APRES CALL :
 L - Check mes remarques sur EFFETS EN ETAT DE FONCTIONNEMENT.txt
 L - Check effetSacrifice et voir pk ça marche pas sur wolf form, 
 L - l'option consulterpilesacrifice marche pas
-L - pioche_sioui_defausse : utiliser std::vector<Carte*>*
 L - 0 pour annuler une action.
 L - Se renseigner trucs de sauvegarde.
 
