@@ -13,7 +13,6 @@ class Marche {
 private:
     Deck deckMarche;
     std::vector<Carte*> ligne;
-    Pile zoneSacrifice;
 
 public:
     Marche();
@@ -24,5 +23,4 @@ public:
 
     const std::vector<Carte*>& getLigne() const { return ligne; }
     Deck& getDeckMarche() { return deckMarche; }
-    Pile& getZoneSacrifice() { return zoneSacrifice; }
 };

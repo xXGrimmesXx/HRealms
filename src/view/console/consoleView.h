@@ -36,6 +36,8 @@ public:
         void afficherDefausse(const Joueur& joueur)override;
         void afficherDeckMarche(Deck& deckMarche)override;
         void afficherDefausseChampion(const Joueur& joueur)override;
+        void afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes) override;
+        void afficherPileSacrifice(const Partie& partie) override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
@@ -45,11 +47,12 @@ public:
     int demanderNombreJoueurs() override;
     std::string demanderNomJoueur(int numero) override;
     int demanderChoixAction(Partie& partie) override;
-    std::vector<int> demanderIndexCarte() override;
+    int demanderIndexCarte() override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs) override;
     int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) override;
     std::vector<int> demanderIndexChampion(Joueur& joueur) override;
     std::vector<int> demanderIndexGarde(Joueur& joueur)override;
+    int demanderIndexCarteEffetSacrifice() override;
     int demanderSlotMarche() override;
     bool confirmerAction(std::string& action) override;
     void attendreEntree() override;

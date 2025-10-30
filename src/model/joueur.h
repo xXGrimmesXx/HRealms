@@ -41,13 +41,11 @@ public:
     void assomerChampion(Champion* c);
     void activerProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=true;}
     void activerProchainAchatDansMain(){prochainAchatDansMain=true;}
-    void sacrifier(int montant, Partie& p);
-    std::vector<Champion*> getGardes()const;
     bool possedeAllie(Carte& carte);
-    int getNombreCartesJouables() const;
     void choisirCarteDefausseAjouterDessusDeck(int montant);
     void choisirChampionDefausseAjouterDessusDeck(int montant);
     void retirerCarteDefausseVersDessusDeck(int index);
+    Carte* retirerCarteAvecEffetSacrifice(int globalIdx, bool& fromChampions);
 
     // interface Attaquable
     bool prendreDegats(int m) override;
@@ -61,11 +59,16 @@ public:
     const Pile& getDefausse() const { return defausse; }
     std::vector<Champion*>& getChampions() { return champions; }
     const std::vector<Champion*>& getChampions() const { return champions; }
+    std::vector<Champion*> getGardes()const;
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }
     bool getProchainAchatActionDessusDeck() const { return prochainAchatActionDessusDeck; }
     bool getProchainAchatDansMain() const { return prochainAchatDansMain;}
     std::vector<Champion*> getDefausseChampions() const;
+    std::vector<Champion*> getChampionsMain() const;
+    std::vector<Champion*> getGardesMain() const;
+        int getNombreCartesJouables() const;
+
 
     std::string toString() const {
         return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.getTaille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";

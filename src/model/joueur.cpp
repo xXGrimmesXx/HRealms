@@ -184,3 +184,56 @@ std::vector<Champion*> Joueur::getDefausseChampions() const {
     }
     return champions;
 }
+
+std::vector<Champion*> Joueur::getChampionsMain() const {
+    std::vector<Champion*> championsMain;
+    for (Carte* carte : main.getCartes()) {
+        Champion* champ = dynamic_cast<Champion*>(carte);
+        if (champ != nullptr) {
+            championsMain.push_back(champ);
+        }
+    }
+    return championsMain;
+}
+
+std::vector<Champion*> Joueur::getGardesMain() const {
+    std::vector<Champion*> gardesMain;
+    for (Carte* carte : main.getCartes()) {
+        Champion* champ = dynamic_cast<Champion*>(carte);
+        if (champ != nullptr && champ->estGarde()) {
+            gardesMain.push_back(champ);
+        }
+    }
+    return gardesMain;
+}
+
+Carte* Joueur::retirerCarteAvecEffetSacrifice(int globalIdx, bool& fromChampions) {
+    // Récupère toutes les cartes avec effetSacrifice
+    std::vector<Carte*> candidates;
+    for (int i = 0; i < main.getTaille(); ++i) {
+        if (main.getCarte(i)->getEffetsSacrifice().size() > 0) {
+            candidates.push_back(main.getCarte(i));
+        }
+    }
+    for (auto champ : champions) {
+        if (champ->getEffetsSacrifice().size() > 0) {
+            candidates.push_back(champ);
+        }
+    }
+
+    if (globalIdx < 0 || globalIdx >= (int)candidates.size()) return nullptr;
+    Carte* c = candidates[globalIdx];
+
+    // Retire la carte de la bonne zone
+    if (std::find(main.getCartes().begin(), main.getCartes().end(), c) != main.getCartes().end()) {
+        main.sacrifier(c);
+        fromChampions = false;
+    } else {
+        auto it = std::find(champions.begin(), champions.end(), c);
+        if (it != champions.end()) {
+            champions.erase(it);
+            fromChampions = true;
+        }
+    }
+    return c;
+}

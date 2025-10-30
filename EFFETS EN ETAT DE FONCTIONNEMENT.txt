@@ -1,38 +1,46 @@
 // Effets basiques
-      AJOUT_OR,		XXXXX
-      AJOUT_COMBAT, 	XXXXX
-      AJOUT_VIE,	XXXXX
+      AJOUT_OR,		XXXXX YYYYY
+      AJOUT_COMBAT, 	XXXXX YYYYY 
+      AJOUT_VIE,	XXXXX YYYYY
 
       // Effets cartes
-      PIOCHER,		XXXXX
-      DEFAUSSER,	XXXXX
-      SACRIFIER,	XXXXX
+      PIOCHER,		XXXXX  YYYYY (ça demande la cible en proposant que l'adversaire mais ça fait bien piocher nous (death threat))
+      --> ligne ~250 GameController.cpp
+      DEFAUSSER,	XXXXX YYYYY (demande la cible même si ya qu'1 adversaire)
+      --> Ce problème est présent dans beaucoup d'autres effets
+      SACRIFIER,	XXXXX YYYYY (affiche une erreur alors qu'il y en a pas mdr)
+      /!\ peut sacrifier dans main, mais pas dans champions
 
       // EFfets champions
-      ASSOMMER_CHAMPION,XXXXXX
-      PREPARE_CHAMPION, XXXXX
+      ASSOMMER_CHAMPION,XXXXXX YYYYY
+      PREPARE_CHAMPION, XXXXX YYYYY
 
       // Effets "or"
-      COMBAT_OU_VIE,    XXXXX
-      OR_OU_COMBAT,	XXXXX
+      COMBAT_OU_VIE,    XXXXX YYYYY
+      OR_OU_COMBAT,	XXXXX YYYYY
 
       // Effets "per"
-      COMBAT_PAR_CHAMPION, XXXXXX
-      COMBAT_PAR_GARDE,  XXXXX
-      COMBAT_PAR_ALLIE,	XXXXX
-      VIE_PAR_CHAMPION,	 XXXX
+      COMBAT_PAR_CHAMPION, XXXXXX YYYYY
+      COMBAT_PAR_GARDE,  XXXXX YYYYY
+      COMBAT_PAR_ALLIE,	XXXXX YYYYY
+      VIE_PAR_CHAMPION,	 XXXX YYYYY
 
       // Effets "or" et "per"
-      OR_OU_VIE_PAR_CHAMPION, XXXXX
+      OR_OU_VIE_PAR_CHAMPION, XXXXX YYYYY
 
       // Effets "defausse au dessus du deck"
-      DEFAUSSE_AU_DESSUS_DU_DECK,  XXXXX
-      CHAMPION_DEFAUSSE_AU_DESSUS_DECK, XXXX
+      DEFAUSSE_AU_DESSUS_DU_DECK,  XXXXX YYYYY
+      CHAMPION_DEFAUSSE_AU_DESSUS_DECK, XXXX YYYYY
 
       // Effets "prochain achat"
-      PROCHAIN_ACHAT_ACTION_DESSUS_DECK, XXXX
-      PROCHAIN_ACHAT_DANS_MAIN, XXXX
+      PROCHAIN_ACHAT_ACTION_DESSUS_DECK, XXXX YYYYY
+      PROCHAIN_ACHAT_DANS_MAIN, XXXX YYYYY
+      fonctionnels, mais si on peut pas utiliser les 2 au même tour. (bribe + deception, jaunes)
+      voir ligne 24-34 de marche.cpp
+      jpourrais t'expliquer en détail, 
+      là j'ai juste changé que PROCHAIN_ACHAT_DANS_MAIN est prioritaire sur PROCHAIN_ACHAT_ACTION_DESSUS_DECK
 
       // Effets "si oui"
-      SACRIFIER_SIOUI_AJOUT_COMBAT, XXXXX a tester
-      PIOCHE_SIOUI_DEFAUSSE, ELVEN GIFT
+      SACRIFIER_SIOUI_AJOUT_COMBAT, XXXXX YYYYY
+      me fait segm fault. j'ai entièrement refais l'effet dans effet.cpp et ça marche
+      PIOCHE_SIOUI_DEFAUSSE, ELVEN GIFT (pas fonctionnel)

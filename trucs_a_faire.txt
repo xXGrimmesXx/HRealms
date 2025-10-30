@@ -1,16 +1,47 @@
-VIE PAR CHAMPION
-+ VIE 
-
 TODO LIST APRES CALL :
+(par ordre d'importance)
 
-G - Check les effets + effetSacrifice
+L - Check mes remarques sur EFFETS EN ETAT DE FONCTIONNEMENT.txt
+L - Check effetSacrifice et voir pk ça marche pas sur wolf form, 
+L - l'option consulterpilesacrifice marche pas
+L - pioche_sioui_defausse : utiliser std::vector<Carte*>*
+L - 0 pour annuler une action.
 L - Se renseigner trucs de sauvegarde.
+
+L ou G - coder la possibilité de jouer toutes les cartes en même temps
+
+
+G - Améliorer attaquer joueur. i+1 et i-1[nbJoueurs] + visu pas fou fou
+
+G - coder la possibilité de sacrifier une carte et ajouter effetSacrifice
+G - mettre dans zoneSacrifice et la rendre consultable à tout moment (sauf GemmeDeFeu qui retourne dans sa pile)
+--> Presque fini normalement 
+marche surtout sauf wolf form
+ne s'ajoute pas à la pile de défausse (attention à remettre gemmedefeu dans sa pile)
+Les nouvelles fonctions :
+GameController :
+- utiliserEffetSacrifice()
+- ajout 2 case gererActionJoueur
+- consulterpilesacrifice
+ConsoleView :
+- afficherCartesEffetSacrifice
+- demanderIndexCarteEffetSacrifice
+- afficherpilesacrifice
+Main : 
+- contientCarteEffetSacrifice
+(PS : je pense que ça irait mieux dans le case après jouer une carte, décaler les indices)
+
+
+FAIT : 
+G - Check les effets
+G - peut plus jouer plusieurs cartes à la fois (ANNULE CAR CAUSAIT DES PBS SUR CERTAINS EFFETS)
+--> j'ai donc changé la signature et tous les appels à demanderIndexCarte (de vector<int> à int, dans consoleView.cpp)
 G - Faire -1 aux indexs > aux champions joués
 G - Voir pour sacrifier.
-G - Améliorer attaquer joueur. i+1 et i-1[nbJoueurs]
-L - 0 pour annuler une action.
-L - pioche_sioui_defausse std::vector<Carte*>*
+--> les 2 annulés car on joue qu'une carte à la fois
 
+
+-------------------------------------------------------------------------------------------------------------------
 
 
 1) Fonctions importantes :

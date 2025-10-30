@@ -132,22 +132,35 @@ void GameController::gererActionJoueur() {
             }
             afficherEtatJeu();
             break;
-
-        case 6: // Consulter sa défausse
+        case 6 : // Utiliser un effetSacrifice
+            if (!utiliserEffetSacrifice()) {
+                std::string message = "Aucune carte à sacrifier ou action annulée.";
+                view->afficherErreur(message);
+            }
+            afficherEtatJeu();
+            break;
+        case 7: // Consulter sa défausse
             if(!consulterDefausse()){
                 std::string message = "Impossible de consulter la défausse.";
                 view->afficherErreur(message);
             }
             afficherEtatJeu();
             break;
-        case 7: // Consulter la main d'un adversaire
+        case 8: // Consulter pile de sacrifice
+            if(!consulterPileSacrifice()){
+                std::string message = "Impossible de consulter la pile de sacrifice.";
+                view->afficherErreur(message);
+            }
+            afficherEtatJeu();
+            break;
+        case 9: // Consulter la main d'un adversaire
             afficherMainAdversaire();
             afficherEtatJeu();
             break;
-        case 8: // Finir le tour
+        case 10: // Finir le tour
             finirTour();
             break;
-        case 9: // Activer le godMode
+        case 11: // Activer le godMode
             toggleGodMode();
             afficherEtatJeu();
             break;
@@ -159,35 +172,33 @@ bool GameController::jouerCarte() {
     Joueur& joueurActuel = partie->getJoueurActuel();
     
     // Demander quelle carte jouer
-    std::vector<int> index = view->demanderIndexCarte();
+    int index = view->demanderIndexCarte();
 
-    for (int ind : index) {
-        if (!validerIndex(ind,joueurActuel.getMain().getTaille(), "carte")) {
-            return false;
+    if (!validerIndex(index,joueurActuel.getMain().getTaille(), "carte")) {
+        return false;
+    }
+    std::cout << "Index de la carte à jouer: " << index << std::endl;
+    Carte* c = joueurActuel.getMain().getCarte(index);
+    std::cout << "Carte à jouer: " << c->getNom() << std::endl;
+    std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
+    std::vector<ChoixEffet*> ciblesAllies = choisirCible(c,c->getEffetsAllie());
+
+    // Essayer de jouer la carte
+    try {
+        bool succes = joueurActuel.jouerCarte(index, *partie, cibles, ciblesAllies);
+        if (succes) {
+            std::string message = "Carte jouée avec succès !";
+            view->afficherMessage(message);
         }
-        std::cout << "Index de la carte à jouer: " << ind << std::endl;
-        Carte* c = joueurActuel.getMain().getCarte(ind);
-        std::cout << "Carte à jouer: " << c->getNom() << std::endl;
-        std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
-        std::vector<ChoixEffet*> ciblesAllies = choisirCible(c,c->getEffetsAllie());
-
-        // Essayer de jouer la carte
-        try {
-            bool succes = joueurActuel.jouerCarte(ind, *partie, cibles, ciblesAllies);
-            if (succes) {
-                std::string message = "Carte jouée avec succès !";
-                view->afficherMessage(message);
-            }
-            else {
-                std::string message = "Échec du jeu de la carte.";
-                view->afficherErreur(message);
-                return false;
-            }
-        } catch (const std::exception& e) {
-            std::string message = "Erreur lors du jeu de carte: " + std::string(e.what());
+        else {
+            std::string message = "Échec du jeu de la carte.";
             view->afficherErreur(message);
             return false;
         }
+    } catch (const std::exception& e) {
+        std::string message = "Erreur lors du jeu de carte: " + std::string(e.what());
+        view->afficherErreur(message);
+        return false;
     }
     return true;
 }
@@ -251,6 +262,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
         case TypeEffet::PIOCHER:
+            // Chelou
             std::cout << "Demande de choix de cible pour l'effet PIOCHER." << std::endl;
             return new ChoixEffet(&partie.getJoueurActuel(),0);
 
@@ -261,7 +273,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 return new ChoixEffet(nullptr,0);
             }
             view->afficherMain(*j);
-            int indexCarte = view->demanderIndexCarte().at(0);
+            int indexCarte = view->demanderIndexCarte();
             Carte* c = j->getMain().getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
@@ -272,7 +284,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexCarte =-1;
             
             while (!validerIndex(indexCarte,j->getMain().getTaille(),"carte de la main")){
-                indexCarte = view->demanderIndexCarte().at(0);
+                indexCarte = view->demanderIndexCarte();
             }
 
             Carte* c = j->getMain().getCarte(indexCarte);
@@ -290,7 +302,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 return new ChoixEffet(nullptr,0);
             }
             view->afficherChampions(j->getChampions());
-            int indexCarte = view->demanderIndexCarte().at(0);
+            int indexCarte = view->demanderIndexCarte();
             if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
                 return new ChoixEffet(nullptr,0);
             }
@@ -304,7 +316,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
             }
-            int indexCarte = view->demanderIndexCarte().at(0);
+            int indexCarte = view->demanderIndexCarte();
             if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
                 return new ChoixEffet(nullptr,0);
             }
@@ -340,7 +352,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         }
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:{
             view ->afficherDefausse(partie.getJoueurActuel());
-            int indexCarte = view->demanderIndexCarte().at(0);
+            int indexCarte = view->demanderIndexCarte();
             if (!validerIndex(indexCarte,partie.getJoueurActuel().getDefausse().getTaille(),"carte de la défausse")){
                 return new ChoixEffet(nullptr,0);
             }
@@ -355,7 +367,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 return new ChoixEffet(nullptr, 0);
             }
             view->afficherDefausseChampion(partie.getJoueurActuel());
-            int indexCarte = view->demanderIndexCarte().at(0);
+            int indexCarte = view->demanderIndexCarte();
             if (!validerIndex(indexCarte, defausseChampions.size(), "champion de la défausse")) {
                 return new ChoixEffet(nullptr, 0);
             }
@@ -371,7 +383,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:{
             bool choix = view->demanderChoix(effet);
             if (choix == true){
-                int indexCarte = view->demanderIndexCarte().at(0);
+                int indexCarte = view->demanderIndexCarte();
                 if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
                     return new ChoixEffet(nullptr,0);
                 }
@@ -386,7 +398,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
             bool choix = view->demanderChoix(effet);
             if (choix == true){
-                int indexCarte = view->demanderIndexCarte().at(0);
+                int indexCarte = view->demanderIndexCarte();
                 std::cout << "Index de la carte à défausser: " << indexCarte << std::endl;
                 if (!validerIndex(indexCarte,partie.getJoueurActuel().getMain().getTaille(),"carte de la main")){
                     return new ChoixEffet(nullptr,0);
@@ -646,6 +658,52 @@ bool GameController::consulterDefausse() {
     view->afficherDefausse(joueurActuel);
     view->attendreEntree();
     return true;
+}
+
+bool GameController::consulterPileSacrifice() {
+
+    if (partie->getCartesSacrifie().getTaille() == 0) {
+        std::string message = "Votre pile de sacrifice est vide.";
+        view->afficherMessage(message);
+        return false;
+    }
+
+    view->afficherPileSacrifice(*partie);
+    view->attendreEntree();
+    return true;
+}
+
+bool GameController::utiliserEffetSacrifice() {
+    Joueur& joueurActuel = partie->getJoueurActuel();
+    std::vector<Carte*> cartesEffetSacrifice;
+    // Cartes de la main
+    for (int i = 0; i < joueurActuel.getMain().getTaille(); ++i) {
+        Carte* c = joueurActuel.getMain().getCarte(i);
+        if (!c->getEffetsSacrifice().empty()) {
+            cartesEffetSacrifice.push_back(c);
+        }
+    }
+    // Champions
+    for (Champion* champ : joueurActuel.getChampions()) {
+        if (champ && !champ->getEffetsSacrifice().empty()) {
+            cartesEffetSacrifice.push_back(static_cast<Carte*>(champ));
+        }
+    }
+        if (cartesEffetSacrifice.empty()) {
+            std::string message = "Aucune carte avec effetSacrifice dans votre main ou parmi vos champions.";
+            view->afficherMessage(message);
+            return false;
+        }
+        view->afficherCartesEffetSacrifice(cartesEffetSacrifice);
+        int indexCarte = view->demanderIndexCarteEffetSacrifice();
+        if (!validerIndex(indexCarte, cartesEffetSacrifice.size(), "carte à sacrifier")) {
+            return false;
+        }
+        Carte* carteChoisie = cartesEffetSacrifice[indexCarte];
+        carteChoisie->sacrifier(joueurActuel, *partie);
+        std::string message = "Vous avez sacrifié la carte: " + carteChoisie->getNom();
+        view->afficherMessage(message);
+        return true;
 }
 
 void GameController::finirTour() {

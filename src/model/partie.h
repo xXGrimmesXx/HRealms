@@ -42,7 +42,7 @@ public:
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(const Joueur& j) { joueurs.push_back(j); }
-    Pile getCartesSacrifie(){return cartesSacrifie;}
+    Pile getCartesSacrifie() const {return cartesSacrifie;}
     GemmeDeFeu& getGemmeDeFeu(){return gemmeDeFeu;}
 
     Joueur* getGagnant();

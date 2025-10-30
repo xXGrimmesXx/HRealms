@@ -31,17 +31,19 @@ public:
         virtual void afficherDefausse(const Joueur& joueur) = 0;
         virtual void afficherDeckMarche(Deck& deckMarche) = 0;
         virtual void afficherDefausseChampion(const Joueur& joueur) = 0;
-
+        virtual void afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes) = 0;
+        virtual void afficherPileSacrifice(const Partie& partie) = 0;
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
     virtual std::string demanderNomJoueur(int numero) = 0;
     virtual int demanderChoixAction(Partie& partie) = 0;
-    virtual std::vector<int> demanderIndexCarte() = 0;
+    virtual int demanderIndexCarte() = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs) = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur>& joueurs, int joueurActuelIndex) = 0;
     virtual std::vector<int> demanderIndexChampion(Joueur& joueur) = 0;
     virtual std::vector<int> demanderIndexGarde(Joueur& joueur) = 0;
+    virtual int demanderIndexCarteEffetSacrifice() = 0;
     virtual int demanderSlotMarche() = 0;
     virtual bool confirmerAction(std::string& action) = 0;
     virtual void attendreEntree() = 0;

@@ -32,6 +32,8 @@ public:
     bool acheterGemmeDeFeu();
     bool attaquerJoueur();
     bool consulterDefausse();
+    bool consulterPileSacrifice();
+    bool utiliserEffetSacrifice();
     void finirTour();
     std::vector<ChoixEffet*> choisirCible(Carte* carte,std::vector<Effet> effets);
     ChoixEffet* demanderChoixEffet(Effet effet, Partie& partie, Carte* carteSource);

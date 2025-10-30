@@ -26,6 +26,7 @@ public:
     void viderMain(Joueur* j);
     
     bool contientCarteDeFaction(Faction f);
+    bool contientCarteEffetSacrifice();
     void sacrifier(Carte* c);
 
     std::string toString() const;

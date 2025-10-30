@@ -49,12 +49,22 @@ bool Main::contientCarteDeFaction(Faction f){
     }
     return false;
 }
-void Main::sacrifier(Carte* c){
-    for (int i=0; i<(int)cartes.size(); i++){
-        if (cartes.at(i)==c){
-            //itérateur pointant sur la carte à supprimer
-            cartes.at(i)->setEstJouee(false);
-            cartes.erase(std::next(cartes.begin(),i));
+
+bool Main::contientCarteEffetSacrifice() {
+    for (auto c : cartes) {
+        if (!c->getEffetsSacrifice().empty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Main::sacrifier(Carte* c) {
+    for (auto it = cartes.begin(); it != cartes.end(); ++it) {
+        if (*it == c) {
+            c->setEstJouee(false);
+            cartes.erase(it);
+            return;
         }
     }
 }

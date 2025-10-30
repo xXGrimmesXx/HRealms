@@ -269,26 +269,40 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
         numeroAffiche++;
     }
     
+    // Seulement si une carte avec effet Sacrifice est jouable
+    if (joueur.getMain().contientCarteEffetSacrifice()) {
+        std::cout << "[" << numeroAffiche << "] Utiliser un effet sacrifice" << std::endl;
+        actionsDisponibles.push_back(6);
+        numeroAffiche++;
+    }
+
     // Seulement si le joueur à au moins une carte dans sa défausse
     if (joueur.getDefausse().getTaille() > 0) {
         std::cout << "[" << numeroAffiche << "] Consulter sa défausse" << std::endl;
-        actionsDisponibles.push_back(6);
+        actionsDisponibles.push_back(7);
+        numeroAffiche++;
+    }
+
+    // Seulement si la pile des cartes sacrifiées n'est pas vide
+    if (partie.getCartesSacrifie().getTaille() > 0) {
+        std::cout << "[" << numeroAffiche << "] Consulter pile de sacrifice" << std::endl;
+        actionsDisponibles.push_back(8);
         numeroAffiche++;
     }
 
     // Consulter main adversaire - TOUJOURS DISPONIBLE
     std::cout << "[" << numeroAffiche << "] Consulter main adversaire" << std::endl;
-    actionsDisponibles.push_back(7);
+    actionsDisponibles.push_back(9);
     numeroAffiche++;
     
     // Finir le tour - toujours disponible
     std::cout << "[" << numeroAffiche << "] Finir le tour" << std::endl;
-    actionsDisponibles.push_back(8);
+    actionsDisponibles.push_back(10);
     numeroAffiche++;
     
     // GodMode - toujours disponible
     std::cout << "[" << numeroAffiche << "] GodMode" << std::endl;
-    actionsDisponibles.push_back(9);
+    actionsDisponibles.push_back(11);
     std::cout << "Votre choix: ";
     
     int choixAffiche;
@@ -310,24 +324,13 @@ int ConsoleView::demanderChoixAction(Partie& partie) {
     return actionsDisponibles[choixAffiche - 1];
 }
 
-std::vector<int> ConsoleView::demanderIndexCarte() {
-    std::vector<int> indices;
-    char * line;
-    std::string input;
-    std::cout << "🎴 Numéro de la carte (séparer les numeros pas des espaces): ";
-    std::cin >> input;
+int ConsoleView::demanderIndexCarte() {
+    int indice = -1;
+    std::cout << "🎴 Numéro de la carte: ";
+    std::cin >> indice;
+    // A l'origine, on utilisait std::getline, mais cela posait problème pour certains effets.
     //std::getline(std::cin, input, '\n');
-    if (!input.empty()) {
-        line = trimString(input).data();
-        char * p;
-        p = strtok(line, " " ); 
-        while (p !=  NULL ) {
-            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
-            p = strtok( NULL , " " );
-        }
-    }
-    return indices;
-    
+    return indice-1;
 }
 
 std::vector<int> ConsoleView::demanderIndexChampion(Joueur& joueur) {
@@ -412,6 +415,14 @@ int ConsoleView::demanderIndexJoueur(std::vector<Joueur>& joueurs,int joueurActu
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     return index - 1; // Convertir en index 0-based
+}
+
+int ConsoleView::demanderIndexCarteEffetSacrifice() {
+    std::cout << "Choisissez l'index de la carte à sacrifier : ";
+    int idx;
+    std::cin >> idx;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return idx-1;
 }
 
 int ConsoleView::demanderSlotMarche() {
@@ -612,4 +623,28 @@ void ConsoleView::afficherDefausseChampion(const Joueur& joueur) {
         std::cout << std::endl;
         std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     }  
+}
+
+void ConsoleView::afficherCartesEffetSacrifice(const std::vector<Carte*>& cartes) {
+    std::cout << "Cartes avec effetSacrifice disponibles :\n";
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    const int CARDS_PER_ROW = 5;
+    CardRenderer::printCards(cartes, CARDS_PER_ROW);
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+}
+
+void ConsoleView::afficherPileSacrifice(const Partie& partie) {
+    std::cout << "🗂️ Pile de sacrifice:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+
+    const Pile& pile = partie.getCartesSacrifie();
+    int taille = pile.getTaille();
+
+    std::cout << "Nombre de cartes: " << taille << std::endl;
+    const auto& cartes = pile.getCartes();
+    const int CARDS_PER_ROW = 5;
+
+    CardRenderer::printCards(cartes, CARDS_PER_ROW);
+
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
 }
