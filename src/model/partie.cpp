@@ -86,3 +86,37 @@ std::ostream& operator<<(std::ostream& os, const Partie& p) {
     os << p.toString();
     return os;
 }
+
+// Setters pour la restauration depuis JSON
+void Partie::setCartesSacrifie(Pile* p) {
+    if (!p) return;
+    
+    // Vider la pile actuelle sans supprimer les cartes
+    while (cartesSacrifie.getTaille() > 0) {
+        cartesSacrifie.prendreDessus();
+    }
+    
+    // Copier les cartes de la nouvelle pile (transfert de propriété)
+    for (auto carte : p->getCartes()) {
+        cartesSacrifie.ajouter(carte);
+    }
+}
+
+void Partie::setGemmeDeFeu(GemmeDeFeu* g) {
+    if (!g) return;
+    
+    // Remplacer la gemme de feu actuelle
+    gemmeDeFeu = *g;
+}
+
+void Partie::setMarche(Marche* m) {
+    if (!m) return;
+    
+    // Supprimer l'ancien marché
+    if (marche) {
+        delete marche;
+    }
+    
+    // Assigner le nouveau marché (transfert de propriété)
+    marche = m;
+}

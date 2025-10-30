@@ -15,7 +15,7 @@ public:
     // Getters
     int getTaille() const;
     std::vector<Carte*> getCartes();
-    const std::vector<Carte*> getCartes() const;
+    const std::vector<Carte*>& getCartes() const;
 
     // Méthodes
     void ajouter(Carte* c);

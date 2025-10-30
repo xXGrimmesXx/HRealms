@@ -58,11 +58,18 @@ public:
     Deck* getDeck() { return &deck; }
     Pile* getDefausse() { return &defausse; }
     std::vector<Champion*> getChampions() { return champions; }
+    void ajouterChampion(Champion* c){champions.push_back(c);}
+    void setChampions(const std::vector<Champion*>& c) { champions = c; }
+    void setMain(Main* m);
+    void setDeck(Deck* d);
+    void setDefausse(Pile* p);
     std::vector<Champion*> getGardes()const;
     void setPv(int v) { pv = v; }
     int getPv() const { return pv; }
     bool getProchainAchatActionDessusDeck() const { return prochainAchatActionDessusDeck; }
     bool getProchainAchatDansMain() const { return prochainAchatDansMain;}
+    void setProchainAchatActionDessusDeck(bool b) { prochainAchatActionDessusDeck = b; }
+    void setProchainAchatDansMain(bool b) { prochainAchatDansMain = b; }
     std::vector<Champion*> getDefausseChampions() const;
     std::vector<Champion*> getChampionsMain() const;
     std::vector<Champion*> getGardesMain() const;

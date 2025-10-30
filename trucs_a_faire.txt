@@ -1,3 +1,5 @@
+MOBILISER CHAMPION -> attaque -> segmentation fault au moment de l'affichage des choix
+
 TODO LIST APRES CALL :
 (par ordre d'importance)
 

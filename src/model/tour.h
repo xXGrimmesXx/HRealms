@@ -20,6 +20,8 @@ public:
     int getDegats() const;
     Joueur* getJoueur() const;
     void setJoueur(Joueur* j);
+    void setOr(int o) { reserveOr = o; }
+    void setDegats(int d) { reserveDegats = d; }
     
     void utiliserDegats(int m);
     void utiliserOr(int m);

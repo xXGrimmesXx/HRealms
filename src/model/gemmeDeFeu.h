@@ -19,4 +19,8 @@ public:
     int getCout() const { return COUT; }
     
     Pile* getPile() { return &pile; }
+    const Pile* getPile() const { return &pile; }
+    
+    // Setter pour la restauration depuis JSON
+    void setPile(Pile* p);
 };

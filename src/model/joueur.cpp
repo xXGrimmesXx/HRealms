@@ -244,3 +244,16 @@ Carte* Joueur::retirerCarteAvecEffetSacrifice(int globalIdx, bool& fromChampions
     }
     return c;
 }
+
+// Setters pour la restauration depuis JSON
+void Joueur::setMain(Main* m) {
+    main = *m;
+}
+
+void Joueur::setDeck(Deck* d) {
+    deck = *d;
+}
+
+void Joueur::setDefausse(Pile* p) {
+    defausse = *p;
+}

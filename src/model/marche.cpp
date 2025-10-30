@@ -50,3 +50,18 @@ bool Marche::acquerirDepuisDeck(int idx, Joueur* j){
     deckMarche.retirerCarte(idx);
     return true;
 }
+
+// Setter pour la restauration depuis JSON
+void Marche::setDeckMarche(Deck* d) {
+    if (!d) return;
+    
+    // Vider le deck actuel sans supprimer les cartes
+    while (deckMarche.getTaille() > 0) {
+        deckMarche.piocher();
+    }
+    
+    // Copier les cartes du nouveau deck (transfert de propriété)
+    for (auto carte : d->getCartes()) {
+        deckMarche.ajouterDessous(carte);
+    }
+}

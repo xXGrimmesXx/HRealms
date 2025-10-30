@@ -18,6 +18,7 @@ public:
     // Gestion du jeu principal
     void lancerJeu();
     void initialiserPartie();
+    void chargerPartie();
     void boucleJeu();
     void finirPartie();
     

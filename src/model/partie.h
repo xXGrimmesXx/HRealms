@@ -42,8 +42,13 @@ public:
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
     void ajouterJoueur(Joueur* j) { joueurs.push_back(j); }
+    void setJoueurs(const std::vector<Joueur*>& j) { joueurs = j; }
     Pile* getCartesSacrifie() {return &cartesSacrifie;}
     GemmeDeFeu* getGemmeDeFeu(){return &gemmeDeFeu;}
+    void setCartesSacrifie(Pile* p);
+    void setGemmeDeFeu(GemmeDeFeu* g);
+    void setMarche(Marche* m);
+    void setGodMode(bool actif) { godMode.actif = actif; }
 
     Joueur* getGagnant();
 

@@ -23,4 +23,8 @@ public:
 
     const std::vector<Carte*> getLigne() const { return ligne; }
     Deck* getDeckMarche() { return &deckMarche; }
+    
+    // Setters pour la restauration depuis JSON
+    void setLigne(const std::vector<Carte*>& l) { ligne = l; }
+    void setDeckMarche(Deck* d);
 };

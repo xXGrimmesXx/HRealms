@@ -42,6 +42,7 @@ public:
     Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); return this; }
     Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); return this; }
     bool setEstJouee(bool b) { return estJouee = b; }
+    void setId(int i) { id = i; }
 
     // Méthodes
     void jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target);

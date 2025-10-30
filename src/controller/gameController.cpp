@@ -2,6 +2,7 @@
 #include "../model/joueur.h"
 #include "../model/marche.h"
 #include "../model/carte.h"
+#include "../serialization/saveManager.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -58,6 +59,29 @@ void GameController::initialiserPartie() {
     
     jeuEnCours = true;
     std::string message = "Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !";
+    view->afficherMessage(message);
+    view->attendreEntree();
+
+    HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
+}
+
+void GameController::chargerPartie() {
+    std::cout << "[INFO] Chargement de la partie depuis autosave.json..." << std::endl;
+    
+    Partie* partieChargee = HRealms::Serialization::SaveManager::chargerPartie("autosave.json");
+    
+    if (partieChargee == nullptr) {
+        std::string message = "Erreur lors du chargement de la sauvegarde. Nouvelle partie créée.";
+        view->afficherErreur(message);
+        initialiserPartie();
+        return;
+    }
+    
+    // Transférer la partie chargée dans le unique_ptr
+    partie.reset(partieChargee);
+    jeuEnCours = true;
+    
+    std::string message = "Partie chargée avec succès !";
     view->afficherMessage(message);
     view->attendreEntree();
 }
@@ -738,6 +762,9 @@ void GameController::finirTour() {
     std::string message = "Tour terminé.";
     view->afficherMessage(message);
     partie->finTour();
+    
+    // Sauvegarder automatiquement la partie après chaque tour
+    HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
 }
 
 void GameController::toggleGodMode() {
