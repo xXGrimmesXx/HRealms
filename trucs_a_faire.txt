@@ -1,7 +1,6 @@
 TODO LIST APRES CALL :
 (par ordre d'importance)
 
-L - Check mes remarques sur EFFETS EN ETAT DE FONCTIONNEMENT.txt
 L - Check effetSacrifice et voir pk ça marche pas sur wolf form, 
 L - l'option consulterpilesacrifice marche pas
 L - 0 pour annuler une action.
