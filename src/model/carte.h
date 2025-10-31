@@ -47,7 +47,7 @@ public:
     // Méthodes
     void jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target);
     void jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies);
-    void sacrifier(Joueur* j, Partie* p);
+    void sacrifier(std::vector<ChoixEffet*> cibles, Partie* p);
 };
 
 #endif

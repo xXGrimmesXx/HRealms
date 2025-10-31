@@ -16,16 +16,16 @@ void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     marche->remplirLigne();
     nb_tour = 1;
     idx_joueur_actuel = 0;
-    tour_courant = new Tour(joueurs[0]);
+    tour_courant = new Tour(joueurs.at(0));
 }
 
 void Partie::commencerTour() {
-    Joueur* joueurActuel = joueurs[idx_joueur_actuel];
+    Joueur* joueurActuel = joueurs.at(idx_joueur_actuel);
     tour_courant = new Tour(joueurActuel);
 }
 
 void Partie::finTour() {
-    Joueur* joueurActuel = joueurs[idx_joueur_actuel];
+    Joueur* joueurActuel = joueurs.at(idx_joueur_actuel);
     joueurActuel->finTour();
     idx_joueur_actuel = (idx_joueur_actuel + 1) % joueurs.size();
     if (idx_joueur_actuel == 0) {
@@ -57,8 +57,8 @@ void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur* j) {
 
 Joueur* Partie::getGagnant() {
     for (int i = 0; i < (int)joueurs.size(); ++i) {
-        if (joueurs[i]->getPv() <= 0) {
-            return joueurs[(i - 1) % joueurs.size()]; // Le joueur suivant gagne
+        if (joueurs.at(i)->getPv() <= 0) {
+            return joueurs.at((i - 1) % joueurs.size()); // Le joueur suivant gagne
         }
     }
     return nullptr;

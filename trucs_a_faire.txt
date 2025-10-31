@@ -1,15 +1,8 @@
-MOBILISER CHAMPION -> attaque -> segmentation fault au moment de l'affichage des choix
-
 TODO LIST APRES CALL :
 (par ordre d'importance)
 
-L - Check effetSacrifice et voir pk ça marche pas sur wolf form, 
-L - l'option consulterpilesacrifice marche pas
-L - quand sacrifice gemme de feu la remettre dans la pile gemme de feu
 L - 0 pour annuler une action.
 L - Se renseigner trucs de sauvegarde.
-
-L ou G - coder la possibilité de jouer toutes les cartes en même temps
 
 
 G ou L- Améliorer attaquer joueur. i+1 et i-1[nbJoueurs] + visu pas fou fou

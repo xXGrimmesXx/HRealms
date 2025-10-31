@@ -216,6 +216,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     int numeroAffiche = 1;
     
     // Seulement si le joueur a des cartes en main
+    std::cout << "Avant demande carte jouable" << std::endl;
     if (joueur->getNombreCartesJouables() > 0) {
         std::cout << "[" << numeroAffiche << "] Jouer une carte" << std::endl;
         actionsDisponibles.push_back(1);
@@ -224,11 +225,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     
     // Seulement s'il y a des champions
     if (joueur->getChampions().size() > 0) {
-        bool aChampionMobilisable = std::any_of(
-            joueur->getChampions().begin(),
-            joueur->getChampions().end(),
-            [](Champion* c) { return c && !c->estMobilise(); }
-        );
+        bool aChampionMobilisable = joueur->aChampionMobilisable();
         
         if (aChampionMobilisable) {
             std::cout << "[" << numeroAffiche << "] Mobiliser un champion" << std::endl;
@@ -236,7 +233,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
             numeroAffiche++;
         }
     }
-    
+
     // Seulement si le joueur a de l'or et qu'il y a des cartes au marché (cas très rare où toutes les cartes ont été jouées)
     if (tour && tour->getOr() > 0 && marche && marche->getLigne().size() > 0) {
         // Vérifier s'il y a au moins une carte que le joueur peut se payer
@@ -294,7 +291,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     std::cout << "[" << numeroAffiche << "] Consulter main adversaire" << std::endl;
     actionsDisponibles.push_back(9);
     numeroAffiche++;
-    
+
     // Finir le tour - toujours disponible
     std::cout << "[" << numeroAffiche << "] Finir le tour" << std::endl;
     actionsDisponibles.push_back(10);
@@ -321,16 +318,22 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     }
 
     // Convertir le choix affiché en action réelle
-    return actionsDisponibles[choixAffiche - 1];
+    return actionsDisponibles.at(choixAffiche - 1);
 }
 
-int ConsoleView::demanderIndexCarte() {
-    int indice = -1;
+std::vector<int> ConsoleView::demanderIndexCarte() {
+    std::vector<int> indices;
+    std::string line;
     std::cout << "🎴 Numéro de la carte: ";
-    std::cin >> indice;
-    // A l'origine, on utilisait std::getline, mais cela posait problème pour certains effets.
-    //std::getline(std::cin, input, '\n');
-    return indice-1;
+    std::getline(std::cin, line);
+    line = trimString(line);
+    char * p;
+    p = strtok(line.data(), " " );
+    while (p !=  NULL ) {
+        indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+        p = strtok( NULL , " " );
+    }
+    return indices;
 }
 
 std::vector<int> ConsoleView::demanderIndexChampion(Joueur* joueur) {
@@ -341,7 +344,6 @@ std::vector<int> ConsoleView::demanderIndexChampion(Joueur* joueur) {
         indices.push_back(-1);
         return indices; // Retourner vide si pas de champions
     }
-    afficherChampions(joueur->getChampions());
     std::cout << "🛡️ Numéro du champion (séparer les numeros pas des espaces): ";
     std::getline(std::cin, input, '\n');
     if (!input.empty()) {
@@ -441,7 +443,12 @@ int ConsoleView::demanderSlotMarche() {
 bool ConsoleView::confirmerAction( std::string& action) {
     char reponse;
     std::cout << "❓ " << action << " (o/n): ";
-    std::cin >> reponse;
+    if (!(std::cin >> reponse)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     return (reponse == 'o' || reponse == 'O' || reponse == 'y' || reponse == 'Y');
 }
@@ -592,10 +599,12 @@ bool ConsoleView::demanderChoix(Effet effet) {
     }
     
     std::cin >> choix;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     while (choix != 1 && choix != 2) {
         std::cout << "❌ ERREUR: Choix invalide. Veuillez choisir 1 ou 2: ";
         std::cin >> choix;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     return (choix == 2);
 }
@@ -646,4 +655,21 @@ void ConsoleView::afficherPileSacrifice(Partie* partie) {
     CardRenderer::printCards(cartes, CARDS_PER_ROW);
 
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+}
+
+int ConsoleView::demanderChoixInitialisationPartie() {
+    std::cout << "🔧 INITIALISATION DE LA PARTIE:" << std::endl;
+    std::cout << "[1] Nouvelle partie" << std::endl;
+    std::cout << "[2] Charger une partie sauvegardée" << std::endl;
+    std::cout << "Choix: ";
+
+    int choix;
+    if (!(std::cin >> choix)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return choix;
 }

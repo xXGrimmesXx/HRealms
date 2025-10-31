@@ -57,5 +57,6 @@
         "xutility": "cpp",
         "iomanip": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "makefile.configureOnOpen": true
 }

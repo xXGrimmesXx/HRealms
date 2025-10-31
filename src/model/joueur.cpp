@@ -67,6 +67,15 @@ bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target
     return false;
 }
 
+bool Joueur::aChampionMobilisable(){
+    for (auto c : champions){
+        if (!c->estMobilise()){
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Joueur::acheterDepuisMarche(int slot,Partie* p){
     return p->getMarche()->acquerirDepuisLigne(slot,this,p);
 }
@@ -101,7 +110,15 @@ void Joueur::sacrifier(Carte* c,Partie* p){
         throw std::invalid_argument("Carte invalide");
     }
     main.sacrifier(c);
-    p->getCartesSacrifie()->ajouter(c);
+
+    //si la carte est une gemme de feu, la remettre dans la pile gemme de feu
+    //sinon on la met dans la pile de cartes sacrifiées
+    if (c->getNom() == "Gemme de Feu") {
+        p->getGemmeDeFeu()->getPile()->ajouter(c);
+    }
+    else{
+        p->getCartesSacrifie()->ajouter(c);
+    }
 }
 void Joueur::assomerChampions(){
     for(auto c : champions){
@@ -174,7 +191,7 @@ int Joueur::getNombreCartesJouables() const {
     int count = 0;
     for (int i = 0; i < main.getTaille(); ++i) {
         Carte* carte = main.getCarte(i);
-        if (carte && !carte->getEstJouee()) {
+        if (carte !=nullptr && !carte->getEstJouee()) {
             count++;
         }
     }
@@ -229,7 +246,7 @@ Carte* Joueur::retirerCarteAvecEffetSacrifice(int globalIdx, bool& fromChampions
     }
 
     if (globalIdx < 0 || globalIdx >= (int)candidates.size()) return nullptr;
-    Carte* c = candidates[globalIdx];
+    Carte* c = candidates.at(globalIdx);
 
     // Retire la carte de la bonne zone
     if (std::find(main.getCartes().begin(), main.getCartes().end(), c) != main.getCartes().end()) {

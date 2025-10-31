@@ -13,13 +13,11 @@ Carte::Carte( const std::string nom, int cout, Faction f) : nom(nom), cout(cout)
 // Méthodes
 
 
-void Carte::sacrifier(Joueur* j, Partie* p) {
+void Carte::sacrifier(std::vector<ChoixEffet*> cibles, Partie* p) {
     // Effet reste à définir
-    for (const auto& effet : effetsSacrifice) {
-        effet.appliquer(this, j, p, false);
+    for (int i = 0; i < (int)effetsSacrifice.size(); ++i) {
+        effetsSacrifice.at(i).appliquer(this, cibles.at(i)->getCible(), p, cibles.at(i)->getChoix());
     }
-    j->getMain()->sacrifier(this);
-    p->getCartesSacrifie()->ajouter(this);
 }
 
 void Carte::jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target) {

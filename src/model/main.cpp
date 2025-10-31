@@ -34,7 +34,7 @@ Carte* Main::getCarte(int idx) const{
     if(idx < 0 || idx >= (int)cartes.size()) {
         throw std::out_of_range("Index hors limites");
     }
-    return cartes[idx];
+    return cartes.at(idx);
 }
 
 std::string Main::toString() const{
@@ -58,7 +58,7 @@ bool Main::contientCarteDeFaction(Faction f){
 
 bool Main::contientCarteEffetSacrifice() {
     for (auto c : cartes) {
-        if (!c->getEffetsSacrifice().empty()) {
+        if (!c->getEffetsSacrifice().empty() && !c->getEstJouee()) {
             return true;
         }
     }
@@ -66,10 +66,11 @@ bool Main::contientCarteEffetSacrifice() {
 }
 
 void Main::sacrifier(Carte* c) {
-    for (auto it = cartes.begin(); it != cartes.end(); ++it) {
-        if (*it == c) {
-            c->setEstJouee(false);
-            cartes.erase(it);
+    // Retire la carte de la main
+    for (auto i=0; i<(int)cartes.size(); i++) {
+        if (cartes.at(i) == c) {
+            cartes.at(i)->setEstJouee(false);
+            cartes.erase(cartes.begin() + i);
             return;
         }
     }

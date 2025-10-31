@@ -368,7 +368,8 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                             }
                         }
                         if (carteDansMain) {
-                            carteTgt->sacrifier(joueurProprietaire, partie);
+                            // Sacrifier la carte sans utiliser ses effets de sacrifice
+                            joueurProprietaire->sacrifier(carteTgt, partie);
                             partie->getTourCourant()->ajouterDegats(montant1);
                         } else {
                             std::cerr << "Erreur : la carte à sacrifier n'est pas dans la main du joueur actuel." << std::endl;

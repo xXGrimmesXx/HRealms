@@ -16,7 +16,7 @@ void Deck::melanger(){
         std::uniform_int_distribution<size_t> dist(0, i);
         size_t j = rng() % (i + 1); 
         //size_t j = dist(rng);  // ← Cette ligne bloque/plante
-        std::swap(cartes[i], cartes[j]);
+        std::swap(cartes.at(i), cartes.at(j));
     }
 }
 

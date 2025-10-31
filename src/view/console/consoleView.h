@@ -47,7 +47,7 @@ public:
     int demanderNombreJoueurs() override;
     std::string demanderNomJoueur(int numero) override;
     int demanderChoixAction(Partie* partie) override;
-    int demanderIndexCarte() override;
+    std::vector<int> demanderIndexCarte() override;
     int demanderIndexJoueur(std::vector<Joueur*> joueurs) override;
     int demanderIndexJoueur(std::vector<Joueur*> joueurs, int joueurActuelIndex) override;
     std::vector<int> demanderIndexChampion(Joueur* joueur) override;
@@ -61,7 +61,7 @@ public:
     int demanderIndexDeck(Deck* deckMarche)override;
     std::string demanderMotDePasseGodMode()override;
     bool demanderChoix(Effet effet) override;
-    
+    int demanderChoixInitialisationPartie() override;
 
 
 private:

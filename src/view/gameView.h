@@ -38,7 +38,7 @@ public:
     virtual int demanderNombreJoueurs() = 0;
     virtual std::string demanderNomJoueur(int numero) = 0;
     virtual int demanderChoixAction(Partie* partie) = 0;
-    virtual int demanderIndexCarte() = 0;
+    virtual std::vector<int> demanderIndexCarte() = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur*> joueurs) = 0;
     virtual int demanderIndexJoueur(std::vector<Joueur*> joueurs, int joueurActuelIndex) = 0;
     virtual std::vector<int> demanderIndexChampion(Joueur* joueur) = 0;
@@ -52,4 +52,5 @@ public:
     virtual int demanderIndexDeck(Deck* deckMarche) = 0;
     virtual std::string demanderMotDePasseGodMode() = 0;
     virtual bool demanderChoix(Effet effet) = 0;
+    virtual int demanderChoixInitialisationPartie() = 0;
 };
