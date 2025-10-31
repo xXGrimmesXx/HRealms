@@ -1,24 +1,5 @@
 {
-    "cartes_sacrifie": [
-        {
-            "cout": 0,
-            "effets_allie": [],
-            "effets_primaires": [
-                {
-                    "montant1": 1,
-                    "montant2": 0,
-                    "typeCible": 0,
-                    "typeEffet": 0
-                }
-            ],
-            "effets_sacrifice": [],
-            "est_jouee": false,
-            "faction": 0,
-            "id": 97,
-            "nom": "Or",
-            "type": "objet"
-        }
-    ],
+    "cartes_sacrifie": [],
     "gemme_de_feu": {
         "pile": [
             {
@@ -320,6 +301,106 @@
                 "id": 91,
                 "nom": "Gemme de feu",
                 "type": "objet"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 0,
+                "id": 92,
+                "nom": "Gemme de feu",
+                "type": "objet"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 0,
+                "id": 93,
+                "nom": "Gemme de feu",
+                "type": "objet"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 0,
+                "id": 94,
+                "nom": "Gemme de feu",
+                "type": "objet"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 0,
+                "id": 95,
+                "nom": "Gemme de feu",
+                "type": "objet"
             }
         ]
     },
@@ -327,37 +408,7 @@
     "idx_joueur_actuel": 0,
     "joueurs": [
         {
-            "champions": [
-                {
-                    "cout": 4,
-                    "effets_activer": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_allie": [
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 3
-                        }
-                    ],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": true,
-                    "faction": 3,
-                    "garde": false,
-                    "id": 49,
-                    "mobilise": false,
-                    "nom": "Rayla, Endweaver",
-                    "type": "champion",
-                    "vie": 4
-                }
-            ],
+            "champions": [],
             "deck": [
                 {
                     "cout": 0,
@@ -367,88 +418,14 @@
                             "montant1": 1,
                             "montant2": 0,
                             "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 102,
-                    "nom": "Or",
-                    "type": "objet"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": 0,
-                            "typeCible": 0,
                             "typeEffet": 1
                         }
                     ],
                     "effets_sacrifice": [],
                     "est_jouee": false,
                     "faction": 0,
-                    "id": 104,
-                    "nom": "Epee courte",
-                    "type": "objet"
-                }
-            ],
-            "defausse": [
-                {
-                    "cout": 5,
-                    "effets_activer": [
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 4,
-                            "typeEffet": 16
-                        }
-                    ],
-                    "effets_allie": [
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 3
-                        }
-                    ],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 3,
-                    "garde": false,
-                    "id": 59,
-                    "mobilise": false,
-                    "nom": "Varrick, the Necromancer",
-                    "type": "champion",
-                    "vie": 3
-                },
-                {
-                    "cout": 2,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 94,
-                    "nom": "Gemme de feu",
+                    "id": 105,
+                    "nom": "Dague",
                     "type": "objet"
                 },
                 {
@@ -468,111 +445,6 @@
                     "id": 103,
                     "nom": "Rubis",
                     "type": "objet"
-                },
-                {
-                    "cout": 3,
-                    "effets_allie": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_primaires": [
-                        {
-                            "montant1": 6,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        },
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 6,
-                            "typeEffet": 4
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 4,
-                    "id": 63,
-                    "nom": "Elven Curse",
-                    "type": "action"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 100,
-                    "nom": "Or",
-                    "type": "objet"
-                },
-                {
-                    "cout": 3,
-                    "effets_allie": [
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 17
-                        }
-                    ],
-                    "effets_primaires": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 2,
-                    "id": 22,
-                    "nom": "Bribe",
-                    "type": "action"
-                },
-                {
-                    "cout": 1,
-                    "effets_allie": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_primaires": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        },
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 6,
-                            "typeEffet": 4
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 4,
-                    "id": 74,
-                    "nom": "Spark",
-                    "type": "action"
                 },
                 {
                     "cout": 0,
@@ -597,6 +469,46 @@
                     "effets_allie": [],
                     "effets_primaires": [
                         {
+                            "montant1": 2,
+                            "montant2": 0,
+                            "typeCible": 0,
+                            "typeEffet": 1
+                        }
+                    ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 104,
+                    "nom": "Epee courte",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
+                        {
+                            "montant1": 1,
+                            "montant2": 0,
+                            "typeCible": 0,
+                            "typeEffet": 0
+                        }
+                    ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 102,
+                    "nom": "Or",
+                    "type": "objet"
+                }
+            ],
+            "defausse": [],
+            "gardes": [],
+            "main": [
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
+                        {
                             "montant1": 1,
                             "montant2": 0,
                             "typeCible": 0,
@@ -611,29 +523,40 @@
                     "type": "objet"
                 },
                 {
-                    "cout": 2,
-                    "effets_allie": [
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
                         {
-                            "montant1": 2,
-                            "montant2": -1,
+                            "montant1": 1,
+                            "montant2": 0,
                             "typeCible": 0,
                             "typeEffet": 0
                         }
                     ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 100,
+                    "nom": "Or",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
                     "effets_primaires": [
                         {
-                            "montant1": 5,
-                            "montant2": -1,
+                            "montant1": 1,
+                            "montant2": 0,
                             "typeCible": 0,
-                            "typeEffet": 1
+                            "typeEffet": 0
                         }
                     ],
                     "effets_sacrifice": [],
                     "est_jouee": false,
-                    "faction": 2,
-                    "id": 28,
-                    "nom": "Intimidation",
-                    "type": "action"
+                    "faction": 0,
+                    "id": 97,
+                    "nom": "Or",
+                    "type": "objet"
                 },
                 {
                     "cout": 0,
@@ -652,10 +575,7 @@
                     "id": 99,
                     "nom": "Or",
                     "type": "objet"
-                }
-            ],
-            "gardes": [],
-            "main": [
+                },
                 {
                     "cout": 0,
                     "effets_allie": [],
@@ -673,346 +593,16 @@
                     "id": 101,
                     "nom": "Or",
                     "type": "objet"
-                },
-                {
-                    "cout": 2,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "est_jouee": false,
-                    "faction": 3,
-                    "id": 50,
-                    "nom": "Influence",
-                    "type": "action"
-                },
-                {
-                    "cout": 5,
-                    "effets_activer": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_allie": [
-                        {
-                            "montant1": 4,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 4,
-                    "garde": true,
-                    "id": 62,
-                    "mobilise": false,
-                    "nom": "Dire Wolf",
-                    "type": "champion",
-                    "vie": 5
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 105,
-                    "nom": "Dague",
-                    "type": "objet"
-                },
-                {
-                    "cout": 1,
-                    "effets_allie": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        },
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 6,
-                            "typeEffet": 5
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 3,
-                    "id": 48,
-                    "nom": "Death Touch",
-                    "type": "action"
                 }
             ],
-            "nom": "Louis",
+            "nom": "A",
             "prochain_achat_action_dessus_deck": false,
             "prochain_achat_dans_main": false,
-            "pv": 38
+            "pv": 50
         },
         {
-            "champions": [
-                {
-                    "cout": 2,
-                    "effets_activer": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_allie": [],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": true,
-                    "faction": 3,
-                    "garde": true,
-                    "id": 44,
-                    "mobilise": false,
-                    "nom": "Death Cultist",
-                    "type": "champion",
-                    "vie": 3
-                }
-            ],
+            "champions": [],
             "deck": [
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 109,
-                    "nom": "Or",
-                    "type": "objet"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 110,
-                    "nom": "Or",
-                    "type": "objet"
-                },
-                {
-                    "cout": 2,
-                    "effets_activer": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_allie": [],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 3,
-                    "garde": true,
-                    "id": 45,
-                    "mobilise": false,
-                    "nom": "Death Cultist",
-                    "type": "champion",
-                    "vie": 3
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 111,
-                    "nom": "Or",
-                    "type": "objet"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 113,
-                    "nom": "Rubis",
-                    "type": "objet"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 114,
-                    "nom": "Epee courte",
-                    "type": "objet"
-                },
-                {
-                    "cout": 2,
-                    "effets_activer": [
-                        {
-                            "montant1": 3,
-                            "montant2": 1,
-                            "typeCible": 0,
-                            "typeEffet": 14
-                        }
-                    ],
-                    "effets_allie": [],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 1,
-                    "garde": false,
-                    "id": 15,
-                    "mobilise": false,
-                    "nom": "Tithe Priest",
-                    "type": "champion",
-                    "vie": 3
-                },
-                {
-                    "cout": 4,
-                    "effets_allie": [
-                        {
-                            "montant1": 1,
-                            "montant2": -1,
-                            "typeCible": 4,
-                            "typeEffet": 6
-                        }
-                    ],
-                    "effets_primaires": [
-                        {
-                            "montant1": 7,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 2,
-                    "id": 27,
-                    "nom": "Hit Job",
-                    "type": "action"
-                }
-            ],
-            "defausse": [
-                {
-                    "cout": 2,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 92,
-                    "nom": "Gemme de feu",
-                    "type": "objet"
-                },
-                {
-                    "cout": 0,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 1,
-                            "montant2": 0,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_sacrifice": [],
-                    "est_jouee": false,
-                    "faction": 0,
-                    "id": 115,
-                    "nom": "Dague",
-                    "type": "objet"
-                },
                 {
                     "cout": 0,
                     "effets_allie": [],
@@ -1045,84 +635,84 @@
                     "effets_sacrifice": [],
                     "est_jouee": false,
                     "faction": 0,
-                    "id": 108,
+                    "id": 110,
+                    "nom": "Or",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
+                        {
+                            "montant1": 1,
+                            "montant2": 0,
+                            "typeCible": 0,
+                            "typeEffet": 0
+                        }
+                    ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 111,
+                    "nom": "Or",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
+                        {
+                            "montant1": 2,
+                            "montant2": 0,
+                            "typeCible": 0,
+                            "typeEffet": 1
+                        }
+                    ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 114,
+                    "nom": "Epee courte",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
+                        {
+                            "montant1": 1,
+                            "montant2": 0,
+                            "typeCible": 0,
+                            "typeEffet": 0
+                        }
+                    ],
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 109,
                     "nom": "Or",
                     "type": "objet"
                 }
             ],
-            "gardes": [
-                {
-                    "cout": 2,
-                    "effets_activer": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "effets_allie": [],
-                    "effets_primaires": [],
-                    "effets_sacrifice": [],
-                    "est_jouee": true,
-                    "faction": 3,
-                    "garde": true,
-                    "id": 44,
-                    "mobilise": false,
-                    "nom": "Death Cultist",
-                    "type": "champion",
-                    "vie": 3
-                }
-            ],
+            "defausse": [],
+            "gardes": [],
             "main": [
                 {
-                    "cout": 1,
-                    "effets_allie": [
-                        {
-                            "montant1": 4,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
+                    "cout": 0,
+                    "effets_allie": [],
                     "effets_primaires": [
                         {
-                            "montant1": 2,
-                            "montant2": -1,
+                            "montant1": 1,
+                            "montant2": 0,
                             "typeCible": 0,
                             "typeEffet": 0
                         }
                     ],
                     "effets_sacrifice": [],
                     "est_jouee": false,
-                    "faction": 2,
-                    "id": 34,
-                    "nom": "Profit",
-                    "type": "action"
-                },
-                {
-                    "cout": 2,
-                    "effets_allie": [],
-                    "effets_primaires": [
-                        {
-                            "montant1": 2,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 0
-                        }
-                    ],
-                    "effets_sacrifice": [
-                        {
-                            "montant1": 3,
-                            "montant2": -1,
-                            "typeCible": 0,
-                            "typeEffet": 1
-                        }
-                    ],
-                    "est_jouee": false,
                     "faction": 0,
-                    "id": 95,
-                    "nom": "Gemme de feu",
+                    "id": 108,
+                    "nom": "Or",
                     "type": "objet"
                 },
                 {
@@ -1144,66 +734,73 @@
                     "type": "objet"
                 },
                 {
-                    "cout": 2,
+                    "cout": 0,
                     "effets_allie": [],
                     "effets_primaires": [
                         {
-                            "montant1": 2,
-                            "montant2": -1,
+                            "montant1": 1,
+                            "montant2": 0,
                             "typeCible": 0,
                             "typeEffet": 0
                         }
                     ],
-                    "effets_sacrifice": [
+                    "effets_sacrifice": [],
+                    "est_jouee": false,
+                    "faction": 0,
+                    "id": 112,
+                    "nom": "Or",
+                    "type": "objet"
+                },
+                {
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
                         {
-                            "montant1": 3,
-                            "montant2": -1,
+                            "montant1": 1,
+                            "montant2": 0,
                             "typeCible": 0,
                             "typeEffet": 1
                         }
                     ],
+                    "effets_sacrifice": [],
                     "est_jouee": false,
                     "faction": 0,
-                    "id": 93,
-                    "nom": "Gemme de feu",
+                    "id": 115,
+                    "nom": "Dague",
                     "type": "objet"
                 },
                 {
-                    "cout": 2,
-                    "effets_activer": [
+                    "cout": 0,
+                    "effets_allie": [],
+                    "effets_primaires": [
                         {
-                            "montant1": 3,
-                            "montant2": 1,
+                            "montant1": 2,
+                            "montant2": 0,
                             "typeCible": 0,
-                            "typeEffet": 14
+                            "typeEffet": 0
                         }
                     ],
-                    "effets_allie": [],
-                    "effets_primaires": [],
                     "effets_sacrifice": [],
                     "est_jouee": false,
-                    "faction": 1,
-                    "garde": false,
-                    "id": 14,
-                    "mobilise": false,
-                    "nom": "Tithe Priest",
-                    "type": "champion",
-                    "vie": 3
+                    "faction": 0,
+                    "id": 113,
+                    "nom": "Rubis",
+                    "type": "objet"
                 }
             ],
-            "nom": "Maryne",
+            "nom": "B",
             "prochain_achat_action_dessus_deck": false,
             "prochain_achat_dans_main": false,
-            "pv": 5
+            "pv": 50
         }
     ],
     "marche": {
         "deck_marche": [
             {
-                "cout": 2,
+                "cout": 1,
                 "effets_allie": [
                     {
-                        "montant1": 4,
+                        "montant1": 2,
                         "montant2": -1,
                         "typeCible": 0,
                         "typeEffet": 1
@@ -1214,10 +811,167 @@
                         "montant1": 2,
                         "montant2": -1,
                         "typeCible": 0,
-                        "typeEffet": 0
+                        "typeEffet": 1
                     },
                     {
                         "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 5
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 48,
+                "nom": "Death Touch",
+                "type": "action"
+            },
+            {
+                "cout": 6,
+                "effets_activer": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "garde": true,
+                "id": 20,
+                "mobilise": false,
+                "nom": "Borg, Ogre Mercenary",
+                "type": "champion",
+                "vie": 6
+            },
+            {
+                "cout": 2,
+                "effets_activer": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": true,
+                "id": 44,
+                "mobilise": false,
+                "nom": "Death Cultist",
+                "type": "champion",
+                "vie": 3
+            },
+            {
+                "cout": 5,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 2,
+                "nom": "Command",
+                "type": "action"
+            },
+            {
+                "cout": 4,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 4,
+                        "typeEffet": 7
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 10,
+                "nom": "Rally the Troops",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": 1,
+                        "typeCible": 0,
+                        "typeEffet": 14
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": false,
+                "id": 14,
+                "mobilise": false,
+                "nom": "Tithe Priest",
+                "type": "champion",
+                "vie": 3
+            },
+            {
+                "cout": 6,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 2,
                         "montant2": -1,
                         "typeCible": 6,
                         "typeEffet": 20
@@ -1226,63 +980,9 @@
                 "effets_sacrifice": [],
                 "est_jouee": false,
                 "faction": 4,
-                "id": 67,
-                "nom": "Elven Gift",
+                "id": 72,
+                "nom": "Rampage",
                 "type": "action"
-            },
-            {
-                "cout": 2,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 52,
-                "nom": "Influence",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_activer": [
-                    {
-                        "montant1": 1,
-                        "montant2": 1,
-                        "typeCible": 0,
-                        "typeEffet": 9
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 3,
-                "garde": false,
-                "id": 40,
-                "mobilise": false,
-                "nom": "Cult Priest",
-                "type": "champion",
-                "vie": 4
             },
             {
                 "cout": 6,
@@ -1317,123 +1017,29 @@
                 "cout": 3,
                 "effets_activer": [
                     {
-                        "montant1": 1,
-                        "montant2": 1,
-                        "typeCible": 0,
-                        "typeEffet": 9
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 4,
+                        "montant1": 2,
                         "montant2": -1,
                         "typeCible": 0,
                         "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 11
                     }
                 ],
+                "effets_allie": [],
                 "effets_primaires": [],
                 "effets_sacrifice": [],
                 "est_jouee": false,
-                "faction": 3,
-                "garde": false,
-                "id": 41,
+                "faction": 1,
+                "garde": true,
+                "id": 8,
                 "mobilise": false,
-                "nom": "Cult Priest",
+                "nom": "Man-at-Arms",
                 "type": "champion",
                 "vie": 4
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 5
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 47,
-                "nom": "Death Touch",
-                "type": "action"
-            },
-            {
-                "cout": 5,
-                "effets_allie": [
-                    {
-                        "montant1": 0,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 18
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 25,
-                "nom": "Deception",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_allie": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 10
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "id": 1,
-                "nom": "Close Ranks",
-                "type": "action"
             },
             {
                 "cout": 2,
@@ -1462,56 +1068,9 @@
                 "effets_sacrifice": [],
                 "est_jouee": false,
                 "faction": 4,
-                "id": 66,
+                "id": 65,
                 "nom": "Elven Gift",
                 "type": "action"
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 32,
-                "nom": "Profit",
-                "type": "action"
-            },
-            {
-                "cout": 6,
-                "effets_activer": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "garde": true,
-                "id": 20,
-                "mobilise": false,
-                "nom": "Borg, Ogre Mercenary",
-                "type": "champion",
-                "vie": 6
             },
             {
                 "cout": 7,
@@ -1551,6 +1110,266 @@
                 "type": "action"
             },
             {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 13
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 13,
+                "nom": "Recruit",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 17
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 22,
+                "nom": "Bribe",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_activer": [
+                    {
+                        "montant1": 1,
+                        "montant2": 2,
+                        "typeCible": 0,
+                        "typeEffet": 9
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "garde": false,
+                "id": 38,
+                "mobilise": false,
+                "nom": "Street Thug",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 5,
+                "effets_allie": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 5
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 43,
+                "nom": "Dark Reward",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 34,
+                "nom": "Profit",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 74,
+                "nom": "Spark",
+                "type": "action"
+            },
+            {
+                "cout": 5,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "garde": true,
+                "id": 62,
+                "mobilise": false,
+                "nom": "Dire Wolf",
+                "type": "champion",
+                "vie": 5
+            },
+            {
+                "cout": 8,
+                "effets_activer": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": true,
+                "id": 0,
+                "mobilise": false,
+                "nom": "Arkus, Imperial Dragon",
+                "type": "champion",
+                "vie": 6
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 50,
+                "nom": "Influence",
+                "type": "action"
+            },
+            {
                 "cout": 1,
                 "effets_allie": [
                     {
@@ -1582,6 +1401,357 @@
                 "type": "action"
             },
             {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 28,
+                "nom": "Intimidation",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 13
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 11,
+                "nom": "Recruit",
+                "type": "action"
+            },
+            {
+                "cout": 7,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": 3,
+                        "typeCible": 6,
+                        "typeEffet": 19
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": false,
+                "id": 53,
+                "mobilise": false,
+                "nom": "Krythos, Master Vampire",
+                "type": "champion",
+                "vie": 6
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 52,
+                "nom": "Influence",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_activer": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 12
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "garde": false,
+                "id": 79,
+                "mobilise": false,
+                "nom": "Wolf Shaman",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 8,
+                "effets_activer": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 5
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": true,
+                "id": 58,
+                "mobilise": false,
+                "nom": "Tyrannor, the Devourer",
+                "type": "champion",
+                "vie": 6
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 17
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 21,
+                "nom": "Bribe",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 5
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 46,
+                "nom": "Death Touch",
+                "type": "action"
+            },
+            {
+                "cout": 6,
+                "effets_allie": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 19,
+                "nom": "Word of Power",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 64,
+                "nom": "Elven Curse",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_activer": [
+                    {
+                        "montant1": 1,
+                        "montant2": 1,
+                        "typeCible": 0,
+                        "typeEffet": 9
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": false,
+                "id": 41,
+                "mobilise": false,
+                "nom": "Cult Priest",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 4,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 4,
+                        "typeEffet": 6
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 7,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 27,
+                "nom": "Hit Job",
+                "type": "action"
+            },
+            {
                 "cout": 4,
                 "effets_allie": [
                     {
@@ -1607,7 +1777,101 @@
                 "type": "action"
             },
             {
-                "cout": 5,
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 4,
+                        "typeEffet": 6
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 24,
+                "nom": "Death Threat",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 20
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 67,
+                "nom": "Elven Gift",
+                "type": "action"
+            },
+            {
+                "cout": 4,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 69,
+                "nom": "Nature's Bounty",
+                "type": "action"
+            },
+            {
+                "cout": 2,
                 "effets_activer": [
                     {
                         "montant1": 2,
@@ -1616,12 +1880,26 @@
                         "typeEffet": 1
                     },
                     {
-                        "montant1": 3,
+                        "montant1": 1,
                         "montant2": -1,
                         "typeCible": 0,
-                        "typeEffet": 2
+                        "typeEffet": 12
                     }
                 ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "garde": false,
+                "id": 78,
+                "mobilise": false,
+                "nom": "Wolf Shaman",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 6,
                 "effets_allie": [
                     {
                         "montant1": 1,
@@ -1630,40 +1908,25 @@
                         "typeEffet": 3
                     }
                 ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": true,
-                "id": 5,
-                "mobilise": false,
-                "nom": "Cristov, the Just",
-                "type": "champion",
-                "vie": 5
-            },
-            {
-                "cout": 3,
-                "effets_allie": [
+                "effets_primaires": [
+                    {
+                        "montant1": 8,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
                     {
                         "montant1": 1,
                         "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 17
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
+                        "typeCible": 6,
+                        "typeEffet": 5
                     }
                 ],
                 "effets_sacrifice": [],
                 "est_jouee": false,
-                "faction": 2,
-                "id": 23,
-                "nom": "Bribe",
+                "faction": 3,
+                "id": 54,
+                "nom": "Life Drain",
                 "type": "action"
             },
             {
@@ -1700,6 +1963,292 @@
                 "nom": "Grak, Storm Giant",
                 "type": "champion",
                 "vie": 7
+            },
+            {
+                "cout": 8,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 8,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 4,
+                        "typeEffet": 6
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 26,
+                "nom": "Fire Bomb",
+                "type": "action"
+            },
+            {
+                "cout": 5,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "garde": true,
+                "id": 31,
+                "mobilise": false,
+                "nom": "Parov, the Enforcer",
+                "type": "champion",
+                "vie": 5
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 10
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 1,
+                "nom": "Close Ranks",
+                "type": "action"
+            },
+            {
+                "cout": 5,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "garde": true,
+                "id": 30,
+                "mobilise": false,
+                "nom": "Myros, Guild Mage",
+                "type": "champion",
+                "vie": 3
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 16,
+                "nom": "Taxation",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_activer": [
+                    {
+                        "montant1": 1,
+                        "montant2": 1,
+                        "typeCible": 0,
+                        "typeEffet": 9
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": false,
+                "id": 40,
+                "mobilise": false,
+                "nom": "Cult Priest",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 3,
+                "effets_activer": [
+                    {
+                        "montant1": 1,
+                        "montant2": 2,
+                        "typeCible": 0,
+                        "typeEffet": 9
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "garde": false,
+                "id": 39,
+                "mobilise": false,
+                "nom": "Street Thug",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 75,
+                "nom": "Spark",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 5
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 47,
+                "nom": "Death Touch",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": 1,
+                        "typeCible": 0,
+                        "typeEffet": 14
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": false,
+                "id": 15,
+                "mobilise": false,
+                "nom": "Tithe Priest",
+                "type": "champion",
+                "vie": 3
             },
             {
                 "cout": 3,
@@ -1770,67 +2319,7 @@
                 "type": "action"
             },
             {
-                "cout": 2,
-                "effets_allie": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 20
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 65,
-                "nom": "Elven Gift",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_activer": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "garde": true,
-                "id": 71,
-                "mobilise": false,
-                "nom": "Orc Grunt",
-                "type": "champion",
-                "vie": 3
-            },
-            {
-                "cout": 2,
+                "cout": 6,
                 "effets_activer": [
                     {
                         "montant1": 2,
@@ -1838,240 +2327,9 @@
                         "typeCible": 0,
                         "typeEffet": 1
                     },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 12
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "garde": false,
-                "id": 79,
-                "mobilise": false,
-                "nom": "Wolf Shaman",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 8,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 8,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 4,
-                        "typeEffet": 6
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_sacrifice": [
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 26,
-                "nom": "Fire Bomb",
-                "type": "action"
-            },
-            {
-                "cout": 4,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 69,
-                "nom": "Nature's Bounty",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_activer": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 11
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": true,
-                "id": 8,
-                "mobilise": false,
-                "nom": "Man-at-Arms",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 2,
-                "effets_allie": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 29,
-                "nom": "Intimidation",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_activer": [
                     {
                         "montant1": 1,
                         "montant2": 2,
-                        "typeCible": 0,
-                        "typeEffet": 9
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "garde": false,
-                "id": 38,
-                "mobilise": false,
-                "nom": "Street Thug",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 4,
-                "effets_activer": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 10
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": true,
-                "id": 9,
-                "mobilise": false,
-                "nom": "Master Weyan",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 5,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 8,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "effets_sacrifice": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 77,
-                "nom": "Wolf Form",
-                "type": "action"
-            },
-            {
-                "cout": 7,
-                "effets_activer": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": 3,
                         "typeCible": 6,
                         "typeEffet": 19
                     }
@@ -2081,68 +2339,12 @@
                 "effets_sacrifice": [],
                 "est_jouee": false,
                 "faction": 3,
-                "garde": false,
-                "id": 53,
+                "garde": true,
+                "id": 55,
                 "mobilise": false,
-                "nom": "Krythos, Master Vampire",
+                "nom": "Lys, the Unseen",
                 "type": "champion",
-                "vie": 6
-            },
-            {
-                "cout": 4,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 4,
-                        "typeEffet": 7
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "id": 10,
-                "nom": "Rally the Troops",
-                "type": "action"
-            },
-            {
-                "cout": 2,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 51,
-                "nom": "Influence",
-                "type": "action"
+                "vie": 5
             },
             {
                 "cout": 4,
@@ -2203,270 +2405,6 @@
                 "vie": 6
             },
             {
-                "cout": 3,
-                "effets_allie": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 64,
-                "nom": "Elven Curse",
-                "type": "action"
-            },
-            {
-                "cout": 8,
-                "effets_activer": [
-                    {
-                        "montant1": 5,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    }
-                ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": true,
-                "id": 0,
-                "mobilise": false,
-                "nom": "Arkus, Imperial Dragon",
-                "type": "champion",
-                "vie": 6
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "id": 16,
-                "nom": "Taxation",
-                "type": "action"
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 75,
-                "nom": "Spark",
-                "type": "action"
-            },
-            {
-                "cout": 4,
-                "effets_activer": [
-                    {
-                        "montant1": 3,
-                        "montant2": 4,
-                        "typeCible": 0,
-                        "typeEffet": 8
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": false,
-                "id": 3,
-                "mobilise": false,
-                "nom": "Darian, War Mage",
-                "type": "champion",
-                "vie": 5
-            },
-            {
-                "cout": 2,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    },
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 13
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "id": 11,
-                "nom": "Recruit",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_activer": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 11
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "garde": true,
-                "id": 7,
-                "mobilise": false,
-                "nom": "Man-at-Arms",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 5
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 46,
-                "nom": "Death Touch",
-                "type": "action"
-            },
-            {
-                "cout": 6,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 15
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 37,
-                "nom": "Smash and Grab",
-                "type": "action"
-            },
-            {
                 "cout": 7,
                 "effets_activer": [
                     {
@@ -2495,168 +2433,16 @@
                 "vie": 7
             },
             {
-                "cout": 6,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 8,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 5
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 54,
-                "nom": "Life Drain",
-                "type": "action"
-            },
-            {
                 "cout": 5,
-                "effets_allie": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 5
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 3,
-                "id": 43,
-                "nom": "Dark Reward",
-                "type": "action"
-            },
-            {
-                "cout": 2,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    },
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 2
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 13
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 1,
-                "id": 13,
-                "nom": "Recruit",
-                "type": "action"
-            },
-            {
-                "cout": 3,
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 17
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 21,
-                "nom": "Bribe",
-                "type": "action"
-            },
-            {
-                "cout": 3,
                 "effets_activer": [
-                    {
-                        "montant1": 1,
-                        "montant2": 2,
-                        "typeCible": 0,
-                        "typeEffet": 9
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "garde": false,
-                "id": 39,
-                "mobilise": false,
-                "nom": "Street Thug",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 3,
-                "effets_allie": [
                     {
                         "montant1": 1,
                         "montant2": -1,
                         "typeCible": 4,
-                        "typeEffet": 6
+                        "typeEffet": 16
                     }
                 ],
-                "effets_primaires": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
+                "effets_allie": [
                     {
                         "montant1": 1,
                         "montant2": -1,
@@ -2664,68 +2450,16 @@
                         "typeEffet": 3
                     }
                 ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 24,
-                "nom": "Death Threat",
-                "type": "action"
-            },
-            {
-                "cout": 2,
-                "effets_activer": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 12
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "garde": false,
-                "id": 78,
-                "mobilise": false,
-                "nom": "Wolf Shaman",
-                "type": "champion",
-                "vie": 4
-            },
-            {
-                "cout": 6,
-                "effets_activer": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": 2,
-                        "typeCible": 6,
-                        "typeEffet": 19
-                    }
-                ],
-                "effets_allie": [],
                 "effets_primaires": [],
                 "effets_sacrifice": [],
                 "est_jouee": false,
                 "faction": 3,
-                "garde": true,
-                "id": 55,
+                "garde": false,
+                "id": 59,
                 "mobilise": false,
-                "nom": "Lys, the Unseen",
+                "nom": "Varrick, the Necromancer",
                 "type": "champion",
-                "vie": 5
+                "vie": 3
             },
             {
                 "cout": 3,
@@ -2762,6 +2496,213 @@
                 "cout": 1,
                 "effets_allie": [
                     {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 32,
+                "nom": "Profit",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 17
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 23,
+                "nom": "Bribe",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_activer": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "garde": true,
+                "id": 70,
+                "mobilise": false,
+                "nom": "Orc Grunt",
+                "type": "champion",
+                "vie": 3
+            },
+            {
+                "cout": 7,
+                "effets_activer": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "garde": true,
+                "id": 73,
+                "mobilise": false,
+                "nom": "Torgen Rocksplitter",
+                "type": "champion",
+                "vie": 7
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "id": 18,
+                "nom": "Taxation",
+                "type": "action"
+            },
+            {
+                "cout": 4,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": 4,
+                        "typeCible": 0,
+                        "typeEffet": 8
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": false,
+                "id": 3,
+                "mobilise": false,
+                "nom": "Darian, War Mage",
+                "type": "champion",
+                "vie": 5
+            },
+            {
+                "cout": 4,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 10
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": true,
+                "id": 9,
+                "mobilise": false,
+                "nom": "Master Weyan",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 2,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 3,
+                "id": 51,
+                "nom": "Influence",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
                         "montant1": 6,
                         "montant2": -1,
                         "typeCible": 0,
@@ -2782,6 +2723,263 @@
                 "id": 17,
                 "nom": "Taxation",
                 "type": "action"
+            },
+            {
+                "cout": 5,
+                "effets_allie": [
+                    {
+                        "montant1": 0,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 18
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 25,
+                "nom": "Deception",
+                "type": "action"
+            },
+            {
+                "cout": 1,
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 33,
+                "nom": "Profit",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 4,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 20
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 66,
+                "nom": "Elven Gift",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_allie": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 0
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 5,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 29,
+                "nom": "Intimidation",
+                "type": "action"
+            },
+            {
+                "cout": 5,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 8,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_sacrifice": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 77,
+                "nom": "Wolf Form",
+                "type": "action"
+            },
+            {
+                "cout": 3,
+                "effets_allie": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_primaires": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 4
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 4,
+                "id": 63,
+                "nom": "Elven Curse",
+                "type": "action"
+            },
+            {
+                "cout": 6,
+                "effets_allie": [],
+                "effets_primaires": [
+                    {
+                        "montant1": 6,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 6,
+                        "typeEffet": 15
+                    }
+                ],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 2,
+                "id": 37,
+                "nom": "Smash and Grab",
+                "type": "action"
+            },
+            {
+                "cout": 2,
+                "effets_activer": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 3,
+                "garde": true,
+                "id": 45,
+                "mobilise": false,
+                "nom": "Death Cultist",
+                "type": "champion",
+                "vie": 3
+            }
+        ],
+        "ligne": [
+            {
+                "cout": 5,
+                "effets_activer": [
+                    {
+                        "montant1": 2,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
+                    },
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 2
+                    }
+                ],
+                "effets_allie": [
+                    {
+                        "montant1": 1,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 3
+                    }
+                ],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": true,
+                "id": 5,
+                "mobilise": false,
+                "nom": "Cristov, the Just",
+                "type": "champion",
+                "vie": 5
             },
             {
                 "cout": 6,
@@ -2847,26 +3045,48 @@
                 "est_jouee": false,
                 "faction": 4,
                 "garde": true,
-                "id": 70,
+                "id": 71,
                 "mobilise": false,
                 "nom": "Orc Grunt",
                 "type": "champion",
                 "vie": 3
             },
             {
-                "cout": 8,
+                "cout": 3,
                 "effets_activer": [
                     {
-                        "montant1": 4,
+                        "montant1": 2,
                         "montant2": -1,
                         "typeCible": 0,
                         "typeEffet": 1
                     },
                     {
-                        "montant1": 2,
+                        "montant1": 1,
                         "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 5
+                        "typeCible": 0,
+                        "typeEffet": 11
+                    }
+                ],
+                "effets_allie": [],
+                "effets_primaires": [],
+                "effets_sacrifice": [],
+                "est_jouee": false,
+                "faction": 1,
+                "garde": true,
+                "id": 7,
+                "mobilise": false,
+                "nom": "Man-at-Arms",
+                "type": "champion",
+                "vie": 4
+            },
+            {
+                "cout": 4,
+                "effets_activer": [
+                    {
+                        "montant1": 3,
+                        "montant2": -1,
+                        "typeCible": 0,
+                        "typeEffet": 1
                     }
                 ],
                 "effets_allie": [
@@ -2881,152 +3101,19 @@
                 "effets_sacrifice": [],
                 "est_jouee": false,
                 "faction": 3,
-                "garde": true,
-                "id": 58,
+                "garde": false,
+                "id": 49,
                 "mobilise": false,
-                "nom": "Tyrannor, the Devourer",
+                "nom": "Rayla, Endweaver",
                 "type": "champion",
-                "vie": 6
-            }
-        ],
-        "ligne": [
-            {
-                "cout": 7,
-                "effets_activer": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 4
-                    }
-                ],
-                "effets_allie": [],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "garde": true,
-                "id": 73,
-                "mobilise": false,
-                "nom": "Torgen Rocksplitter",
-                "type": "champion",
-                "vie": 7
-            },
-            {
-                "cout": 5,
-                "effets_activer": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 1,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 3
-                    }
-                ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "garde": true,
-                "id": 31,
-                "mobilise": false,
-                "nom": "Parov, the Enforcer",
-                "type": "champion",
-                "vie": 5
-            },
-            {
-                "cout": 5,
-                "effets_activer": [
-                    {
-                        "montant1": 3,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_allie": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "garde": true,
-                "id": 30,
-                "mobilise": false,
-                "nom": "Myros, Guild Mage",
-                "type": "champion",
-                "vie": 3
-            },
-            {
-                "cout": 6,
-                "effets_allie": [],
-                "effets_primaires": [
-                    {
-                        "montant1": 6,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    },
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 6,
-                        "typeEffet": 20
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 4,
-                "id": 72,
-                "nom": "Rampage",
-                "type": "action"
-            },
-            {
-                "cout": 1,
-                "effets_allie": [
-                    {
-                        "montant1": 4,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 1
-                    }
-                ],
-                "effets_primaires": [
-                    {
-                        "montant1": 2,
-                        "montant2": -1,
-                        "typeCible": 0,
-                        "typeEffet": 0
-                    }
-                ],
-                "effets_sacrifice": [],
-                "est_jouee": false,
-                "faction": 2,
-                "id": 33,
-                "nom": "Profit",
-                "type": "action"
+                "vie": 4
             }
         ]
     },
-    "nb_tour": 8,
-    "tour_courant": null
+    "nb_tour": 1,
+    "tour_courant": {
+        "joueur_nom": "A",
+        "reserve_degats": 0,
+        "reserve_or": 0
+    }
 }

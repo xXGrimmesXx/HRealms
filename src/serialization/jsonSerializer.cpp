@@ -236,7 +236,7 @@ Deck* jsonToDeck(const json& j) {
     for (const auto& carteJson : j) {
         Carte* carte = jsonToCarte(carteJson);
         if (carte) {
-            deck->ajouterDessus(carte);
+            deck->ajouterDessous(carte);
         }
     }
     
@@ -405,11 +405,6 @@ GemmeDeFeu* jsonToGemmeDeFeu(const json& j) {
     if (j.contains("pile")) {
         Pile* pile = jsonToPile(j["pile"]);
         gemmeDeFeu->setPile(pile);
-        // Vider le conteneur temporaire avant de le supprimer (cartes transférées)
-        while (pile->getTaille() > 0) {
-            pile->prendreDessus();
-        }
-        delete pile;
     }
     
     return gemmeDeFeu;
@@ -520,7 +515,6 @@ Partie* jsonToPartie(const json& j) {
     if (j.contains("cartes_sacrifie")) {
         Pile* cartesSacrifie = jsonToPile(j["cartes_sacrifie"]);
         partie->setCartesSacrifie(cartesSacrifie);
-        delete cartesSacrifie;
     }
     
     // Restaurer les gemmes de feu (complète avec toute la pile)
@@ -528,7 +522,7 @@ Partie* jsonToPartie(const json& j) {
         GemmeDeFeu* gemmeDeFeu = jsonToGemmeDeFeu(j["gemme_de_feu"]);
         partie->setGemmeDeFeu(gemmeDeFeu);
         // Note: On ne supprime pas gemmeDeFeu car il a été copié par valeur dans setGemmeDeFeu
-        delete gemmeDeFeu;
+
     }
     
     // Restaurer GodMode

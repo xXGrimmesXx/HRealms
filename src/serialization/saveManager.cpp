@@ -22,23 +22,12 @@ std::string SaveManager::obtenirCheminComplet(const std::string& nomFichier) {
 }
 
 bool SaveManager::creerDossierSavesSiNecessaire() {
-    try {
-        std::cout << "[DEBUG] Vérification du dossier: " << DOSSIER_SAVE << std::endl;
-        
+    try {        
         if (!fs::exists(DOSSIER_SAVE)) {
-            std::cout << "[DEBUG] Le dossier n'existe pas. Tentative de création..." << std::endl;
-            bool resultat = fs::create_directory(DOSSIER_SAVE);
-            
-            if (resultat) {
-                std::cout << "[DEBUG] Dossier créé avec succès!" << std::endl;
-            } else {
-                std::cerr << "[ERREUR] Échec de la création du dossier!" << std::endl;
-            }
-            
+            bool resultat = fs::create_directory(DOSSIER_SAVE);            
             return resultat;
         }
-        
-        std::cout << "[DEBUG] Le dossier existe déjà." << std::endl;
+
         return true;
     } catch (const fs::filesystem_error& e) {
         std::cerr << "[ERREUR] Exception lors de la création du dossier saves: " << e.what() << std::endl;
@@ -47,14 +36,11 @@ bool SaveManager::creerDossierSavesSiNecessaire() {
 }
 
 bool SaveManager::sauvegarderPartie(Partie* partie, const std::string& nomFichier) {
-    std::cout << "[DEBUG] Début de sauvegarderPartie..." << std::endl;
     
     if (!partie) {
         std::cerr << "[ERREUR] Partie nulle!" << std::endl;
         return false;
     }
-    
-    std::cout << "[DEBUG] Partie valide, création du dossier..." << std::endl;
     
     // Créer le dossier saves s'il n'existe pas
     if (!creerDossierSavesSiNecessaire()) {
@@ -62,18 +48,12 @@ bool SaveManager::sauvegarderPartie(Partie* partie, const std::string& nomFichie
         return false;
     }
     
-    std::cout << "[DEBUG] Dossier prêt, début de la sérialisation..." << std::endl;
-    
     try {
         // Sérialiser la partie en JSON
         json j = partieToJson(partie);
         
-        std::cout << "[DEBUG] Sérialisation réussie, taille JSON: " << j.dump().size() << " caractères" << std::endl;
-        
         // Obtenir le chemin complet du fichier
         std::string cheminComplet = obtenirCheminComplet(nomFichier);
-        
-        std::cout << "[DEBUG] Chemin complet du fichier: " << cheminComplet << std::endl;
         
         // Écrire dans le fichier
         std::ofstream fichier(cheminComplet);
@@ -82,13 +62,10 @@ bool SaveManager::sauvegarderPartie(Partie* partie, const std::string& nomFichie
             return false;
         }
         
-        std::cout << "[DEBUG] Fichier ouvert, écriture en cours..." << std::endl;
-        
         // Écrire le JSON avec indentation pour la lisibilité
         fichier << j.dump(4);
         fichier.close();
         
-        std::cout << "[SUCCESS] Partie sauvegardée avec succès dans: " << cheminComplet << std::endl;
         return true;
         
     } catch (const std::exception& e) {
@@ -122,12 +99,6 @@ Partie* SaveManager::chargerPartie(const std::string& nomFichier) {
         
         // Désérialiser la partie
         Partie* partie = jsonToPartie(j);
-        
-        if (partie) {
-            std::cout << "Partie chargée avec succès depuis: " << cheminComplet << std::endl;
-        } else {
-            std::cerr << "Erreur lors de la désérialisation de la partie" << std::endl;
-        }
         
         return partie;
         
@@ -170,7 +141,6 @@ bool SaveManager::supprimerSauvegarde(const std::string& nomFichier) {
         }
         
         fs::remove(cheminComplet);
-        std::cout << "Sauvegarde supprimée: " << cheminComplet << std::endl;
         return true;
         
     } catch (const fs::filesystem_error& e) {

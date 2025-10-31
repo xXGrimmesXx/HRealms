@@ -81,10 +81,25 @@ void GameController::initialiserPartie() {
 }
 
 void GameController::chargerPartie() {
-    std::cout << "[INFO] Chargement de la partie depuis autosave.json..." << std::endl;
-    
-    Partie* partieChargee = HRealms::Serialization::SaveManager::chargerPartie("autosave.json");
-    
+    //récupérer les cauvegardes possibles
+    std::vector<std::string> sauvegardes = HRealms::Serialization::SaveManager::listerSauvegardes();
+    if (sauvegardes.empty()) {
+        std::string message = "Aucune sauvegarde trouvée. Nouvelle partie créée.";
+        view->afficherErreur(message);
+        initialiserPartie();
+        return;
+    }
+    else {
+        std::string message = "Sauvegardes disponibles:";
+        view->afficherMessage(message);
+        for (std::string nom : sauvegardes) {
+            view->afficherMessage(nom);
+        }
+    }
+
+    std::string nom_fichier = view->demanderNomFichierSauvegarde();
+    Partie* partieChargee = HRealms::Serialization::SaveManager::chargerPartie(nom_fichier);
+
     if (partieChargee == nullptr) {
         std::string message = "Erreur lors du chargement de la sauvegarde. Nouvelle partie créée.";
         view->afficherErreur(message);
@@ -203,6 +218,22 @@ void GameController::gererActionJoueur() {
             toggleGodMode();
             afficherEtatJeu();
             break;
+        case 12: // Sauvegarder la partie
+            {
+            std::string nom_sauvegarde = view->demanderNomFichierSauvegarde();
+            HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), nom_sauvegarde);
+            
+                std::string message = "Partie sauvegardée avec succès.";
+                view->afficherMessage(message);
+            }
+            break;
+        case 13: // Quitter le jeu
+        {
+            partie->setTourCourant(nullptr);
+            jeuEnCours = false;
+            std::string message = "Vous avez quitté la partie.";
+            view->afficherMessage(message);
+        }
     }
 
 }
@@ -957,25 +988,21 @@ void GameController::afficherMainAdversaire() {
     }
 }
 
-void GameController::finirPartie() {
+Joueur* GameController::finirPartie() {
     if (partie && partie->estTerminee()) {
         Joueur* gagnant = partie->getGagnant();
         if(gagnant!=nullptr){
             view->afficherGagnant(gagnant);
-            std::string message = "Merci d'avoir joué à Hero Realms !";
-            view->afficherMessage(message);
             jeuEnCours = false;
+            return gagnant;
         }
         else{
-            std::string message = "La partie s'est terminée sans gagnant clair.";
-            view->afficherMessage(message);
             jeuEnCours = false;
+            return nullptr;
         }
-
-        
     }
-    
-    
+    jeuEnCours = false;
+    return nullptr;
 }
 
 Joueur* GameController::getJoueurParIndex(int index){

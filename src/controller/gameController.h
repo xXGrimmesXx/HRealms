@@ -20,7 +20,7 @@ public:
     void initialiserPartie();
     void chargerPartie();
     void boucleJeu();
-    void finirPartie();
+    Joueur* finirPartie();
     
     // Actions de tour
     void jouerTour();

@@ -30,15 +30,5 @@ int GemmeDeFeu::getNombreDisponible() const {
 
 // Setter pour la restauration depuis JSON
 void GemmeDeFeu::setPile(Pile* p) {
-    if (!p) return;
-    
-    // Vider la pile actuelle sans supprimer les cartes
-    while (!pile.estVide()) {
-        pile.prendreDessus();
-    }
-    
-    // Copier les cartes de la nouvelle pile (transfert de propriété)
-    for (auto carte : p->getCartes()) {
-        pile.ajouter(carte);
-    }
+    pile = *p;
 }

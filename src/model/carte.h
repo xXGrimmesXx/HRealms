@@ -48,6 +48,10 @@ public:
     void jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target);
     void jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies);
     void sacrifier(std::vector<ChoixEffet*> cibles, Partie* p);
+
+    std::string to_string() const {
+        return nom + " (Coût: " + std::to_string(cout) + ", Faction: " + std::to_string(static_cast<int>(faction)) + ")";
+    }
 };
 
 #endif

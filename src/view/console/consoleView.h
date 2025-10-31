@@ -62,6 +62,7 @@ public:
     std::string demanderMotDePasseGodMode()override;
     bool demanderChoix(Effet effet) override;
     int demanderChoixInitialisationPartie() override;
+    std::string demanderNomFichierSauvegarde() override;
 
 
 private:

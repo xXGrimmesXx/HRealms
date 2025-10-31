@@ -300,6 +300,15 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     // GodMode - toujours disponible
     std::cout << "[" << numeroAffiche << "] GodMode" << std::endl;
     actionsDisponibles.push_back(11);
+    numeroAffiche++;
+
+    std::cout << "[" << numeroAffiche << "] Sauvegarder la partie" << std::endl;
+    actionsDisponibles.push_back(12);
+    numeroAffiche++;
+
+    std::cout << "[" << numeroAffiche << "] Quitter le jeu" << std::endl;
+    actionsDisponibles.push_back(13);
+    
     std::cout << "Votre choix: ";
     
     int choixAffiche;
@@ -672,4 +681,12 @@ int ConsoleView::demanderChoixInitialisationPartie() {
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return choix;
+}
+
+std::string ConsoleView::demanderNomFichierSauvegarde() {
+    std::string nomFichier;
+    std::cout << "💾 Entrez le nom du fichier de sauvegarde: ";
+    std::getline(std::cin, nomFichier);
+    std::cin.clear();
+    return nomFichier;
 }

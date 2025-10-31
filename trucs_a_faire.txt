@@ -2,7 +2,6 @@ TODO LIST APRES CALL :
 (par ordre d'importance)
 
 L - 0 pour annuler une action.
-L - Se renseigner trucs de sauvegarde.
 
 
 G ou L- Améliorer attaquer joueur. i+1 et i-1[nbJoueurs] + visu pas fou fou

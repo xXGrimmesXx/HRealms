@@ -53,4 +53,5 @@ public:
     virtual std::string demanderMotDePasseGodMode() = 0;
     virtual bool demanderChoix(Effet effet) = 0;
     virtual int demanderChoixInitialisationPartie() = 0;
+    virtual std::string demanderNomFichierSauvegarde() = 0;
 };
