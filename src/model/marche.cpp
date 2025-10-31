@@ -30,6 +30,9 @@ bool Marche::acquerirDepuisLigne(int slot, Joueur* j, Partie* partie){
             j->getDeck()->ajouterDessus(c);
             j->desactiverProchainAchatActionDessusDeck(); // reset le flag
         }
+        else{
+            j->getDefausse()->ajouter(c);
+        }
         
     }
     else {

@@ -20,7 +20,6 @@ public:
     // Méthodes
     void ajouter(Carte* c);
     Carte* prendreDessus();
-    void melanger();
     bool estVide() const;
     Carte* retirerCarte(int idx);
 };

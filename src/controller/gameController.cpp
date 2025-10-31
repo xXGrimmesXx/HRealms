@@ -137,7 +137,11 @@ void GameController::boucleJeu() {
 void GameController::jouerTour() {
     try {
         // Commencer le tour
-        partie->commencerTour();
+        
+        if(partie->getTourCourant()==nullptr){
+            partie->commencerTour();
+        }
+        
         
         // Afficher l'état du jeu
         afficherEtatJeu();
@@ -315,11 +319,9 @@ bool GameController::mobiliserChampion() {
         }
         Champion* c = joueurActuel->getChampions().at(ind);
         std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
-        std::cout << "Cibles choisies: " << cibles.size() << std::endl;
         // Essayer de jouer la carte
         try {
             bool succes = joueurActuel->mobiliserChampion(ind, partie.get(), cibles);
-            std::cout << "champion mobilisé dans le joueur " << joueurActuel->getNom() << std::endl;
             if (succes) {
                 std::string message = "Champion mobilisé avec succès !";
                 view->afficherMessage(message);
@@ -499,7 +501,6 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 bool choix = view->demanderChoix(effet);
                 if (choix == true){
                     int indexCarte = view->demanderIndexCarte().at(0);
-                    std::cout << "Index de la carte à défausser: " << indexCarte << std::endl;
                     if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main")){
                         cartesADefausser->push_back(nullptr);
                     }
@@ -892,7 +893,6 @@ void GameController::afficherMain() {
 
 void GameController::afficherMarche() {
     Marche* marche = partie->getMarche();
-    std::cout << "marche recupéré dans game controller" << std::endl;
     view->afficherMarche(marche);
 }
 

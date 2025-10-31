@@ -1,14 +1,41 @@
+attaquerJoueur --> afficher champions
+tous les effets à choix --> préciser c'est pour quel effet
+CHAMPION -> activer effet alier a chaque fois qu'on mobilise
+attaquer champion ou joueur
+--> joueur marche pas
+--> message d'erreur quand mauvais choix champion doit être index 1based
+PIOCHE_SIOUI_DEFAUSSE
+--> le rendre possible que sur des cartes non jouées
+SACRIFIER
+--> que si elle est déjà jouée
+indice décalé si tu sacrifies puis défausse en même temps
+QUAND JE JOUE TITHE PRIEST, 
+❌ ERREUR: Échec du jeu de la carte.
+❌ ERREUR: Impossible de jouer cette carte.
+si pas assez dégâts pour tuer champion, affiche pas d'erreur
+duplication or et gemmedefeu
+changer mdp godmode
+
+
 TODO LIST APRES CALL :
 (par ordre d'importance)
 
 L - 0 pour annuler une action.
+G ou L- Améliorer attaquer joueur. mettre cout dans consoleview.
+
+remettre gemmedefeu dans sa pile
 
 
-G ou L- Améliorer attaquer joueur. i+1 et i-1[nbJoueurs] + visu pas fou fou
-
+FAIT : 
+G - Check les effets
+G - peut plus jouer plusieurs cartes à la fois (ANNULE CAR CAUSAIT DES PBS SUR CERTAINS EFFETS)
+--> j'ai donc changé la signature et tous les appels à demanderIndexCarte (de vector<int> à int, dans consoleView.cpp)
+G - Faire -1 aux indexs > aux champions joués
+G - Voir pour sacrifier.
+--> les 2 annulés car on joue qu'une carte à la fois
 G - coder la possibilité de sacrifier une carte et ajouter effetSacrifice
 G - mettre dans zoneSacrifice et la rendre consultable à tout moment (sauf GemmeDeFeu qui retourne dans sa pile)
---> Presque fini normalement 
+--> Presque fini normalement
 marche surtout sauf wolf form
 ne s'ajoute pas à la pile de défausse (attention à remettre gemmedefeu dans sa pile)
 Les nouvelles fonctions :
@@ -23,15 +50,6 @@ ConsoleView :
 Main : 
 - contientCarteEffetSacrifice
 (PS : je pense que ça irait mieux dans le case après jouer une carte, décaler les indices)
-
-
-FAIT : 
-G - Check les effets
-G - peut plus jouer plusieurs cartes à la fois (ANNULE CAR CAUSAIT DES PBS SUR CERTAINS EFFETS)
---> j'ai donc changé la signature et tous les appels à demanderIndexCarte (de vector<int> à int, dans consoleView.cpp)
-G - Faire -1 aux indexs > aux champions joués
-G - Voir pour sacrifier.
---> les 2 annulés car on joue qu'une carte à la fois
 
 
 -------------------------------------------------------------------------------------------------------------------

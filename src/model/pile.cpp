@@ -16,7 +16,7 @@ void Pile::ajouter(Carte* c) {
 }
 Carte* Pile::prendreDessus() {
     if (cartes.empty()) {
-        return nullptr; // or throw an exception
+        return nullptr;
     }
     Carte* c = cartes.back();
     cartes.pop_back();
@@ -24,12 +24,6 @@ Carte* Pile::prendreDessus() {
 }
 int Pile::getTaille() const {
     return cartes.size();
-}
-
-void Pile::melanger() {
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(cartes.begin(), cartes.end(), g);
 }
 
 std::vector<Carte*> Pile::getCartes(){
@@ -46,7 +40,6 @@ bool Pile::estVide() const {
 }
 
 Carte* Pile::retirerCarte(int index) {
-    // Double vérif
     if (index < 0 || index >= (int)cartes.size()) {
         return nullptr;
     }

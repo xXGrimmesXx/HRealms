@@ -216,7 +216,6 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     int numeroAffiche = 1;
     
     // Seulement si le joueur a des cartes en main
-    std::cout << "Avant demande carte jouable" << std::endl;
     if (joueur->getNombreCartesJouables() > 0) {
         std::cout << "[" << numeroAffiche << "] Jouer une carte" << std::endl;
         actionsDisponibles.push_back(1);
@@ -555,9 +554,7 @@ void ConsoleView::afficherMarche(Marche* marche) {
     std::cout << "🏪 MARCHÉ:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     
-    const auto& ligne = marche->getLigne();
-    std::cout << "Ligne du marché récupérée." << std::endl;
-    
+    const auto& ligne = marche->getLigne();    
    CardRenderer::printCards(ligne, 5);
 
     std::cout << std::endl;

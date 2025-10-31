@@ -412,7 +412,7 @@ GemmeDeFeu* jsonToGemmeDeFeu(const json& j) {
 
 // ========== TOUR ==========
 json tourToJson(const Tour* tour) {
-    if (!tour) {
+    if (tour==nullptr) {
         return nullptr;
     }
     
@@ -422,7 +422,7 @@ json tourToJson(const Tour* tour) {
     j["joueur_nom"] = tour->getJoueur()->getNom();
     j["reserve_or"] = tour->getOr();
     j["reserve_degats"] = tour->getDegats();
-    
+
     return j;
 }
 
@@ -538,7 +538,7 @@ Partie* jsonToPartie(const json& j) {
     }
     
     // Restaurer le tour courant
-    if (j.contains("tour_courant") && !j["tour_courant"].is_null()) {
+    if (j.contains("tour_courant")) {
         Tour* tour = jsonToTour(j["tour_courant"], partie->getJoueurs());
         partie->setTourCourant(tour);
     }
