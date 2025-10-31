@@ -58,7 +58,7 @@ bool Main::contientCarteDeFaction(Faction f){
 
 bool Main::contientCarteEffetSacrifice() {
     for (auto c : cartes) {
-        if (!c->getEffetsSacrifice().empty() && !c->getEstJouee()) {
+        if (!c->getEffetsSacrifice().empty()) {
             return true;
         }
     }

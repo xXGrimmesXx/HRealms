@@ -113,7 +113,8 @@ void Joueur::sacrifier(Carte* c,Partie* p){
 
     //si la carte est une gemme de feu, la remettre dans la pile gemme de feu
     //sinon on la met dans la pile de cartes sacrifiées
-    if (c->getNom() == "Gemme de Feu") {
+    std::cout << "Sacrifier la carte: " << c->to_string() <<std::endl<< "est une gemme de feu " << (c->getNom() == "Gemme de feu") <<std::endl;
+    if (c->getNom() == "Gemme de feu") {
         p->getGemmeDeFeu()->getPile()->ajouter(c);
     }
     else{

@@ -72,6 +72,18 @@ void GameController::initialiserPartie() {
     partie = std::make_unique<Partie>();
     partie->commencer(nomsJoueurs);
     
+    //fait defausser les cartes pour que le premier joueur commence avec 3 cartes etc...
+    for (int i=2; i>0;i--){
+        Joueur * joueur = partie->getJoueurs().at(2-i);
+        Main * m = joueur->getMain();
+        //fait defausser deux cartes pour le premier joueur 1 carte pour le deuxieme et 0 pour les autres
+        for (int j=0; j<i;j++){
+            Carte * c = m->getCartes().at(0);
+            m->defausser(c);
+            joueur->getDeck()->ajouterDessous(c);
+        }
+    }
+    
     jeuEnCours = true;
     std::string message = "Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !";
     view->afficherMessage(message);
