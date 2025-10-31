@@ -294,9 +294,6 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                 if (carteTgt != nullptr){
                     partie->getJoueurActuel()->getDeck()->ajouterDessus(carteTgt);
                 }
-                else{
-                    throw std::invalid_argument("Target is not a valid Carte pointer");
-                }
                 
             }else{
                 // Invalid target type for this effect
@@ -309,9 +306,6 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                 Champion* championTgt = static_cast<Champion*>(target);
                 if (championTgt != nullptr){
                     partie->getJoueurActuel()->getDeck()->ajouterDessus(championTgt);
-                }
-                else{
-                    throw std::invalid_argument("Target is not a valid Champion pointer");
                 }
             }else{
                 // Invalid target type for this effect
