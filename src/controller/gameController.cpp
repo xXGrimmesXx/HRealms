@@ -558,65 +558,43 @@ bool GameController::acheterGemmeDeFeu() {
 }
 
 bool GameController::attaquerJoueur() {
-    std::vector<Joueur*> joueurs = partie.get()->getJoueurs();
-    int idxActuel = partie->getIdxJoueurActuel();
-
-    // Filtrer les adversaires
-    std::vector<int> indicesAdversaires;
-    for (size_t i = 0; i < joueurs.size(); ++i) {
-        if ((int)i != idxActuel) {
-            indicesAdversaires.push_back((int)i);
-        }
-    }
     
-    // Afficher la liste détaillée
-    std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
-    std::cout << "Adversaires disponibles :" << std::endl;
-    for (int i : indicesAdversaires) {
-        Joueur* adv = joueurs.at(i);
-        std::cout << "[" << i << "] " << adv->getNom() << " (" << adv->getPv() << " ❤️)" << std::endl;
-
-        // Afficher les champions de l'adversaire
-        if (!adv->getChampions().empty()) {
-            view->afficherChampions(adv->getChampions());
-        }
-        std::cout << "-------------------------------------------------------------" << std::endl;
+    // Afficher les adversaires et leurs champions
+    std::vector<Joueur*> joueursAttaquable = std::vector<Joueur*>();
+    Joueur* cible = nullptr;
+    if (partie->getJoueurs().size() > 2) {
+        //si on a plus de deux joueurs on peut attaquer les deux joueurs adjacents
+        joueursAttaquable.push_back(partie->getJoueurs().at((partie->getIdxJoueurActuel() +1)%partie->getJoueurs().size()));
+        joueursAttaquable.push_back(partie->getJoueurs().at((partie->getIdxJoueurActuel() -1)%partie->getJoueurs().size()));
+    } else {
+        //si il n'y a que deux joueurs on attaque l'autre joueur
+        joueursAttaquable.push_back(partie->getJoueurs().at((partie->getIdxJoueurActuel() + 1) % partie->getJoueurs().size()));
+        cible = joueursAttaquable.back();
     }
-    std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
-
-    int index = -1;
-    // Demander quel joueur attaquer
-    if (indicesAdversaires.size() > 1) {
-        index = view->demanderIndexJoueur(joueurs,partie->getIdxJoueurActuel());
-        if (!validerIndex(index, static_cast<int>(joueurs.size()), "joueur")) {
+    //on affiche les joueurs attaquables
+    
+    
+    if (cible == nullptr){
+        view->afficherAdversaires(joueursAttaquable);
+        int index = view->demanderIndexJoueur(joueursAttaquable, -1);
+        if (!validerIndex(index, joueursAttaquable.size(), "joueur")) {
             return false;
         }
+        cible = joueursAttaquable.at(index);
     }
-    // Sauf s'il y en a un seul
-    else{
-        index = indicesAdversaires.at(0);
-    }
-    
-
-    Joueur* cible = partie->getJoueurs().at(index);
     int degatsRestants = partie->getTourCourant()->getDegats();
-
-    // Afficher état cible
-    std::cout << "\n═══════════════════════════════════════════════════════════════" << std::endl;
-    std::cout << "🎯 Cible : " << cible->getNom() << " (" << cible->getPv() << " ❤️)" << std::endl;
-    std::cout << "⚔️  Vos dégâts disponibles : " << degatsRestants << std::endl;
-    std::cout << "═══════════════════════════════════════════════════════════════\n" << std::endl;
 
     // Si le joueur n'a pas assez de dégâts pour tuer au moins un garde, on bloque l'action
     if (cible->aGarde()) {
-        bool possible = false;
+        bool attaquePossible = false;
         for (auto* garde : cible->getGardes()) {
             if (degatsRestants >= garde->getVie()) {
-                possible = true;
+                attaquePossible = true;
                 break;
             }
         }
-        if (!possible) {
+
+        if (!attaquePossible) {
             std::string err = "❌ Vous n'avez pas assez de dégâts pour éliminer un garde. Action impossible.";
             view->afficherErreur(err);
             return false;
@@ -627,51 +605,41 @@ bool GameController::attaquerJoueur() {
         
         // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
         while (cible->aGarde() && degatsRestants > 0){
-            std::string message = joueurs.at(index)->getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
+            view->afficherChampions(cible->getChampions());
+            std::string message = cible->getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
             view->afficherMessage(message);
 
-            std::vector<int> indexGarde = view->demanderIndexGarde(cible);
-
-            if (indexGarde.empty() || indexGarde.at(0) < 0) {
-                std::string err = "Vous devez choisir un garde.";
-                view->afficherErreur(err);
-                continue;
+            std::vector<int> indexChampions = view->demanderIndexChampion(cible);
+            std::vector<Champion*> championAttaqués = std::vector<Champion*>();
+            for (int ind : indexChampions ){
+                championAttaqués.push_back(cible->getChampions().at(ind));
             }
 
-            int ind = indexGarde.at(0);
-
-            if (!validerIndex(ind, cible->getGardes().size(), "garde")) {
-                continue;
-            }
-
-            Champion* garde = cible->getGardes().at(ind);
-
-            if (degatsRestants < garde->getVie()) {
-                std::string err = "❌ Pas assez de dégâts pour ce garde (" 
-                                + std::to_string(garde->getVie()) + " PV). Il vous reste " 
-                                + std::to_string(degatsRestants) + " dégâts.";
-                view->afficherErreur(err);
-                continue;
-            }
+            for (auto champ : championAttaqués){
+                if (degatsRestants < champ->getVie()) {
+                    std::string err = "❌ Pas assez de dégâts pour ce garde (" 
+                                    + std::to_string(champ->getVie()) + " PV). Il vous reste " 
+                                    + std::to_string(degatsRestants) + " dégâts.";
+                    view->afficherErreur(err);
+                    continue;
+                }
             
-            degatsRestants -= garde->getVie();
-            partie->getTourCourant()->utiliserDegats(garde->getVie());
+            degatsRestants -= champ->getVie();
+            partie->getTourCourant()->utiliserDegats(champ->getVie());
             
-            std::cout << "⚔️ " << garde->getVie() << " dégâts → " << garde->getNom() << std::endl;
-            std::cout << "💀 " << garde->getNom() << " éliminé !" << std::endl;
+            std::cout << "⚔️ " << champ->getVie() << " dégâts → " << champ->getNom() << std::endl;
+            std::cout << "💀 " << champ->getNom() << " éliminé !" << std::endl;
             
-            cible->assomerChampion(garde);
+            cible->assomerChampion(champ);
 
             // Réafficher les gardes restants
-            if (cible->aGarde()) {
-                std::cout << "\n🛡️ Gardes restants :" << std::endl;
-                view->afficherChampions(cible->getGardes());
-                std::cout << std::endl;
             }
         }
 
         // 2 : Attaquer les autres champions si le joueur le souhaite
-        if (degatsRestants > 0 && !cible->getChampions().empty()) {
+        while (degatsRestants > 0 && !cible->getChampions().empty()) {
+
+
             std::string choix = "Attaquer un champion (c) ou le joueur (j) ?";
             view->afficherMessage(choix);
             
@@ -681,33 +649,28 @@ bool GameController::attaquerJoueur() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             
             if (reponse == 'c' || reponse == 'C') {
-                while (degatsRestants > 0 && !cible->getChampions().empty()) {
-                    
-                    std::vector<int> indexChamp = view->demanderIndexChampion(cible);
-                    
-                    if (indexChamp.empty() || indexChamp.at(0) < 0) {
-                        break;
-                    }
-                    
-                    int ind = indexChamp.at(0);
-                    
+            
+                view->afficherChampions(cible->getChampions());
+                std::vector<int> indexChamp = view->demanderIndexChampion(cible);
+                std::vector<Champion*> championAttaque = std::vector<Champion*>();
+
+                //on transforme les index en pointeur sur champions
+                for (int ind : indexChamp ){
                     if (!validerIndex(ind, cible->getChampions().size(), "champion")) {
-                        break;
+                        continue;
                     }
-                    
-                    Champion* champ = cible->getChampions().at(ind);
-                    
+                    championAttaque.push_back(cible->getChampions().at(ind));
+                }
+                
+                if (championAttaque.empty()) {
+                    break;
+                }
+                
+                //on attaque les champions choisis
+                for (auto champ : championAttaque){
+
+                    //si on a pas assez de degats on passe au champion d'après
                     if (degatsRestants < champ->getVie()) {
-                        std::string err = "❌ Pas assez de dégâts pour ce champion (" 
-                                        + std::to_string(champ->getVie()) + " PV).";
-                        view->afficherErreur(err);
-                        
-                        std::cout << "Choisir un autre champion ? (o/n): ";
-                        char rep;
-                        std::cin >> rep;
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        
-                        if (rep != 'o' && rep != 'O') break;
                         continue;
                     }
                     
@@ -719,16 +682,6 @@ bool GameController::attaquerJoueur() {
                     std::cout << "💀 " << champ->getNom() << " éliminé !" << std::endl;
 
                     cible->assomerChampion(champ);
-
-                    // Demander si continuer
-                    if (degatsRestants > 0 && !cible->getChampions().empty()) {
-                        std::cout << "Reste " << degatsRestants << " dégâts. Attaquer un autre champion ? (o/n): ";
-                        char rep;
-                        std::cin >> rep;
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        
-                        if (rep != 'o' && rep != 'O') break;
-                    }
                 }
             }
         }

@@ -54,4 +54,5 @@ public:
     virtual bool demanderChoix(Effet effet) = 0;
     virtual int demanderChoixInitialisationPartie() = 0;
     virtual std::string demanderNomFichierSauvegarde() = 0;
+    virtual void afficherAdversaires(std::vector<Joueur*> joueurs) = 0;
 };

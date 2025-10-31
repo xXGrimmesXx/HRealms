@@ -690,3 +690,21 @@ std::string ConsoleView::demanderNomFichierSauvegarde() {
     std::cin.clear();
     return nomFichier;
 }
+
+void ConsoleView::afficherAdversaires(const std::vector<Joueur*> joueurs) {
+    std::cout << "👥 Adversaires:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    for (int i = 0; i < (int)joueurs.size(); ++i) {
+        Joueur* adversaire = joueurs.at(i);
+        afficherJoueur(adversaire);
+        std::cout << std::endl;
+
+        if (!adversaire->getChampions().empty()) {
+            afficherChampions(adversaire->getChampions());
+        }
+        else {
+            std::cout << "  Aucun champion en jeu." << std::endl;
+        }
+    }
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+}

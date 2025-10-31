@@ -4,5 +4,5 @@
 class CarteObjet : public Carte {
 public:
     // Constructeur
-    CarteObjet(std::string nom, int cout, Faction f) : Carte(nom, cout, f) {}
+    CarteObjet(std::string nom, int cout, Faction f);
 };

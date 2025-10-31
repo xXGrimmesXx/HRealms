@@ -63,6 +63,7 @@ public:
     bool demanderChoix(Effet effet) override;
     int demanderChoixInitialisationPartie() override;
     std::string demanderNomFichierSauvegarde() override;
+    void afficherAdversaires(std::vector<Joueur*> joueurs) override;
 
 
 private:
