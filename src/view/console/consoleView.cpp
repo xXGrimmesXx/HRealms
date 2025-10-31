@@ -83,12 +83,8 @@ std::string ConsoleView::typeEffetToString (TypeEffet t) {
 std::string ConsoleView::typeCibleToString(TypeCible c) {
     switch (c) {
         case TypeCible::SOI: return "Soi";
-        case TypeCible::ADVERSAIRE: return "Adversaire";
         case TypeCible::CHAMPION: return "Champion";
-        case TypeCible::TOUS_CHAMPIONS: return "Tous champions";
         case TypeCible::CARTE: return "Carte";
-        case TypeCible::NIMPORTE: return "N'importe";
-        case TypeCible::AUCUNE: return "Aucune";
         default: return "Cible inconnue";
     }
 }

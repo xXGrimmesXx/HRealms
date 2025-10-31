@@ -840,7 +840,7 @@ void GameController::toggleGodMode() {
         // GodMode inactif → demander mot de passe
         std::string motDePasse = view->demanderMotDePasseGodMode();
         
-        if (motDePasse != "joelgaylegoat") {
+        if (motDePasse != "quarantedeux") {
             std::string message = "❌ Mot de passe incorrect.";
             view->afficherErreur(message);
             return;
