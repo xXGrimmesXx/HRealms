@@ -38,6 +38,7 @@ public:
         void afficherDefausseChampion(Joueur* joueur)override;
         void afficherCartesEffetSacrifice(std::vector<Carte*> cartes) override;
         void afficherPileSacrifice(Partie* partie) override;
+        void afficherAdversaires(std::vector<Joueur*> joueurs) override;
 
     //helpers
     std::string typeEffetToString(TypeEffet t);
@@ -63,7 +64,6 @@ public:
     bool demanderChoix(Effet effet) override;
     int demanderChoixInitialisationPartie() override;
     std::string demanderNomFichierSauvegarde() override;
-    void afficherAdversaires(std::vector<Joueur*> joueurs) override;
 
 
 private:

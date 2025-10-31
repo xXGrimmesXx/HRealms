@@ -18,8 +18,11 @@ private:
     TypeCible cible;
 
 public:
+    // Constructeurs
     Effet(TypeEffet t, int m1, int m2, TypeCible c);
     Effet(TypeEffet t, int m1, TypeCible c);
+    
+    // Méthode
     void appliquer(Carte* src, void* tgt, Partie* partie,bool choix) const;
 
     // Getters et setters
@@ -27,7 +30,6 @@ public:
     int getMontant1()const{return montant1;}
     int getMontant2()const{return montant2;}
     TypeCible getTypeCible()const{return cible;}
-
     void setTypeEffet(TypeEffet t){type = t;}
     void setMontant1(int m){montant1 = m;}
     void setMontant2(int m){montant2 = m;}

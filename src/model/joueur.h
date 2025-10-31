@@ -27,14 +27,17 @@ private:
     bool prochainAchatDansMain;
 
 public:
+    // Constructeur
     Joueur(std::string nom="");
     ~Joueur() = default;
+
+    // Méthodes
     void piocher(int n);
     bool jouerCarte(Carte* c,Partie* p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
     bool mobiliserChampion(int idx, Partie* p,std::vector<ChoixEffet*> target);
-    bool aChampionMobilisable();
     bool acheterDepuisMarche(int slot, Partie* p);
     void finTour();
+    bool aChampionMobilisable();
     bool aGarde() const;
     void soigner(int montant);
     void defausser(Carte * c);
@@ -74,9 +77,10 @@ public:
     std::vector<Champion*> getDefausseChampions() const;
     std::vector<Champion*> getChampionsMain() const;
     std::vector<Champion*> getGardesMain() const;
-        int getNombreCartesJouables() const;
+    int getNombreCartesJouables() const;
 
 
+    // Helpers pour l'affichage
     std::string toString() const {
         return nom + " (PV: " + std::to_string(pv) + ", Defausse: " + std::to_string(defausse.getTaille()) + " cartes, Champions: " + std::to_string(champions.size()) + ")";
     }

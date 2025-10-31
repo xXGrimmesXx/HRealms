@@ -24,11 +24,11 @@ public:
     void ajouter(Carte* c);
     void defausser(Carte* c);
     void viderMain(Joueur* j);
-    
     bool contientCarteDeFaction(Faction f);
     bool contientCarteEffetSacrifice();
     void sacrifier(Carte* c);
 
+    // Helpers pour l'affichage
     std::string toString() const;
     friend std::ostream& operator<<(std::ostream& os, const Main& m){os<<m.toString(); return os; }
 };

@@ -62,7 +62,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             }
             break;
         case TypeEffet::PIOCHER:
-            if (cible == TypeCible::SOI || cible == TypeCible::ADVERSAIRE) {
+            if (cible == TypeCible::SOI) {
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
                     joueurTgt->piocher(montant1);

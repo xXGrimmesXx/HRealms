@@ -15,6 +15,8 @@ public:
     
     bool acheter(Joueur* joueur, Partie* partie);
     bool estDisponible() const;
+
+    // Getters
     int getNombreDisponible() const;
     int getCout() const { return COUT; }
     

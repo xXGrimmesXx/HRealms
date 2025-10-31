@@ -33,6 +33,7 @@ public:
         virtual void afficherDefausseChampion(Joueur* joueur) = 0;
         virtual void afficherCartesEffetSacrifice(std::vector<Carte*> cartes) = 0;
         virtual void afficherPileSacrifice(Partie* partie) = 0;
+        virtual void afficherAdversaires(std::vector<Joueur*> joueurs) = 0;
 
     // Interface pour les saisies utilisateur
     virtual int demanderNombreJoueurs() = 0;
@@ -54,5 +55,4 @@ public:
     virtual bool demanderChoix(Effet effet) = 0;
     virtual int demanderChoixInitialisationPartie() = 0;
     virtual std::string demanderNomFichierSauvegarde() = 0;
-    virtual void afficherAdversaires(std::vector<Joueur*> joueurs) = 0;
 };

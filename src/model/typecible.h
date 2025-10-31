@@ -1,3 +1,3 @@
 #pragma once
 
-enum class TypeCible {SOI,  ADVERSAIRE,  CHAMPION_ALLIE,  CHAMPION_ENNEMI,CHAMPION,  TOUS_CHAMPIONS, CARTE,  NIMPORTE,  AUCUNE};
+enum class TypeCible {SOI, CHAMPION, CARTE};
