@@ -8,8 +8,8 @@ QUAND JE JOUE TITHE PRIEST,
 ❌ ERREUR: Impossible de jouer cette carte.
 si pas assez dégâts pour tuer champion, affiche pas d'erreur
 duplication or et gemmedefeu
-changer mdp godmode
 SMASH AND GRAB SI PAS DE DEFAUSSE BUG
+faire les modes Premier Sang et Dernier Survivant pour +2 joueurs
 
 TODO LIST APRES CALL :
 (par ordre d'importance)
