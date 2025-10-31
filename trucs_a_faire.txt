@@ -1,21 +1,15 @@
 attaquerJoueur --> afficher champions
-tous les effets à choix --> préciser c'est pour quel effet
-CHAMPION -> activer effet alier a chaque fois qu'on mobilise
-attaquer champion ou joueur
---> joueur marche pas
---> message d'erreur quand mauvais choix champion doit être index 1based
 PIOCHE_SIOUI_DEFAUSSE
 --> le rendre possible que sur des cartes non jouées
 SACRIFIER
 --> que si elle est déjà jouée
-indice décalé si tu sacrifies puis défausse en même temps
 QUAND JE JOUE TITHE PRIEST, 
 ❌ ERREUR: Échec du jeu de la carte.
 ❌ ERREUR: Impossible de jouer cette carte.
 si pas assez dégâts pour tuer champion, affiche pas d'erreur
 duplication or et gemmedefeu
 changer mdp godmode
-
+SMASH AND GRAB SI PAS DE DEFAUSSE BUG
 
 TODO LIST APRES CALL :
 (par ordre d'importance)

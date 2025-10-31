@@ -51,7 +51,7 @@ bool Joueur::jouerCarte(Carte* c,Partie *p,std::vector<ChoixEffet*> target,std::
     
     return true;
 }
-bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target){
+bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies){
     if (idx < 0 || idx >= (int)champions.size()) {
         throw std::out_of_range("Index de champion invalide");
         return false;
@@ -62,6 +62,10 @@ bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target
             return false;
         }
         c->mobiliser(p,target);
+        if (c->getEstJouee() == false && !targetAllies.empty()) {
+            c->jouerEffetsAllies(p,targetAllies);
+            c->setEstJouee(true);
+        }
         return true;
     }
     return false;
@@ -85,6 +89,7 @@ void Joueur::finTour(){
     piocher(5);
     for (auto c : champions){
         c->demobiliser();
+        c->setEstJouee(false);
     }
 }
 bool Joueur::aGarde()const {

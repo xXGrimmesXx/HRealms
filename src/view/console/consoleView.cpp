@@ -586,7 +586,7 @@ void ConsoleView::afficherChampions(const std::vector<Champion*> champions) {
 
 bool ConsoleView::demanderChoix(Effet effet) {
     int choix;
-    std::cout << "❓ Choisir l'option pour l'effet (" << typeEffetToString(effet.getTypeEffet()) << ") (1/2): "<< std::endl;
+    std::cout << "❓ Choisir l'option"<< std::endl;
     TypeEffet t = effet.getTypeEffet();
     if (t== TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT || t== TypeEffet::PIOCHE_SIOUI_DEFAUSSE) {
         std::cout << "[1] non" << std::endl << "[2] oui" << std::endl;

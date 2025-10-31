@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "../model/typeEffet.h"
 
 
 // Forward declarations
@@ -55,4 +56,5 @@ public:
     virtual bool demanderChoix(Effet effet) = 0;
     virtual int demanderChoixInitialisationPartie() = 0;
     virtual std::string demanderNomFichierSauvegarde() = 0;
+    virtual std::string typeEffetToString(TypeEffet t) = 0;
 };

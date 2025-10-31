@@ -69,7 +69,3 @@ debug :
 
 clean :
 	rm -rf $(BUILDDIR) Hrealms
-
-# Aide pour déboguer
-print-% :
-	@echo '$*=$($*)'

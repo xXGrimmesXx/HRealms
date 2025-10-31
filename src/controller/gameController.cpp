@@ -303,6 +303,7 @@ bool GameController::jouerCarte() {
             view->afficherErreur(message);
             return false;
         }
+        afficherEtatJeu();
     }
     return true;
 }
@@ -319,9 +320,15 @@ bool GameController::mobiliserChampion() {
         }
         Champion* c = joueurActuel->getChampions().at(ind);
         std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
+        std::vector<ChoixEffet*> ciblesAllies = std::vector<ChoixEffet*>();
+        if (c->getEstJouee() == false) {
+            if (joueurActuel->possedeAllie(c)) {
+                ciblesAllies = choisirCible(c,c->getEffetsAllie());
+            }
+        }
         // Essayer de jouer la carte
         try {
-            bool succes = joueurActuel->mobiliserChampion(ind, partie.get(), cibles);
+            bool succes = joueurActuel->mobiliserChampion(ind, partie.get(), cibles,ciblesAllies);
             if (succes) {
                 std::string message = "Champion mobilisé avec succès !";
                 view->afficherMessage(message);
@@ -353,6 +360,7 @@ std::vector<ChoixEffet*> GameController::choisirCible(Carte* carte,std::vector<E
 ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Carte* carteSource) {
     (void)carteSource;
     TypeEffet tE = effet.getTypeEffet();
+    std::string msg = "Choix pour l'effet " + view->typeEffetToString(tE) +" de la carte " + carteSource->getNom();
     switch (tE) {
         case TypeEffet::AJOUT_OR:
             return new ChoixEffet(partie.getJoueurActuel(),0);
@@ -367,6 +375,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::DEFAUSSER:{
+            view->afficherMessage(msg);
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
             if(j==nullptr){
@@ -381,6 +390,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::SACRIFIER:{
             Joueur* j = partie.getJoueurActuel();
 
+            view->afficherMessage(msg);
             int indexCarte = view->demanderIndexCarte().at(0);
 
             while (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main")){
@@ -392,6 +402,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         }
 
         case TypeEffet::ASSOMMER_CHAMPION:{
+            view->afficherMessage(msg);
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
 
@@ -412,6 +423,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
 
         case TypeEffet::PREPARE_CHAMPION:{
             Joueur* j = partie.getJoueurActuel();
+            view->afficherMessage(msg);
             view->afficherChampions(j->getChampions());
             if(j==nullptr){
                 return new ChoixEffet(nullptr,0);
@@ -425,11 +437,13 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         }
 
         case TypeEffet::COMBAT_OU_VIE:{
+            view->afficherMessage(msg);
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
 
         case TypeEffet::OR_OU_COMBAT: {
+            view->afficherMessage(msg);
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
@@ -447,10 +461,15 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(partie.getJoueurActuel(),0);
 
         case TypeEffet::OR_OU_VIE_PAR_CHAMPION:{
+            view->afficherMessage(msg);
             bool choix = view->demanderChoix(effet);
             return new ChoixEffet(partie.getJoueurActuel(),choix);
         }
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:{
+            if (partie.getJoueurActuel()->getDefausse()->estVide()) {
+                return new ChoixEffet(nullptr, 0);
+            }
+            view->afficherMessage(msg);
             view ->afficherDefausse(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,partie.getJoueurActuel()->getDefausse()->getTaille(),"carte de la défausse")){
@@ -466,6 +485,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             if (defausseChampions.empty()) {
                 return new ChoixEffet(nullptr, 0);
             }
+            view->afficherMessage(msg);
             view->afficherDefausseChampion(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte, defausseChampions.size(), "champion de la défausse")) {
@@ -481,6 +501,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             return new ChoixEffet(partie.getJoueurActuel(), 0);
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT:{
+            view->afficherMessage(msg);
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
@@ -497,6 +518,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         }
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
             std::vector<Carte*>* cartesADefausser = new std::vector<Carte*>();
+            view->afficherMessage(msg);
             for(int i=0; i<effet.getMontant1(); i++){
                 bool choix = view->demanderChoix(effet);
                 if (choix == true){
@@ -684,6 +706,12 @@ bool GameController::attaquerJoueur() {
 
                     cible->assomerChampion(champ);
                 }
+            }
+            if ((reponse == 'j' || reponse == 'J') && cible->aGarde()==false) {
+                cible->prendreDegats(degatsRestants);
+                partie->getTourCourant()->utiliserDegats(degatsRestants);
+                degatsRestants=0;
+                break;
             }
         }
         // 3. Dégâts restants au joueur
@@ -980,7 +1008,7 @@ Joueur* GameController::getJoueurParIndex(int index){
 
 bool GameController::validerIndex(int index, int max, const std::string& type) {
     if (index < 0 || index >= max) {
-        std::string message = "Index de " + type + " invalide. Doit être entre 0 et " + std::to_string(max-1) + ".";
+        std::string message = "Index de " + type + " invalide. Doit être entre 1 et " + std::to_string(max) + ".";
         view->afficherErreur(message);
         return false;
     }

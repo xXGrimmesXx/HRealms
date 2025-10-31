@@ -34,7 +34,7 @@ public:
     // Méthodes
     void piocher(int n);
     bool jouerCarte(Carte* c,Partie* p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
-    bool mobiliserChampion(int idx, Partie* p,std::vector<ChoixEffet*> target);
+    bool mobiliserChampion(int idx, Partie* p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies);
     bool acheterDepuisMarche(int slot, Partie* p);
     void finTour();
     bool aChampionMobilisable();
