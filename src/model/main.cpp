@@ -32,7 +32,7 @@ void Main::viderMain(Joueur* j){
 
 Carte* Main::getCarte(int idx) const{
     if(idx < 0 || idx >= (int)cartes.size()) {
-        throw std::out_of_range("Index hors limites");
+        return nullptr;
     }
     return cartes.at(idx);
 }

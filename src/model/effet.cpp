@@ -125,13 +125,26 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             if (cible == TypeCible::CARTE) {
                 Carte* carteTgt = static_cast<Carte*>(target);
                 if (carteTgt != nullptr) {
+                    
                     //on cherche le propriétaire de la carte à sacrifier
                     for (Joueur* j : partie->getJoueurs()){
                         //on cherche dans la main
                         for (int i=0;i<j->getMain()->getTaille();i++){
                             if (j->getMain()->getCarte(i) == carteTgt){
+                                //si c'est une carte de la main on vérifie qu'elle a bien été jouée
+                                if (!carteTgt->getEstJouee()){
+                                    throw std::invalid_argument("Cannot sacrifice a card that has not been played");
+                                }
                                 j->sacrifier(carteTgt,partie);
-                                break;
+                                return;
+                            }
+                        }
+                        //on cherche dans les champions
+                        //ici tous les champions sont joués donc pas besoin de vérifier getEstJouee
+                        for (Champion* champ : j->getChampions()){
+                            if (champ == carteTgt){
+                                j->sacrifier(carteTgt,partie);
+                                return;
                             }
                         }
                     }
@@ -297,7 +310,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                 
             }else{
                 // Invalid target type for this effect
-                    throw std::invalid_argument("Invalid target type for DEFAUSSE_AU_DESSUS_DU_DECK effect");
+                    throw std::invalid_argument("Invalid target type for DEFAUSSE_AU_DESSUS_DU_DECK effect "+std::to_string(static_cast<int>(cible)));
             }
             break;
 

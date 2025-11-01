@@ -312,6 +312,7 @@ bool GameController::mobiliserChampion() {
     Joueur* joueurActuel = partie->getJoueurActuel();
     
     // Demander quelle carte jouer
+    afficherEtatJeu();
     std::vector<int> index = view->demanderIndexChampion(joueurActuel);
 
     for (int ind : index) {
@@ -379,10 +380,19 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
             Joueur* j = getJoueurParIndex(indexJoueur);
             if(j==nullptr){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             view->afficherMain(j);
             int indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main")){
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
+            }
             Carte* c = j->getMain()->getCarte(indexCarte);
             return new ChoixEffet(c,0);
         }
@@ -393,8 +403,11 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             view->afficherMessage(msg);
             int indexCarte = view->demanderIndexCarte().at(0);
 
-            while (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main")){
-                indexCarte = view->demanderIndexCarte().at(0);
+            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main") || j->getMain()->getCarte(indexCarte)->getEstJouee()==false){
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
 
             Carte* c = j->getMain()->getCarte(indexCarte);
@@ -407,15 +420,24 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             Joueur* j = getJoueurParIndex(indexJoueur);
 
             if(j==nullptr){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             if (j->getChampions().empty()){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             view->afficherChampions(j->getChampions());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
@@ -426,11 +448,17 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             view->afficherMessage(msg);
             view->afficherChampions(j->getChampions());
             if(j==nullptr){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             Champion* c = j->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
@@ -473,7 +501,10 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             view ->afficherDefausse(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte,partie.getJoueurActuel()->getDefausse()->getTaille(),"carte de la défausse")){
-                return new ChoixEffet(nullptr,0);
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             Carte* c = partie.getJoueurActuel()->getDefausse()->getCartes().at(indexCarte);
             return new ChoixEffet(c,0);
@@ -489,7 +520,10 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             view->afficherDefausseChampion(partie.getJoueurActuel());
             int indexCarte = view->demanderIndexCarte().at(0);
             if (!validerIndex(indexCarte, defausseChampions.size(), "champion de la défausse")) {
-                return new ChoixEffet(nullptr, 0);
+                if (view->confirmerAnnulation(effet)) {
+                    return new ChoixEffet(nullptr, 0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
             }
             Champion* c = defausseChampions.at(indexCarte);
             return new ChoixEffet(c, 0);
@@ -505,17 +539,23 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
-                if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main")){
-                    return new ChoixEffet(nullptr,0);
+                if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main") || partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte)->getEstJouee()==false){
+                    if (view->confirmerAnnulation(effet)){
+                        return new ChoixEffet(nullptr,0);
+                    }
+                    return demanderChoixEffet(effet,partie,carteSource);
                 }
                 else{
                     Carte* c = partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte);
                     return new ChoixEffet(c,choix);
                 }
             }
-
-            return new ChoixEffet(nullptr,choix);
+            if (view->confirmerAnnulation(effet)){
+                return new ChoixEffet(nullptr,0);
+            }
+            return demanderChoixEffet(effet,partie,carteSource);
         }
+
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:{
             std::vector<Carte*>* cartesADefausser = new std::vector<Carte*>();
             view->afficherMessage(msg);
@@ -524,15 +564,20 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
                 if (choix == true){
                     int indexCarte = view->demanderIndexCarte().at(0);
                     if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main")){
-                        cartesADefausser->push_back(nullptr);
+                        if (view->confirmerAnnulation(effet)){
+                            cartesADefausser->push_back(nullptr);
+                        }
+                        return demanderChoixEffet(effet,partie,carteSource);
                     }
                     Carte* c = partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte);
                     cartesADefausser->push_back(c);
 
-                }
-                else {
-                    cartesADefausser->push_back(nullptr);
-                    return new ChoixEffet(cartesADefausser,false);
+                }else {
+                    if (view->confirmerAnnulation(effet)){
+                        cartesADefausser->push_back(nullptr);
+                        return new ChoixEffet(cartesADefausser,false);
+                    }
+                    return demanderChoixEffet(effet,partie,carteSource);
                 }
             }
             return new ChoixEffet(cartesADefausser,false);
@@ -608,26 +653,30 @@ bool GameController::attaquerJoueur() {
     int degatsRestants = partie->getTourCourant()->getDegats();
 
     // Si le joueur n'a pas assez de dégâts pour tuer au moins un garde, on bloque l'action
-    if (cible->aGarde()) {
-        bool attaquePossible = false;
-        for (auto* garde : cible->getGardes()) {
-            if (degatsRestants >= garde->getVie()) {
-                attaquePossible = true;
-                break;
-            }
-        }
-
-        if (!attaquePossible) {
-            std::string err = "❌ Vous n'avez pas assez de dégâts pour éliminer un garde. Action impossible.";
-            view->afficherErreur(err);
-            return false;
-        }
-    }
+    
 
     try {
         
         // 1 : Si l'adversaire a un champion garde, on doit l'attaquer en premier
         while (cible->aGarde() && degatsRestants > 0){
+
+            //verifie si on peut attaquer un garde
+            if (cible->aGarde()) {
+                bool attaquePossible = false;
+                for (auto* garde : cible->getGardes()) {
+                    if (degatsRestants >= garde->getVie()) {
+                        attaquePossible = true;
+                        break;
+                    }
+                }
+
+                if (!attaquePossible) {
+                    std::string err = "❌ Vous n'avez pas assez de dégâts pour éliminer un garde. Action impossible.";
+                    view->afficherErreur(err);
+                    return false;
+                }
+            }
+            //demande le champion à attaquer
             view->afficherChampions(cible->getChampions());
             std::string message = cible->getNom() + " a au moins un champion garde. Lequel voulez-vous attaquer?";
             view->afficherMessage(message);
@@ -635,6 +684,10 @@ bool GameController::attaquerJoueur() {
             std::vector<int> indexChampions = view->demanderIndexChampion(cible);
             std::vector<Champion*> championAttaqués = std::vector<Champion*>();
             for (int ind : indexChampions ){
+                //si le champion n'est pas un garde on l'ignore
+                if (!validerIndex(ind, cible->getChampions().size(), "champion") && cible->getChampions().at(ind)->estGarde()==false) {
+                    continue;
+                }
                 championAttaqués.push_back(cible->getChampions().at(ind));
             }
 
@@ -655,7 +708,6 @@ bool GameController::attaquerJoueur() {
             
             cible->assomerChampion(champ);
 
-            // Réafficher les gardes restants
             }
         }
 

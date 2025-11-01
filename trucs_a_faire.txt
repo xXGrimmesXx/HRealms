@@ -1,14 +1,13 @@
 attaquerJoueur --> afficher champions
 PIOCHE_SIOUI_DEFAUSSE
 --> le rendre possible que sur des cartes non jouées
-SACRIFIER
---> que si elle est déjà jouée
 QUAND JE JOUE TITHE PRIEST, 
 ❌ ERREUR: Échec du jeu de la carte.
 ❌ ERREUR: Impossible de jouer cette carte.
 si pas assez dégâts pour tuer champion, affiche pas d'erreur
+si erreur d'index redemander pas faire d'erreur
+SI TU AS PAS D ALLIE MAIS QUE TU PIOHC EUN ALLIE TU PEUX ACTIVER EFFET ALLIE
 duplication or et gemmedefeu
-SMASH AND GRAB SI PAS DE DEFAUSSE BUG
 faire les modes Premier Sang et Dernier Survivant pour +2 joueurs
 
 TODO LIST APRES CALL :

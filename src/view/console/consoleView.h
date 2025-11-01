@@ -64,6 +64,7 @@ public:
     bool demanderChoix(Effet effet) override;
     int demanderChoixInitialisationPartie() override;
     std::string demanderNomFichierSauvegarde() override;
+    bool confirmerAnnulation(Effet effet) override;
 
 
 private:

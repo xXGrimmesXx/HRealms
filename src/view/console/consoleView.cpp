@@ -328,7 +328,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
 std::vector<int> ConsoleView::demanderIndexCarte() {
     std::vector<int> indices;
     std::string line;
-    std::cout << "🎴 Numéro de la carte: ";
+    std::cout << "🎴 Numéro des cartes (mettre des espaces entre les numéros): ";
     std::getline(std::cin, line);
     line = trimString(line);
     char * p;
@@ -415,7 +415,7 @@ int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs,int joueurActu
         return -1;
     }
     if (index-1 == joueurActuelIndex) {
-        throw std::invalid_argument("Vous ne pouvez pas choisir vous-même comme cible.");
+        return -1;
     }
     // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -682,6 +682,19 @@ std::string ConsoleView::demanderNomFichierSauvegarde() {
     std::getline(std::cin, nomFichier);
     std::cin.clear();
     return nomFichier;
+}
+
+bool ConsoleView::confirmerAnnulation(Effet effet) {
+    char reponse;
+    std::cout << "❓ L'entré n'est pas valide ou vous avez choisi de ne pas activer l'effet  " << typeEffetToString(effet.getTypeEffet()) << ", confirmez vous la non activation de l'effet ? (o/n): ";
+    if (!(std::cin >> reponse)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    
+    return (reponse == 'o' || reponse == 'O' || reponse == 'y' || reponse == 'Y');
 }
 
 void ConsoleView::afficherAdversaires(const std::vector<Joueur*> joueurs) {
