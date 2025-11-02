@@ -36,18 +36,24 @@ bool Joueur::jouerCarte(Carte* c,Partie *p,std::vector<ChoixEffet*> target,std::
         throw std::invalid_argument("Carte invalide");
         return false;
     }
-    if (c->getEstJouee()) {
+    if (c->getEffetPrimaireActive()&& c->getEffetAllieActive()) {
     return false;
     }
     if (dynamic_cast<Champion*>(c)) {
         champions.push_back(dynamic_cast<Champion*>(c));
         main.defausser(c); // Retirer de la main sans aller dans la défausse
+        return true;
     }
-    c->jouerEffetPrimaires(p,target);
-    if (!targetAllies.empty()) {
+    if (c->getEffetPrimaireActive() == false){
+        c->jouerEffetPrimaires(p,target);
+        c->setEffetPrimaireActive(true);
+    }
+    if (targetAllies.size()== c->getEffetsAllie().size() && c->getEffetAllieActive() == false) {
         c->jouerEffetsAllies(p,targetAllies);
+        c->setEffetAllieActive(true);
     }
-    c->setEstJouee(true);
+    
+    
     
     return true;
 }
@@ -58,13 +64,16 @@ bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target
     }
     Champion* c = champions.at(idx);
     if (c != nullptr) {
-        if (c->estMobilise()) {
+        // Vérifier si le champion est déjà mobilisé et si ses effets alliés ont été joués
+        if (c->estMobilise() && c->getEffetAllieActive()) {
             return false;
         }
-        c->mobiliser(p,target);
-        if (c->getEstJouee() == false && !targetAllies.empty()) {
+        if (c->estMobilise() == false) {
+            c->mobiliser(p,target);
+        }
+        if (c->getEffetAllieActive() == false && targetAllies.size() == c->getEffetsAllie().size()) {
             c->jouerEffetsAllies(p,targetAllies);
-            c->setEstJouee(true);
+            c->setEffetAllieActive(true);
         }
         return true;
     }
@@ -73,7 +82,7 @@ bool Joueur::mobiliserChampion(int idx,Partie *p,std::vector<ChoixEffet*> target
 
 bool Joueur::aChampionMobilisable(){
     for (auto c : champions){
-        if (!c->estMobilise()){
+        if (!c->estMobilise() || !c->getEffetAllieActive()){
             return true;
         }
     }
@@ -89,7 +98,7 @@ void Joueur::finTour(){
     piocher(5);
     for (auto c : champions){
         c->demobiliser();
-        c->setEstJouee(false);
+        c->setEffetAllieActive(false);
     }
 }
 bool Joueur::aGarde()const {
@@ -118,7 +127,6 @@ void Joueur::sacrifier(Carte* c,Partie* p){
 
     //si la carte est une gemme de feu, la remettre dans la pile gemme de feu
     //sinon on la met dans la pile de cartes sacrifiées
-    std::cout << "Sacrifier la carte: " << c->to_string() <<std::endl<< "est une gemme de feu " << (c->getNom() == "Gemme de feu") <<std::endl;
     if (c->getNom() == "Gemme de feu") {
         p->getGemmeDeFeu()->getPile()->ajouter(c);
     }
@@ -138,7 +146,6 @@ void Joueur::assomerChampion(Champion* c){
         if (champions.at(i)==c){
             defausse.ajouter(c);
             champions.erase(std::next(champions.begin(),i));
-            std::cout << champions.size() << " champions restants pour le joueur joueur.cpp " << getNom() << std::endl;
         }
     }
 }
@@ -197,7 +204,8 @@ int Joueur::getNombreCartesJouables() const {
     int count = 0;
     for (int i = 0; i < main.getTaille(); ++i) {
         Carte* carte = main.getCarte(i);
-        if (carte !=nullptr && !carte->getEstJouee()) {
+        // Vérifie si la carte n'a pas encore joué ses effets
+        if (carte !=nullptr && (!carte->getEffetPrimaireActive()||!carte->getEffetAllieActive())) {
             count++;
         }
     }

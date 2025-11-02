@@ -39,7 +39,8 @@ json carteToJson(const Carte* carte) {
     j["nom"] = carte->getNom();
     j["cout"] = carte->getCout();
     j["faction"] = static_cast<int>(carte->getFaction());
-    j["est_jouee"] = carte->getEstJouee();
+    j["effetPrimaireActive"] = carte->getEffetPrimaireActive();
+    j["effetAllieActive"] = carte->getEffetAllieActive();
     
     // Sérialiser les effets primaires
     json effetsPrimaires = json::array();
@@ -184,8 +185,11 @@ Carte* jsonToCarte(const json& j) {
     }
     
     // Restaurer l'état "jouée"
-    if (j.contains("est_jouee") && j["est_jouee"]) {
-        carte->setEstJouee(true);
+    if (j.contains("effetPrimaireActive") && j["effetPrimaireActive"]) {
+        carte->setEffetPrimaireActive(true);
+    }
+    if (j.contains("effetAllieActive") && j["effetAllieActive"]) {
+        carte->setEffetAllieActive(true);
     }
     
     return carte;

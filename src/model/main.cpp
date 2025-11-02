@@ -13,7 +13,8 @@ void Main::defausser(Carte * c){
     }
     for (auto carte : cartes) {
         if (carte == c) {
-            carte->setEstJouee(false);
+            carte->setEffetAllieActive(false);
+            carte->setEffetPrimaireActive(false);
             cartes.erase(std::remove(cartes.begin(), cartes.end(), carte), cartes.end());
             return;
         }
@@ -23,7 +24,8 @@ void Main::defausser(Carte * c){
 
 void Main::viderMain(Joueur* j){
     for(Carte* c : cartes) {
-        c->setEstJouee(false);
+        c->setEffetAllieActive(false);
+        c->setEffetPrimaireActive(false);
         j->getDefausse()->ajouter(c);
 
     }
@@ -69,7 +71,8 @@ void Main::sacrifier(Carte* c) {
     // Retire la carte de la main
     for (auto i=0; i<(int)cartes.size(); i++) {
         if (cartes.at(i) == c) {
-            cartes.at(i)->setEstJouee(false);
+            cartes.at(i)->setEffetAllieActive(false);
+            cartes.at(i)->setEffetPrimaireActive(false);
             cartes.erase(cartes.begin() + i);
             return;
         }

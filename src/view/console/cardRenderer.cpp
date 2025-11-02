@@ -12,9 +12,13 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     
     std::string color = getFactionColor(carte->getFaction());
     std::string typeSymbol = getTypeSymbol(carte);
-    std::string grayOut = carte->getEstJouee() ? RED : color;
-    if (const Champion* champion = dynamic_cast<const Champion*>(carte)) {
-        grayOut = champion->estMobilise() ? RED : color;
+    std::string grayOut = color;
+    if (carte->getEffetPrimaireActive() && carte->getEffetAllieActive()) {
+        grayOut = RED;
+    }
+    const Champion* champion = dynamic_cast<const Champion*>(carte);
+    if (champion && champion->estMobilise() && champion->getEffetAllieActive()) {
+        grayOut = RED;
     }
 
 
@@ -58,7 +62,11 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     
     // Effets primaires
     if (!carte->getEffetsPrimaire().empty()) {
-        effects.push_back("Effets primaires");
+        if (carte->getEffetPrimaireActive()) {
+            effects.push_back(std::string("Effets primaires (active)"));
+        } else {
+            effects.push_back("Effets primaires");
+        }
         for (const auto& effet : carte->getEffetsPrimaire()) {
             effects.push_back("   " + formatEffect(effet));
         }
@@ -66,7 +74,11 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
 
     // Effets alliés
     if (!carte->getEffetsAllie().empty()) {
-        effects.push_back("Effets allies");
+        if (carte->getEffetAllieActive()) {
+            effects.push_back(std::string("Effets allies (active)"));
+        } else {
+            effects.push_back("Effets allies");
+        }
         for (const auto& effet : carte->getEffetsAllie()) {
             effects.push_back("   " + formatEffect(effet));
         }
@@ -83,7 +95,11 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     // Si champion, effets d'activation
 
     if (const Champion* champion = dynamic_cast<const Champion*>(carte)) {
-        effects.push_back("Effets mobilisation:");
+        if (champion->estMobilise()){
+            effects.push_back(std::string("Effets mobilisation (active)"));
+        } else {
+            effects.push_back("Effets mobilisation");
+        }
         for (const auto& effet : champion->getEffetsActiver()) {
             effects.push_back("   " + formatEffect(effet));
         }

@@ -19,7 +19,8 @@ protected:
     std::vector<Effet> effetsPrimaire;
     std::vector<Effet> effetsAllie;
     std::vector<Effet> effetsSacrifice;
-    bool estJouee;
+    bool effetPrimaireActivé;
+    bool effetAllieActivé;
 
 public:
     // Constructeur & destructeur
@@ -35,13 +36,15 @@ public:
     std::vector<Effet> getEffetsPrimaire() const {return effetsPrimaire;}
     std::vector<Effet> getEffetsAllie() const {return effetsAllie;}
     std::vector<Effet> getEffetsSacrifice() const {return effetsSacrifice;}
-    bool getEstJouee() const { return estJouee; }
+    bool getEffetPrimaireActive() const { return effetPrimaireActivé; }
+    bool getEffetAllieActive() const { return effetAllieActivé; }
 
     // Setters
     Carte* ajouterEffetPrimaire(const Effet& e) { effetsPrimaire.push_back(e); return this; }
     Carte* ajouterEffetAllie(const Effet& e) { effetsAllie.push_back(e); return this; }
     Carte* ajouterEffetSacrifice(const Effet& e) { effetsSacrifice.push_back(e); return this; }
-    bool setEstJouee(bool b) { return estJouee = b; }
+    bool setEffetPrimaireActive(bool b) { return effetPrimaireActivé = b; }
+    bool setEffetAllieActive(bool b) { return effetAllieActivé = b; }
     void setId(int i) { id = i; }
 
     // Méthodes

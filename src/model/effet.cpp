@@ -132,7 +132,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                         for (int i=0;i<j->getMain()->getTaille();i++){
                             if (j->getMain()->getCarte(i) == carteTgt){
                                 //si c'est une carte de la main on vérifie qu'elle a bien été jouée
-                                if (!carteTgt->getEstJouee()){
+                                if (!carteTgt->getEffetPrimaireActive()){
                                     throw std::invalid_argument("Cannot sacrifice a card that has not been played");
                                 }
                                 j->sacrifier(carteTgt,partie);

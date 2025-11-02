@@ -31,11 +31,13 @@ Carte* Deck::piocher(){
     }
 }
 void Deck::ajouterDessous(Carte* c){
-    c->setEstJouee(false);
+    c->setEffetAllieActive(false);
+    c->setEffetPrimaireActive(false);
     cartes.push_front(c);
 }
 void Deck::ajouterDessus(Carte* c){
-    c->setEstJouee(false);
+    c->setEffetAllieActive(false);
+    c->setEffetPrimaireActive(false);
     cartes.push_back(c);
 }
 bool Deck::estVide() const{
@@ -43,7 +45,8 @@ bool Deck::estVide() const{
 }
 void Deck::rechargerDepuis(Pile* defausse){
     for (auto c : defausse->getCartes()){
-        c->setEstJouee(false);
+        c->setEffetAllieActive(false);
+        c->setEffetPrimaireActive(false);
         cartes.push_front(c);
     }
 }
@@ -51,5 +54,6 @@ void Deck::rechargerDepuis(Pile* defausse){
 void Deck::retirerCarte(int idx){
     if (idx >= 0 && idx < static_cast<int>(cartes.size())) {
         cartes.erase(cartes.begin() + idx);
+        
     }
 }

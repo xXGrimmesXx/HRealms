@@ -9,7 +9,7 @@
 
 class CardRenderer {
 public:
-    static constexpr int CARD_WIDTH = 30;
+    static constexpr int CARD_WIDTH = 35;
     static constexpr int CARD_HEIGHT = 15;
     
     // Codes couleurs
@@ -22,6 +22,7 @@ public:
     static constexpr const char* CYAN = "\033[36m";
     static constexpr const char* WHITE = "\033[37m";
     static constexpr const char* GRAY = "\033[90m";
+    static constexpr const char* ORANGE = "\033[38;5;208m";
     static constexpr const char* BOLD = "\033[1m";
     static constexpr const char* NORMAL = "\033[22m";
     

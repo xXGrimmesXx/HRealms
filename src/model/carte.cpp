@@ -24,6 +24,7 @@ void Carte::jouerEffetPrimaires(Partie* p, std::vector<ChoixEffet*> target) {
     for (size_t i = 0; i < effetsPrimaire.size(); ++i) {
         effetsPrimaire.at(i).appliquer(this, target.at(i)->getCible(), p, target.at(i)->getChoix());
     }
+    setEffetPrimaireActive(true);
 }
 void Carte::jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies){
     if (allies.size() != effetsAllie.size()) {
@@ -32,4 +33,5 @@ void Carte::jouerEffetsAllies(Partie* p,std::vector<ChoixEffet*> allies){
     for (size_t i = 0; i < effetsAllie.size(); ++i) {
         effetsAllie.at(i).appliquer(this, allies.at(i)->getCible(), p, allies.at(i)->getChoix());
     }
+    setEffetAllieActive(true);
 }

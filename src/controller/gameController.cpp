@@ -281,9 +281,13 @@ bool GameController::jouerCarte() {
             continue;
         }
 
-        std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsPrimaire());
+        std::vector<ChoixEffet*> cibles ;
         std::vector<ChoixEffet*> ciblesAllies;
-        if (joueurActuel->possedeAllie(c)) {
+
+        if (c->getEffetPrimaireActive()==false) {
+            cibles = choisirCible(c,c->getEffetsPrimaire());
+        }
+        if (joueurActuel->possedeAllie(c) && c->getEffetAllieActive() == false) {
             ciblesAllies = choisirCible(c,c->getEffetsAllie());
         }
         // Essayer de jouer la carte
@@ -320,9 +324,17 @@ bool GameController::mobiliserChampion() {
             return false;
         }
         Champion* c = joueurActuel->getChampions().at(ind);
-        std::vector<ChoixEffet*> cibles = choisirCible(c,c->getEffetsActiver());
+
+        std::vector<ChoixEffet*> cibles = std::vector<ChoixEffet*>();
         std::vector<ChoixEffet*> ciblesAllies = std::vector<ChoixEffet*>();
-        if (c->getEstJouee() == false) {
+
+
+        if (c->estMobilise()==false) {
+            cibles = choisirCible(c,c->getEffetsActiver());
+        }
+
+        // Vérifier si les effets alliés n'ont pas encore été joués
+        if (c->getEffetAllieActive() == false) {
             if (joueurActuel->possedeAllie(c)) {
                 ciblesAllies = choisirCible(c,c->getEffetsAllie());
             }
@@ -350,7 +362,7 @@ bool GameController::mobiliserChampion() {
 }
 
 std::vector<ChoixEffet*> GameController::choisirCible(Carte* carte,std::vector<Effet> effets) {
-    std::vector<ChoixEffet*> targets;
+    std::vector<ChoixEffet*> targets= std::vector<ChoixEffet*>();
     for(size_t i=0;i<effets.size();i++){
 
         targets.push_back(demanderChoixEffet(effets.at(i),*partie,carte));
@@ -403,7 +415,8 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             view->afficherMessage(msg);
             int indexCarte = view->demanderIndexCarte().at(0);
 
-            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main") || j->getMain()->getCarte(indexCarte)->getEstJouee()==false){
+            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main") ||
+            j->getMain()->getCarte(indexCarte)->getEffetPrimaireActive()==false){
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
@@ -539,7 +552,9 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
-                if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main") || partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte)->getEstJouee()==false){
+                if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main") ||
+                partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte)->getEffetPrimaireActive()==false){
+
                     if (view->confirmerAnnulation(effet)){
                         return new ChoixEffet(nullptr,0);
                     }
