@@ -1,21 +1,5 @@
-COMUN :
-    premier joueur random
-    si plus de deux joueurs -> 1er j 3 cartes, 2eme j 4cartes etc...
+FAIRE EN SORTE QUE SI ON ENTRE UNE LETTRE LE PROGRAMME PLANTE PAS (faire un cin de string puis try catch convert en int)
 
-MODE CLASSIQUE :
-    premier joueur random
-    tout le monde peut attaquer tout le monde
-    
-PREMIER SANG :
-    premier joueur random
-    attaquer ou cibler que le joueur a sa gauche
-    attaque ou cible les champions à gauche et à droite
-    dès qu'un joueur meurt le joueur de droite gagne
-DERNIER_EN_LICE :
-    pareil que premier sang sauf que quand un joueur meurt il est eliminé et le joueur a droite gagne 10pv et pioche une carte
-    dernier en vie gagne
-
-attaquerJoueur --> afficher champions
 PIOCHE_SIOUI_DEFAUSSE
 --> le rendre possible que sur des cartes non jouées
 QUAND JE JOUE TITHE PRIEST, 

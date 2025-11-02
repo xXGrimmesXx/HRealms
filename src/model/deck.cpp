@@ -22,7 +22,7 @@ void Deck::melanger(){
 
 Carte* Deck::piocher(){
     if (cartes.empty()) {
-        return nullptr; // ou gérer l'erreur selon vos besoins
+        return nullptr; 
     }
     else{
     Carte * c = cartes.back();

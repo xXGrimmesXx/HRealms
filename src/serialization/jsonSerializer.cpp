@@ -491,6 +491,8 @@ json partieToJson(Partie* partie) {
     
     // Tour courant
     j["tour_courant"] = tourToJson(partie->getTourCourant());
+
+    j["mode_jeu"] = static_cast<int>(partie->getModeJeu());
     
     return j;
 }
@@ -545,6 +547,11 @@ Partie* jsonToPartie(const json& j) {
     if (j.contains("tour_courant")) {
         Tour* tour = jsonToTour(j["tour_courant"], partie->getJoueurs());
         partie->setTourCourant(tour);
+    }
+
+    if (j.contains("mode_jeu")) {
+        ModeJeu modeJeu = static_cast<ModeJeu>(j["mode_jeu"].get<int>());
+        partie->setModeJeu(modeJeu);
     }
     
     return partie;

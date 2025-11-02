@@ -29,6 +29,7 @@ void ConsoleView::afficherMessage(std::string& message) {
 
 void ConsoleView::afficherErreur(std::string& erreur) {
     std::cout << "❌ ERREUR: " << erreur << std::endl;
+    attendreEntree();
 }
 
 void ConsoleView::afficherPartie(Partie* partie) {
@@ -306,7 +307,7 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     
     std::cout << "Votre choix: ";
     
-    int choixAffiche;
+    std::string choixAffiche;
     if (!(std::cin >> choixAffiche)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -315,26 +316,36 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
     // retirer le reste de la ligne (y compris '\n') pour que getline() suivant fonctionne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+    try {
+        choixInt = std::stoi(choixAffiche);
+    } catch (const std::exception& e) {
+        return -1;
+    }
     // Si choix invalide
-    if (choixAffiche < 1 || choixAffiche > (int)actionsDisponibles.size()) {
-        std::cout << "❌ ERREUR: Choix invalide. Veuillez choisir entre 1 et " << actionsDisponibles.size() << "." << std::endl;
+    if (choixInt < 1 || choixInt > (int)actionsDisponibles.size()) {
         return -1;
     }
 
     // Convertir le choix affiché en action réelle
-    return actionsDisponibles.at(choixAffiche - 1);
+    return actionsDisponibles.at(choixInt - 1);
 }
 
 std::vector<int> ConsoleView::demanderIndexCarte() {
     std::vector<int> indices;
     std::string line;
     std::cout << "🎴 Numéro des cartes (mettre des espaces entre les numéros): ";
-    std::getline(std::cin, line);
+    std::getline(std::cin, line, '\n');
     line = trimString(line);
     char * p;
     p = strtok(line.data(), " " );
     while (p !=  NULL ) {
-        indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+        try {
+            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+        } catch (const std::exception& e) {
+            break;
+        }
         p = strtok( NULL , " " );
     }
     return indices;
@@ -355,7 +366,11 @@ std::vector<int> ConsoleView::demanderIndexChampion(Joueur* joueur) {
         char * p;
         p = strtok(line, " " ); 
         while (p !=  NULL ) {
-            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            try {
+                indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            } catch (const std::exception& e) {
+                continue;
+            }
             p = strtok( NULL , " " );
         }
     }
@@ -378,7 +393,11 @@ std::vector<int> ConsoleView::demanderIndexGarde(Joueur* joueur) {
         char * p;
         p = strtok(line, " " ); 
         while (p !=  NULL ) {
-            indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            try {
+                indices.push_back(std::stoi(p) - 1); // Convertir en index 0-based
+            } catch (const std::exception& e) {
+                continue;
+            }
             p = strtok( NULL , " " );
         }
     }
@@ -387,11 +406,11 @@ std::vector<int> ConsoleView::demanderIndexGarde(Joueur* joueur) {
 }
 
 int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs) {
-    int index;
-    std::cout << "👤 Numéro du joueur: ";
+    std::string index;
     for(size_t i=0;i<joueurs.size();i++){
         std::cout << "[" << i+1 << "] " << joueurs.at(i)->getNom() << std::endl;
     }
+    std::cout << "👤 Numéro du joueur: ";
     if (!(std::cin >> index)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -399,62 +418,103 @@ int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs) {
     }
     // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return index - 1; // Convertir en index 0-based
+
+    int indexInt;
+    // si l'entrée n'est pas un entier on retourne -1
+    try {
+        indexInt = std::stoi(index);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    return indexInt - 1; // Convertir en index 0-based
 }
 
 int ConsoleView::demanderIndexJoueur(std::vector<Joueur*> joueurs,int joueurActuelIndex) {
-    int index;
-    std::cout << "👤 Numéro du joueur: ";
+    std::string index;
+    
     for(size_t i=0;i<joueurs.size();i++){
         if((int)i==joueurActuelIndex) continue; // ne pas afficher le joueur actuel
         std::cout << "[" << i+1 << "] " << joueurs.at(i)->getNom() << std::endl;
     }
+    std::cout << "👤 Numéro du joueur: ";
     if (!(std::cin >> index)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
-    if (index-1 == joueurActuelIndex) {
+    int indexInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        indexInt = std::stoi(index);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+
+    if (indexInt-1 == joueurActuelIndex) {
         return -1;
     }
     // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    return index - 1; // Convertir en index 0-based
+    return indexInt - 1; // Convertir en index 0-based
 }
 
 int ConsoleView::demanderIndexCarteEffetSacrifice() {
     std::cout << "Choisissez l'index de la carte à sacrifier : ";
-    int idx;
-    std::cin >> idx;
+    std::string idx;
+
+    if (!(std::cin >> idx)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return idx-1;
+    int idxInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        idxInt = std::stoi(idx);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    return idxInt - 1; // Convertir en index 0-based
+
 }
 
 int ConsoleView::demanderSlotMarche() {
-    int slot;
+    std::string slot;
     std::cout << "🏪 Numéro du slot dans le marché: ";
     if (!(std::cin >> slot)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
+    int slotInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        slotInt = std::stoi(slot);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
     // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return slot - 1; // Convertir en index 0-based
+    return slotInt - 1; // Convertir en index 0-based
 }
 
 bool ConsoleView::confirmerAction( std::string& action) {
-    char reponse;
+    std::string reponse;
     std::cout << "❓ " << action << " (o/n): ";
     if (!(std::cin >> reponse)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return false;
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    
-    return (reponse == 'o' || reponse == 'O' || reponse == 'y' || reponse == 'Y');
+    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    return (reponse == "o" || reponse == "O" || reponse == "y" || reponse == "Y");
 }
 
 void ConsoleView::attendreEntree() {
@@ -484,20 +544,28 @@ int ConsoleView::demanderChoixGodMode() {
     std::cout << "[3] Désactiver GodMode" << std::endl;
     std::cout << "Choix: ";
 
-    int choix;
+    std::string choix;
     if (!(std::cin>>choix)){
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
-
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return choix;
+
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        choixInt = std::stoi(choix);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    return choixInt;
 }
 
 int ConsoleView::demanderIndexDeck(Deck* deckMarche) {
     afficherDeckMarche(deckMarche);
-    int index;
+    std::string index;
     std::cout << "📚 Index de la carte dans le deck du marché: ";
     if (!(std::cin >> index)) {
         std::cin.clear();
@@ -506,7 +574,16 @@ int ConsoleView::demanderIndexDeck(Deck* deckMarche) {
     }
     // retirer le reste de la ligne
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return index - 1; // Convertir en index 0-based
+
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        choixInt = std::stoi(index);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    return choixInt - 1; // Convertir en index 0-based
 }
 
 std::string ConsoleView::demanderMotDePasseGodMode() {
@@ -581,7 +658,7 @@ void ConsoleView::afficherChampions(const std::vector<Champion*> champions) {
 }
 
 bool ConsoleView::demanderChoix(Effet effet) {
-    int choix;
+    std::string choix;
     std::cout << "❓ Choisir l'option"<< std::endl;
     TypeEffet t = effet.getTypeEffet();
     if (t== TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT || t== TypeEffet::PIOCHE_SIOUI_DEFAUSSE) {
@@ -603,12 +680,16 @@ bool ConsoleView::demanderChoix(Effet effet) {
     std::cin >> choix;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    while (choix != 1 && choix != 2) {
-        std::cout << "❌ ERREUR: Choix invalide. Veuillez choisir 1 ou 2: ";
-        std::cin >> choix;
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        choixInt = std::stoi(choix);
+    } catch (const std::exception& e) {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
     }
-    return (choix == 2);
+
+    return (choixInt == 2);
 }
 
 void ConsoleView::afficherDefausseChampion(Joueur* joueur) {
@@ -665,15 +746,22 @@ int ConsoleView::demanderChoixInitialisationPartie() {
     std::cout << "[2] Charger une partie sauvegardée" << std::endl;
     std::cout << "Choix: ";
 
-    int choix;
+    std::string choix;
     if (!(std::cin >> choix)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return -1;
     }
-
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+     try {
+        choixInt = std::stoi(choix);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return choix;
+    return choixInt;
 }
 
 std::string ConsoleView::demanderNomFichierSauvegarde() {
@@ -685,7 +773,7 @@ std::string ConsoleView::demanderNomFichierSauvegarde() {
 }
 
 bool ConsoleView::confirmerAnnulation(Effet effet) {
-    char reponse;
+    std::string reponse;
     std::cout << "❓ L'entré n'est pas valide ou vous avez choisi de ne pas activer l'effet  " << typeEffetToString(effet.getTypeEffet()) << ", confirmez vous la non activation de l'effet ? (o/n): ";
     if (!(std::cin >> reponse)) {
         std::cin.clear();
@@ -693,8 +781,8 @@ bool ConsoleView::confirmerAnnulation(Effet effet) {
         return false;
     }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    
-    return (reponse == 'o' || reponse == 'O' || reponse == 'y' || reponse == 'Y');
+
+    return (reponse == "o" || reponse == "O" || reponse == "y" || reponse == "Y");
 }
 
 void ConsoleView::afficherAdversaires(const std::vector<Joueur*> joueurs) {
@@ -713,4 +801,29 @@ void ConsoleView::afficherAdversaires(const std::vector<Joueur*> joueurs) {
         }
     }
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+}
+
+int ConsoleView::demanderChoixModeJeu() {
+    std::cout << "🎮 CHOIX DU MODE DE JEU:" << std::endl;
+    std::cout << "[1] Mode Classique" << std::endl;
+    std::cout << "[2] Mode Premier sang" << std::endl;
+    std::cout << "[3] Mode Dernier En Lice" << std::endl;
+    std::cout << "Choix: ";
+
+    std::string choix;
+    if (!(std::cin >> choix)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    int choixInt;
+    // si l'entrée n'est pas un entier on retourne -1
+    try {
+        choixInt = std::stoi(choix);
+    } catch (const std::exception& e) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return choixInt - 1;
 }

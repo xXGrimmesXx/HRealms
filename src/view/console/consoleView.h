@@ -65,6 +65,7 @@ public:
     int demanderChoixInitialisationPartie() override;
     std::string demanderNomFichierSauvegarde() override;
     bool confirmerAnnulation(Effet effet) override;
+    int demanderChoixModeJeu() override;
 
 
 private:

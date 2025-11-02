@@ -9,7 +9,7 @@
 
 class CardRenderer {
 public:
-    static constexpr int CARD_WIDTH = 35;
+    static constexpr int CARD_WIDTH = 32;
     static constexpr int CARD_HEIGHT = 15;
     
     // Codes couleurs

@@ -3,6 +3,7 @@
 #include "Joueur.h"
 #include "Marche.h"
 #include "gemmeDeFeu.h"
+#include "modeJeu.h"
 
 #include "GodMode.h"
 
@@ -19,10 +20,11 @@ private:
     GodMode godMode;
     Pile cartesSacrifie;
     GemmeDeFeu gemmeDeFeu;
+    ModeJeu modeJeu;
 
 public:
     Partie();
-    void commencer(std::vector<std::string> nomsJoueurs);
+    void commencer(std::vector<std::string> nomsJoueurs, ModeJeu mode);
     void commencerTour();
     void finTour();
     bool estTerminee() const;
@@ -38,6 +40,7 @@ public:
     GodMode* getGodMode() { return &godMode; }
     int getNbTour() const { return nb_tour; }
     std::vector<Joueur*> getJoueurs() { return joueurs; }
+    ModeJeu getModeJeu() const { return modeJeu; }
     void setIdxJoueurActuel(int idx) { idx_joueur_actuel = idx; };
     void setNbTour(int n) { nb_tour = n; }
     void setTourCourant(Tour* t) { tour_courant = t; }
@@ -49,6 +52,7 @@ public:
     void setGemmeDeFeu(GemmeDeFeu* g);
     void setMarche(Marche* m);
     void setGodMode(bool actif) { godMode.actif = actif; }
+    void setModeJeu(ModeJeu mode) { modeJeu = mode; }
 
     Joueur* getGagnant();
 

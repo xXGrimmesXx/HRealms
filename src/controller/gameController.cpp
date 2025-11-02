@@ -66,30 +66,32 @@ void GameController::initialiserPartie() {
         } while (nom.empty());
         nomsJoueurs.push_back(nom);
     }
+
+    //demander le mode de jeu
+    int choixMode = view->demanderChoixModeJeu();
+    while (choixMode < 0 || choixMode > 2) {
+        std::string msg = "Choix invalide. Veuillez réessayer.";
+        view->afficherErreur(msg);
+        choixMode = view->demanderChoixModeJeu();
+    }
+    ModeJeu modeJeu = static_cast<ModeJeu>(choixMode);
     
     // Créer la partie
+    try{
+        partie = std::make_unique<Partie>();
+        partie->commencer(nomsJoueurs, modeJeu);
+        
+        jeuEnCours = true;
+        std::string message = "Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !";
+        view->afficherMessage(message);
+        view->attendreEntree();
 
-    partie = std::make_unique<Partie>();
-    partie->commencer(nomsJoueurs);
-    
-    //fait defausser les cartes pour que le premier joueur commence avec 3 cartes etc...
-    for (int i=2; i>0;i--){
-        Joueur * joueur = partie->getJoueurs().at(2-i);
-        Main * m = joueur->getMain();
-        //fait defausser deux cartes pour le premier joueur 1 carte pour le deuxieme et 0 pour les autres
-        for (int j=0; j<i;j++){
-            Carte * c = m->getCartes().at(0);
-            m->defausser(c);
-            joueur->getDeck()->ajouterDessous(c);
-        }
+        HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
+    } catch (const std::exception& e) {
+        std::string msg = "Erreur lors de l'initialisation de la partie: " + std::string(e.what());
+        view->afficherErreur(msg);
+        initialiserPartie(); // Recommencer l'initialisation
     }
-    
-    jeuEnCours = true;
-    std::string message = "Partie initialisée avec " + std::to_string(nombreJoueurs) + " joueurs !";
-    view->afficherMessage(message);
-    view->attendreEntree();
-
-    HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
 }
 
 void GameController::chargerPartie() {
@@ -136,8 +138,11 @@ void GameController::boucleJeu() {
 
 void GameController::jouerTour() {
     try {
-        // Commencer le tour
         
+        //sauvegarde automatique avant chaque tour
+        HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
+
+        // Commencer le tour
         if(partie->getTourCourant()==nullptr){
             partie->commencerTour();
         }
@@ -154,6 +159,9 @@ void GameController::jouerTour() {
             if (partie->getTourCourant()==nullptr) {
                 tourTermine = true;
             }
+            else {
+                afficherEtatJeu();
+            }
         }
         
     } catch (const std::exception& e) {
@@ -166,73 +174,70 @@ void GameController::gererActionJoueur() {
     int choix = view->demanderChoixAction(partie.get());
     
     switch (choix) {
-        case 1: // Jouer une carte
-            if (!jouerCarte()) {
-                std::string message = "Impossible de jouer cette carte.";
-                view->afficherErreur(message);
+        case -1:
+            {
+            std::string message = "Choix invalide. Veuillez réessayer.";
+            view->afficherErreur(message);
+            break;
             }
-            afficherEtatJeu();
+        case 1: // Jouer une carte
+            jouerCarte();
             break;
         case 2 ://mobiliser un champion
-            if (!mobiliserChampion()) {
-                std::string message = "Impossible de mobiliser ce champion.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            mobiliserChampion();
             break;
             
         case 3: // Acheter une carte
-            if (!acheterCarte()) {
-                std::string message = "Impossible d'acheter cette carte.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            acheterCarte();
             break;
+
         case 4: // Acheter une carte Gemme de feu
-            if(!acheterGemmeDeFeu()){
-                std::string message = "Impossible d'acheter cette carte.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            acheterGemmeDeFeu();
             break;
         case 5: // Attaquer un joueur
-            if (!attaquerJoueur()) {
-                std::string message = "Impossible d'attaquer ce joueur.";
-                view->afficherErreur(message);
+            attaquerJoueur();
+
+            for (int i = 0; i < (int)partie->getJoueurs().size(); ++i) {
+                //si un joueur est mort on affiche quel joueur est éliminé
+                if (partie->getJoueurs().at(i)->getPv() <= 0) {
+                    std::string msg = "Le joueur " + partie->getJoueurs().at(i)->getNom() + " est éliminé.";
+                    view->afficherMessage(msg);
+
+                    //si on est en mode dernier en lice, on le retire de la partie,
+                    // et on soigne de 10 et on fait piocher une carte au joueur de droite
+                    if (partie->getModeJeu() == ModeJeu::DERNIER_EN_LICE) {
+                        partie->getJoueurs().at((i+1) % partie->getJoueurs().size())->soigner(10);
+                        partie->getJoueurs().at((i+1) % partie->getJoueurs().size())->piocher(1);
+                        std::vector<Joueur*> j = partie->getJoueurs();
+                        j.erase(j.begin() + i);
+                        partie->setJoueurs(j);
+                        if (i <= partie->getIdxJoueurActuel()) {
+                            partie->setIdxJoueurActuel(partie->getIdxJoueurActuel() - 1);
+                        }
+                    }
+                }
             }
-            afficherEtatJeu();
+            
             break;
         case 6 : // Utiliser un effetSacrifice
-            if (!utiliserEffetSacrifice()) {
-                std::string message = "Aucune carte à sacrifier ou action annulée.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            utiliserEffetSacrifice();
             break;
+
         case 7: // Consulter sa défausse
-            if(!consulterDefausse()){
-                std::string message = "Impossible de consulter la défausse.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            consulterDefausse();
             break;
+
         case 8: // Consulter pile de sacrifice
-            if(!consulterPileSacrifice()){
-                std::string message = "Impossible de consulter la pile de sacrifice.";
-                view->afficherErreur(message);
-            }
-            afficherEtatJeu();
+            consulterPileSacrifice();
             break;
         case 9: // Consulter la main d'un adversaire
             afficherMainAdversaire();
-            afficherEtatJeu();
             break;
         case 10: // Finir le tour
             finirTour();
             break;
         case 11: // Activer le godMode
             toggleGodMode();
-            afficherEtatJeu();
             break;
         case 12: // Sauvegarder la partie
             {
@@ -387,27 +392,53 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::PIOCHER:
             return new ChoixEffet(partie.getJoueurActuel(),0);
 
-        case TypeEffet::DEFAUSSER:{
+        case TypeEffet::DEFAUSSER:{{
+            //on ne peut faire defausser une carte que chez son voisin de gauche
             view->afficherMessage(msg);
-            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
-            Joueur* j = getJoueurParIndex(indexJoueur);
-            if(j==nullptr){
-                if (view->confirmerAnnulation(effet)){
-                    return new ChoixEffet(nullptr,0);
-                }
-                return demanderChoixEffet(effet,partie,carteSource);
+
+            Joueur* cible = nullptr;
+            if (partie.getModeJeu() != ModeJeu::CLASSIQUE){
+                int nbJoueurs = partie.getJoueurs().size();
+                int indexJoueur = (partie.getIdxJoueurActuel()-1+nbJoueurs)%nbJoueurs;
+                cible = partie.getJoueurs().at(indexJoueur);
             }
-            view->afficherMain(j);
+            else{
+                //en mode classique le joueur choisit n'importe quel adversaire
+                std::vector<Joueur*> joueursPossibles = {};
+                for (size_t i = 0; i < partie.getJoueurs().size(); i++) {
+                    if ((int)i != partie.getIdxJoueurActuel()) {
+                        joueursPossibles.push_back(partie.getJoueurs().at(i));
+                        view->afficherJoueur(partie.getJoueurs().at(i));
+                        std::cout << std::endl;
+
+                        if (!partie.getJoueurs().at(i)->getChampions().empty()) {
+                            view->afficherChampions(partie.getJoueurs().at(i)->getChampions());
+                        }
+                    }
+                    
+                }
+                int index = view->demanderIndexJoueur(joueursPossibles, -1);
+                if (!validerIndex(index, joueursPossibles.size(), "joueur")) {
+                    if (view->confirmerAnnulation(effet)) {
+                        return new ChoixEffet(nullptr,0);
+                    }
+                    return demanderChoixEffet(effet,partie,carteSource);
+                }
+                cible = joueursPossibles.at(index);
+
+            }
+            //on fait choisir une carte dans la main de l'adversaire
+            view->afficherMain(cible);
             int indexCarte = view->demanderIndexCarte().at(0);
-            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main")){
+            if (!validerIndex(indexCarte,cible->getMain()->getTaille(),"carte de la main")){
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
                 return demanderChoixEffet(effet,partie,carteSource);
             }
-            Carte* c = j->getMain()->getCarte(indexCarte);
+            Carte* c = cible->getMain()->getCarte(indexCarte);
             return new ChoixEffet(c,0);
-        }
+        }}
 
         case TypeEffet::SACRIFIER:{
             Joueur* j = partie.getJoueurActuel();
@@ -429,35 +460,78 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
 
         case TypeEffet::ASSOMMER_CHAMPION:{
             view->afficherMessage(msg);
-            int indexJoueur = view->demanderIndexJoueur(partie.getJoueurs(),partie.getIdxJoueurActuel());
-            Joueur* j = getJoueurParIndex(indexJoueur);
+            std::vector<Joueur*> joueursAttaquables = {};
 
-            if(j==nullptr){
+            Joueur* JoueurCible = nullptr;
+
+            if (partie.getModeJeu() != ModeJeu::CLASSIQUE){
+                int nbJoueurs = partie.getJoueurs().size();
+                joueursAttaquables.push_back(partie.getJoueurs().at((partie.getIdxJoueurActuel()+1)%nbJoueurs));
+                joueursAttaquables.push_back(partie.getJoueurs().at((partie.getIdxJoueurActuel()-1+nbJoueurs)%nbJoueurs));
+            }
+            else{
+                //en mode classique le joueur choisit n'importe quel adversaire
+                for (size_t i = 0; i < partie.getJoueurs().size(); i++) {
+                    if ((int)i != partie.getIdxJoueurActuel()) {
+                        joueursAttaquables.push_back(partie.getJoueurs().at(i));
+
+                    }
+                }
+            }
+            //affichage des joueurs attaquables
+            for (Joueur* j : joueursAttaquables) {
+                view->afficherJoueur(j);
+                std::cout <<std::endl;
+                if (!j->getChampions().empty()) {
+                    view->afficherChampions(j->getChampions());
+                }
+            }
+
+            //le joueur choisit parmis les joueurs attaquables
+            int index = view->demanderIndexJoueur(joueursAttaquables, -1);
+            if (!validerIndex(index, joueursAttaquables.size(), "joueur")) {
+                if (view->confirmerAnnulation(effet)) {
+                    return new ChoixEffet(nullptr,0);
+                }
+                return demanderChoixEffet(effet,partie,carteSource);
+            }
+            JoueurCible = joueursAttaquables.at(index);
+
+            if(JoueurCible==nullptr){
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
                 return demanderChoixEffet(effet,partie,carteSource);
             }
-            if (j->getChampions().empty()){
+            if (JoueurCible->getChampions().empty()){
+                std::string msg = "Le joueur " + JoueurCible->getNom() + " ne possède pas de champion à assommer.";
+                view->afficherMessage(msg);
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
                 return demanderChoixEffet(effet,partie,carteSource);
             }
-            view->afficherChampions(j->getChampions());
+            //on affiche les champions du joueur cible
+            view->afficherChampions(JoueurCible->getChampions());
             int indexCarte = view->demanderIndexCarte().at(0);
-            if (!validerIndex(indexCarte,j->getChampions().size(),"champion")){
+            if (!validerIndex(indexCarte,JoueurCible->getChampions().size(),"champion")){
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
                 return demanderChoixEffet(effet,partie,carteSource);
             }
-            Champion* c = j->getChampions().at(indexCarte);
+            Champion* c = JoueurCible->getChampions().at(indexCarte);
             return new ChoixEffet(c,0);
         }
 
         case TypeEffet::PREPARE_CHAMPION:{
             Joueur* j = partie.getJoueurActuel();
+            if (j->getChampions().empty()){
+                if (view->confirmerAnnulation(effet)){
+                    return new ChoixEffet(nullptr,0);
+                }
+                return nullptr;
+            }
             view->afficherMessage(msg);
             view->afficherChampions(j->getChampions());
             if(j==nullptr){
@@ -552,6 +626,7 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
             bool choix = view->demanderChoix(effet);
             if (choix == true){
                 int indexCarte = view->demanderIndexCarte().at(0);
+                //si l'index est invalide ou si la carte n'est pas déjà jouée
                 if (!validerIndex(indexCarte,partie.getJoueurActuel()->getMain()->getTaille(),"carte de la main") ||
                 partie.getJoueurActuel()->getMain()->getCartes().at(indexCarte)->getEffetPrimaireActive()==false){
 
@@ -641,7 +716,6 @@ bool GameController::acheterGemmeDeFeu() {
 }
 
 bool GameController::attaquerJoueur() {
-    
     // Afficher les adversaires et leurs champions
     std::vector<Joueur*> joueursAttaquable;
     Joueur* cible = nullptr;
@@ -649,28 +723,40 @@ bool GameController::attaquerJoueur() {
     Joueur* droite = nullptr;
     int idxActuel = partie->getIdxJoueurActuel();
     int nbJoueurs = partie->getJoueurs().size();
-    if (nbJoueurs > 2) {
-        gauche = partie->getJoueurs().at((idxActuel + 1) % nbJoueurs);
+
+    //en mode classique on peut attaquer tous les joueurs
+    if (partie->getModeJeu() == ModeJeu::CLASSIQUE){
+        //on ajuoute tous les joueurs sauf soi-même
+        for (size_t i = 0; i < partie->getJoueurs().size(); i++) {
+            if (i != static_cast<size_t>(idxActuel)) {
+                joueursAttaquable.push_back(partie->getJoueurs().at(i));
+            }
+        }
+    }
+    else {
+        // on peut attaquer les joueurs à gauche et à droite
+        gauche = partie->getJoueurs().at((idxActuel - 1 + nbJoueurs) % nbJoueurs);
         joueursAttaquable.push_back(gauche);
-        droite = partie->getJoueurs().at((idxActuel - 1 + nbJoueurs) % nbJoueurs);
-        if (!droite->getChampions().empty()) {
+
+        if (nbJoueurs > 2) {
+            droite = partie->getJoueurs().at((idxActuel + 1) % nbJoueurs);
             joueursAttaquable.push_back(droite);
         }
-    } else {
-        gauche = partie->getJoueurs().at((idxActuel + 1) % nbJoueurs);
-        joueursAttaquable.push_back(gauche);
-        cible = gauche;
+        
+        
     }
     // Affichage des champions de chaque joueur attaquable avant la sélection
-    if (cible == nullptr) {
+    if (joueursAttaquable.size()>1){
         for (Joueur* j : joueursAttaquable) {
-            std::string nomAffiche = j->getNom();
-            if (j == gauche) nomAffiche += " (à gauche)";
-            else if (j == droite) nomAffiche += " (à droite)";
-            view->afficherMessage(nomAffiche);
+            std::string precision = "";
+            // si on est pas en mode classique, on précise la position
+            if (partie->getModeJeu() != ModeJeu::CLASSIQUE){
+                if (j == gauche) precision += " (à gauche)";
+                else if (j == droite) precision += " (à droite)";
+            }
+            view->afficherJoueur(j);
+            view->afficherMessage(precision);
             if (!j->getChampions().empty()) {
-                std::string msgChampions = "Champions :";
-                view->afficherMessage(msgChampions);
                 view->afficherChampions(j->getChampions());
             }
         }
@@ -680,10 +766,14 @@ bool GameController::attaquerJoueur() {
         }
         cible = joueursAttaquable.at(index);
     }
+    else {
+        cible = joueursAttaquable.at(0);
+    }
+    
     int degatsRestants = partie->getTourCourant()->getDegats();
     try {
-        // Si on attaque le joueur à droite : on ne peut attaquer que ses champions
-        if (cible == droite) {
+        // Si on attaque le joueur à droite : on ne peut attaquer que ses champions si on est pas en mode classique
+        if (partie->getModeJeu() != ModeJeu::CLASSIQUE && cible == droite) {
             while (degatsRestants > 0 && !cible->getChampions().empty()) {
                 {
                     std::string msgDroite = "Vous ne pouvez attaquer que les champions du joueur à droite.";
@@ -773,17 +863,34 @@ bool GameController::attaquerJoueur() {
                 }
             }
             if ((reponse == 'j' || reponse == 'J') && cible->aGarde() == false) {
-                cible->prendreDegats(degatsRestants);
-                partie->getTourCourant()->utiliserDegats(degatsRestants);
-                degatsRestants = 0;
+                if (cible->getPv() < degatsRestants) {
+                    partie->getTourCourant()->utiliserDegats(cible->getPv());
+                    degatsRestants -= cible->getPv();
+                    cible->prendreDegats(cible->getPv());
+                }else {
+                    cible->prendreDegats(degatsRestants);
+                    partie->getTourCourant()->utiliserDegats(degatsRestants);
+                    degatsRestants = 0;
+                }
                 break;
             }
         }
         // 3. Dégâts restants au joueur (à gauche)
         if (degatsRestants > 0) {
-            bool succes = cible->prendreDegats(degatsRestants);
-            partie->getTourCourant()->utiliserDegats(degatsRestants);
-            std::string message = "💔 " + cible->getNom() + " perd " + std::to_string(degatsRestants) + " PV !";
+            bool succes = false;
+            std::string message;
+            if (cible->getPv() < degatsRestants) {
+                    partie->getTourCourant()->utiliserDegats(cible->getPv());
+                    degatsRestants -= cible->getPv();
+                    succes = cible->prendreDegats(cible->getPv());
+                    message = "💔 " + cible->getNom() + " perd " + std::to_string(cible->getPv()) + " PV !";
+                }else {
+                    succes = cible->prendreDegats(degatsRestants);
+                    partie->getTourCourant()->utiliserDegats(degatsRestants);
+                    message = "💔 " + cible->getNom() + " perd " + std::to_string(degatsRestants) + " PV !";
+                    degatsRestants = 0;
+                }
+            
             view->afficherMessage(message);
             return succes;
         }

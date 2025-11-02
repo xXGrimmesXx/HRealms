@@ -3,11 +3,9 @@
 
 #include "Tour.h"
 
-Partie::Partie():joueurs(),marche(new Marche()),tour_courant(nullptr),nb_tour(0),idx_joueur_actuel(0),godMode(GodMode()),cartesSacrifie(),gemmeDeFeu() {
+Partie::Partie():joueurs(),marche(new Marche()),tour_courant(nullptr),nb_tour(0),idx_joueur_actuel(0),godMode(GodMode()),cartesSacrifie(),gemmeDeFeu() {}
 
-}
-
-void Partie::commencer(std::vector<std::string> nomsJoueurs) {
+void Partie::commencer(std::vector<std::string> nomsJoueurs, ModeJeu mode) {
     // Initialisation de la partie
     for (size_t i = 0; i < nomsJoueurs.size(); i++) {
         Joueur* j = new Joueur(nomsJoueurs.at(i));
@@ -15,8 +13,31 @@ void Partie::commencer(std::vector<std::string> nomsJoueurs) {
     }
     marche->remplirLigne();
     nb_tour = 1;
-    idx_joueur_actuel = 0;
-    tour_courant = new Tour(joueurs.at(0));
+    auto rd = std::random_device {};
+    auto rng = std::default_random_engine {rd()};
+    std::uniform_int_distribution<size_t> dist(0, joueurs.size() - 1);
+    idx_joueur_actuel = dist(rng);
+    tour_courant = new Tour(joueurs.at(idx_joueur_actuel));
+
+    // si plus de deux joueurs le premier joueur commence à trois cartes etc...
+    if (joueurs.size() > 2) {
+        for (int i=2;i>0;i--) {
+            Joueur * joueur = joueurs.at((idx_joueur_actuel + 2-i) % joueurs.size());
+            Main * m = joueur->getMain();
+            //fait defausser deux cartes pour le premier joueur 1 carte pour le deuxieme et 0 pour les autres
+            for (int j=0; j<i;j++){
+                Carte * c = m->getCartes().at(0);
+                m->defausser(c);
+                joueur->getDeck()->ajouterDessous(c);
+            }
+        }
+    }
+    if (joueurs.size() == 2 && mode != ModeJeu::CLASSIQUE) {
+        throw std::invalid_argument("Seul le mode classique peut être joué à deux joueurs"); 
+    }
+    else if (joueurs.size() >=3 ) {
+        modeJeu = mode;
+    }
 }
 
 void Partie::commencerTour() {
@@ -35,10 +56,16 @@ void Partie::finTour() {
 }
 
 bool Partie::estTerminee() const {
-    for (const auto& j : joueurs) {
-        if (j->getPv() <= 0) {
-            return true;
+    if (modeJeu == ModeJeu::CLASSIQUE || modeJeu == ModeJeu::PREMIER_SANG) {
+        for (const auto& j : joueurs) {
+            if (j->getPv() <= 0) {
+                return true;
+            }
         }
+        return false;
+    }
+    if (joueurs.size() == 1) {
+        return true;
     }
     return false;
 }
@@ -56,12 +83,14 @@ void Partie::GOD_acheterDepuisDeckMarche(int idx, Joueur* j) {
 }
 
 Joueur* Partie::getGagnant() {
-    for (int i = 0; i < (int)joueurs.size(); ++i) {
-        if (joueurs.at(i)->getPv() <= 0) {
-            return joueurs.at((i - 1) % joueurs.size()); // Le joueur suivant gagne
+    if (modeJeu == ModeJeu::CLASSIQUE || modeJeu == ModeJeu::PREMIER_SANG) {
+        for (int i = 0; i < (int)joueurs.size(); ++i) {
+            if (joueurs.at(i)->getPv() <= 0) {
+                return joueurs.at((i + 1) % joueurs.size()); // Le joueur suivant gagne
+            }
         }
     }
-    return nullptr;
+    return joueurs.at(0);
 }
 
 std::string Partie::toString() const {

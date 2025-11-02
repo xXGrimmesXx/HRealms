@@ -58,4 +58,5 @@ public:
     virtual std::string demanderNomFichierSauvegarde() = 0;
     virtual bool confirmerAnnulation(Effet effet) = 0;
     virtual std::string typeEffetToString(TypeEffet t) = 0;
+    virtual int demanderChoixModeJeu() = 0;
 };
