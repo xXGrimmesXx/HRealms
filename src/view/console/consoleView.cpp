@@ -827,3 +827,64 @@ int ConsoleView::demanderChoixModeJeu() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return choixInt - 1;
 }
+
+int ConsoleView::demanderIndexCarteSacrifier(std::vector<Champion*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) {
+    const int CARDS_PER_ROW = 5;
+    const int totalCartes = championsJoues.size() + cartesJouees.size() + cartesDefausse.size();
+    std::cout << "👑 CHAMPIONS EN JEU:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    if(championsJoues.empty()){
+        std::cout << "Aucun champion en jeu." << std::endl;
+    }
+    CardRenderer::printCards(std::vector<Carte*>(championsJoues.begin(), championsJoues.end()), CARDS_PER_ROW);
+
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "🃏 CARTES JOUÉES:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    if(cartesJouees.empty()){
+        std::cout << "Aucune carte jouée." << std::endl;
+    }
+    CardRenderer::printCards(std::vector<Carte*>(cartesJouees.begin(), cartesJouees.end()), CARDS_PER_ROW);
+
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "🗑️ CARTES DEFAUSSÉES:" << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    if(cartesDefausse.empty()){
+        std::cout << "Aucune carte défaussée." << std::endl;
+    }
+    CardRenderer::printCards(std::vector<Carte*>(cartesDefausse.begin(), cartesDefausse.end()), CARDS_PER_ROW);
+
+    // Affichage global des index
+    std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "Liste des cartes à sacrifier :" << std::endl;
+    int idxGlobal = 1;
+    for (Champion* c : championsJoues) {
+        std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Champion)" << std::endl;
+    }
+    for (Carte* c : cartesJouees) {
+        std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Main)" << std::endl;
+    }
+    for (Carte* c : cartesDefausse) {
+        std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Défausse)" << std::endl;
+    }
+    std::cout << "Entrez le numéro de la carte à sacrifier : ";
+
+    std::string idx;
+    if (!(std::cin >> idx)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    int idxInt;
+    try {
+        idxInt = std::stoi(idx);
+    } catch (const std::exception&) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    if (idxInt < 1 || idxInt > totalCartes) {
+        return -1;
+    }
+    return idxInt - 1;
+}

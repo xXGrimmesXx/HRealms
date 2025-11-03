@@ -59,4 +59,5 @@ public:
     virtual bool confirmerAnnulation(Effet effet) = 0;
     virtual std::string typeEffetToString(TypeEffet t) = 0;
     virtual int demanderChoixModeJeu() = 0;
+    virtual int demanderIndexCarteSacrifier(std::vector<Champion*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) = 0;
 };

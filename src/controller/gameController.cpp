@@ -442,19 +442,42 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
 
         case TypeEffet::SACRIFIER:{
             Joueur* j = partie.getJoueurActuel();
+            std::vector<Carte*> cartesSacrifiables;
+            std::vector<Champion*> championsEnJeu;
+            std::vector<Carte*> cartesJouees;
+            std::vector<Carte*> cartesDefausse;
+            // Champions en jeu
+            for (Champion* champ : j->getChampions()) {
+                if (champ) {
+                    championsEnJeu.push_back(champ);
+                    cartesSacrifiables.push_back(static_cast<Carte*>(champ) );
+                }
+            }
+            // Cartes jouées
+            for (int i = 0; i < j->getMain()->getTaille(); ++i) {
+                Carte* c = j->getMain()->getCarte(i);
+                if (c && c->getEffetPrimaireActive()==true) {
+                    cartesJouees.push_back(c);
+                    cartesSacrifiables.push_back(c);
+                }
+            }
+            // Cartes de la défausse
+            for (Carte* c : j->getDefausse()->getCartes()) {
+                if (c) {
+                    cartesDefausse.push_back(c);
+                    cartesSacrifiables.push_back(c);
+                }
+            }
+            int totalCartes = championsEnJeu.size() + cartesJouees.size() + cartesDefausse.size();
+            int indexCarte = view->demanderIndexCarteSacrifier(championsEnJeu, cartesJouees, cartesDefausse);
 
-            view->afficherMessage(msg);
-            int indexCarte = view->demanderIndexCarte().at(0);
-
-            if (!validerIndex(indexCarte,j->getMain()->getTaille(),"carte de la main") ||
-            j->getMain()->getCarte(indexCarte)->getEffetPrimaireActive()==false){
+            if (!validerIndex(indexCarte, totalCartes, "carte à sacrifier")) {
                 if (view->confirmerAnnulation(effet)){
                     return new ChoixEffet(nullptr,0);
                 }
                 return demanderChoixEffet(effet,partie,carteSource);
             }
-
-            Carte* c = j->getMain()->getCarte(indexCarte);
+            Carte* c = cartesSacrifiables.at(indexCarte);
             return new ChoixEffet(c,0);
         }
 
