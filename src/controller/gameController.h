@@ -45,7 +45,7 @@ public:
     void afficherMarche();
     void afficherPileGemmeDeFeu();
     void afficherChampions();
-    void afficherMainAdversaire();
+    void afficherChampionsDefausseAdversaire();
     
     // Utilitaires
     Joueur* getJoueurParIndex(int index);

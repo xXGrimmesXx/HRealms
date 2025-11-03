@@ -361,33 +361,35 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             break;
 
         case TypeEffet::SACRIFIER_SIOUI_AJOUT_COMBAT :
-                if (cible == TypeCible::CARTE) {
-                    Carte* carteTgt = static_cast<Carte*>(target);
-                    if (carteTgt != nullptr) {
-                        Joueur* joueurProprietaire = partie->getJoueurActuel();
-                        bool carteDansMain = false;
-                        // On vérifie si la carte à sacrifier est dans la main du joueur actuel
-                        // Pour éviter un segfault
-                        for (int i = 0; i < joueurProprietaire->getMain()->getTaille(); ++i) {
-                            if (joueurProprietaire->getMain()->getCarte(i) == carteTgt) {
-                                carteDansMain = true;
-                                break;
+            if (cible == TypeCible::CARTE) {
+                Carte* carteTgt = static_cast<Carte*>(target);
+                if (carteTgt != nullptr) {
+                    // On cherche le propriétaire de la carte à sacrifier
+                    for (Joueur* j : partie->getJoueurs()) {
+                        // On cherche dans la main
+                        for (int i = 0; i < j->getMain()->getTaille(); i++) {
+                            if (j->getMain()->getCarte(i) == carteTgt) {
+                                j->sacrifier(carteTgt, partie);
+                                partie->getTourCourant()->ajouterDegats(montant1);
+                                return;
                             }
                         }
-                        if (carteDansMain) {
-                            // Sacrifier la carte sans utiliser ses effets de sacrifice
-                            joueurProprietaire->sacrifier(carteTgt, partie);
-                            partie->getTourCourant()->ajouterDegats(montant1);
-                        } else {
-                            std::cerr << "Erreur : la carte à sacrifier n'est pas dans la main du joueur actuel." << std::endl;
+                        // On cherche dans les champions
+                        for (Champion* champ : j->getChampions()) {
+                            if (champ == carteTgt) {
+                                j->sacrifier(carteTgt, partie);
+                                partie->getTourCourant()->ajouterDegats(montant1);
+                                return;
+                            }
                         }
                     }
-                    //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas sacrifier de carte
                 }
-                else {
-                    // Invalid target type for this effect
-                    throw std::invalid_argument("Invalid target type for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
-                }
+                //si carteTgt est nullptr on ne fait rien le joueur ne voulait pas sacrifier de carte
+            }
+            else {
+                // Invalid target type for this effect
+                throw std::invalid_argument("Invalid target type for SACRIFIER_SIOUI_AJOUT_COMBAT effect");
+            }
             break;
 
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE :
@@ -400,7 +402,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                         Joueur* joueurProprietaire = partie->getJoueurActuel();
                         for (size_t i=0; i<carteTgt->size(); i++){
                             //on vérifie que la carte n'est pas un nullptr (au cas où le joueur ne veut pas défausser de carte)
-                            if (carteTgt->at(i)!=nullptr){
+                            if (carteTgt->at(i)!=nullptr && !carteTgt->at(i)->getEffetPrimaireActive()){
                                 joueurProprietaire->piocher(1);
                                 joueurProprietaire->defausser(carteTgt->at(i));
                             }

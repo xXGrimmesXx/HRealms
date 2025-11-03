@@ -283,8 +283,8 @@ int ConsoleView::demanderChoixAction(Partie* partie) {
         numeroAffiche++;
     }
 
-    // Consulter main adversaire - TOUJOURS DISPONIBLE
-    std::cout << "[" << numeroAffiche << "] Consulter main adversaire" << std::endl;
+    // Consulter champions/défausse adversaire - TOUJOURS DISPONIBLE
+    std::cout << "[" << numeroAffiche << "] Consulter les champions et la défausse d'un adversaire" << std::endl;
     actionsDisponibles.push_back(9);
     numeroAffiche++;
 
@@ -828,9 +828,9 @@ int ConsoleView::demanderChoixModeJeu() {
     return choixInt - 1;
 }
 
-int ConsoleView::demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) {
+int ConsoleView::demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues, std::vector<Carte*> cartesMain, std::vector<Carte*> cartesDefausse) {
     const int CARDS_PER_ROW = 5;
-    const int totalCartes = championsJoues.size() + cartesJouees.size() + cartesDefausse.size();
+    const int totalCartes = championsJoues.size() + cartesMain.size() + cartesDefausse.size();
     std::cout << "👑 CHAMPIONS EN JEU:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     if(championsJoues.empty()){
@@ -839,12 +839,12 @@ int ConsoleView::demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues,
     CardRenderer::printCards(std::vector<Carte*>(championsJoues.begin(), championsJoues.end()), CARDS_PER_ROW);
 
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-    std::cout << "🃏 CARTES JOUÉES:" << std::endl;
+    std::cout << "🃏 CARTES EN MAIN:" << std::endl;
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-    if(cartesJouees.empty()){
-        std::cout << "Aucune carte jouée." << std::endl;
+    if(cartesMain.empty()){
+        std::cout << "Aucune carte en main." << std::endl;
     }
-    CardRenderer::printCards(std::vector<Carte*>(cartesJouees.begin(), cartesJouees.end()), CARDS_PER_ROW);
+    CardRenderer::printCards(std::vector<Carte*>(cartesMain.begin(), cartesMain.end()), CARDS_PER_ROW);
 
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
     std::cout << "🗑️ CARTES DEFAUSSÉES:" << std::endl;
@@ -861,7 +861,7 @@ int ConsoleView::demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues,
     for (Carte* c : championsJoues) {
         std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Champion)" << std::endl;
     }
-    for (Carte* c : cartesJouees) {
+    for (Carte* c : cartesMain) {
         std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Main)" << std::endl;
     }
     for (Carte* c : cartesDefausse) {
