@@ -828,7 +828,7 @@ int ConsoleView::demanderChoixModeJeu() {
     return choixInt - 1;
 }
 
-int ConsoleView::demanderIndexCarteSacrifier(std::vector<Champion*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) {
+int ConsoleView::demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) {
     const int CARDS_PER_ROW = 5;
     const int totalCartes = championsJoues.size() + cartesJouees.size() + cartesDefausse.size();
     std::cout << "👑 CHAMPIONS EN JEU:" << std::endl;
@@ -856,9 +856,9 @@ int ConsoleView::demanderIndexCarteSacrifier(std::vector<Champion*> championsJou
 
     // Affichage global des index
     std::cout << "═══════════════════════════════════════════════════════════════════════════════" << std::endl;
-    std::cout << "Liste des cartes à sacrifier :" << std::endl;
+    std::cout << "Liste des cartes sacrifiables :" << std::endl;
     int idxGlobal = 1;
-    for (Champion* c : championsJoues) {
+    for (Carte* c : championsJoues) {
         std::cout << "[" << idxGlobal++ << "] " << c->getNom() << " (Champion)" << std::endl;
     }
     for (Carte* c : cartesJouees) {

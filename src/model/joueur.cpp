@@ -123,7 +123,18 @@ void Joueur::sacrifier(Carte* c,Partie* p){
     if (c == nullptr) {
         throw std::invalid_argument("Carte invalide");
     }
-    main.sacrifier(c);
+    Champion* champ = dynamic_cast<Champion*>(c);
+    if (champ) {
+        // Retirer le champion du vecteur champions
+        for (auto it = champions.begin(); it != champions.end(); ++it) {
+            if (*it == champ) {
+                champions.erase(it);
+                break;
+            }
+        }
+    } else {
+        main.sacrifier(c);
+    }
 
     //si la carte est une gemme de feu, la remettre dans la pile gemme de feu
     //sinon on la met dans la pile de cartes sacrifiées

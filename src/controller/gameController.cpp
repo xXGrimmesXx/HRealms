@@ -443,14 +443,14 @@ ChoixEffet* GameController::demanderChoixEffet(Effet effet, Partie& partie, Cart
         case TypeEffet::SACRIFIER:{
             Joueur* j = partie.getJoueurActuel();
             std::vector<Carte*> cartesSacrifiables;
-            std::vector<Champion*> championsEnJeu;
+            std::vector<Carte*> championsEnJeu;
             std::vector<Carte*> cartesJouees;
             std::vector<Carte*> cartesDefausse;
             // Champions en jeu
             for (Champion* champ : j->getChampions()) {
                 if (champ) {
-                    championsEnJeu.push_back(champ);
-                    cartesSacrifiables.push_back(static_cast<Carte*>(champ) );
+                    championsEnJeu.push_back(static_cast<Carte*>(champ));
+                    cartesSacrifiables.push_back(static_cast<Carte*>(champ));
                 }
             }
             // Cartes jouées

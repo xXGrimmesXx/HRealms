@@ -66,7 +66,7 @@ public:
     std::string demanderNomFichierSauvegarde() override;
     bool confirmerAnnulation(Effet effet) override;
     int demanderChoixModeJeu() override;
-    int demanderIndexCarteSacrifier(std::vector<Champion*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) override;
+    int demanderIndexCarteSacrifier(std::vector<Carte*> championsJoues, std::vector<Carte*> cartesJouees, std::vector<Carte*> cartesDefausse) override;
 
 
 private:
