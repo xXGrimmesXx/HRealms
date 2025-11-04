@@ -1123,7 +1123,7 @@ void GameController::executerActionGodMode(int choix) {
 }
 
 void GameController::afficherEtatJeu() {
-    view->viderEcran();
+    //view->viderEcran();
     view->afficherPartie(partie.get());
     view->afficherScores(partie->getJoueurs());
     afficherMarche();

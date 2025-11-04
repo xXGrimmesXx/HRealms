@@ -36,6 +36,7 @@ json carteToJson(const Carte* carte) {
     
     json j;
     j["id"] = carte->getId();
+    std::cout <<"     ID carte "<<carte->getNom() << " jsonSerializer: "<< carte->getId() << std::endl;
     j["nom"] = carte->getNom();
     j["cout"] = carte->getCout();
     j["faction"] = static_cast<int>(carte->getFaction());
@@ -187,15 +188,38 @@ Carte* jsonToCarte(const json& j) {
 
 // ========== PILE ==========
 json pileToJson(const Pile* pile) {
+    std::cout << "[DEBUG pileToJson] Début sérialisation pile" << std::endl;
+    
     json j = json::array();
     if (!pile || pile->estVide()) {
+        std::cout << "[DEBUG pileToJson] Pile vide ou nulle" << std::endl;
         return j;
     }
+    
+    std::cout << "[DEBUG pileToJson] Taille pile: " << pile->getTaille() << std::endl;
+    
     for (int i = 0; i < pile->getTaille(); i++) {
         Carte* carte = pile->getCartes().at(i);
-        j.push_back(carteToJson(carte));
+        
+        // ✅ DEBUG : Vérifier le pointeur et le nom AVANT carteToJson
+        std::cout << "[DEBUG pileToJson] Carte " << i 
+                  << " - Pointeur: " << carte
+                  << " - Nom: " << (carte ? carte->getNom() : "nullptr")
+                  << " - ID: " << (carte ? carte->getId() : -1)
+                  << std::endl;
+        
+        json carteJson = carteToJson(carte);
+        
+        // ✅ DEBUG : Vérifier le JSON créé
+        std::cout << "[DEBUG pileToJson] Carte " << i 
+                  << " - JSON nom: " << carteJson["nom"]
+                  << " - JSON type: " << carteJson["type"]
+                  << std::endl;
+        
+        j.push_back(carteJson);
     }
     
+    std::cout << "[DEBUG pileToJson] Fin sérialisation pile" << std::endl;
     return j;
 }
 
@@ -270,9 +294,13 @@ json joueurToJson(Joueur& joueur) {
     j["prochain_achat_action_dessus_deck"] = joueur.getProchainAchatActionDessusDeck();
     j["prochain_achat_dans_main"] = joueur.getProchainAchatDansMain();
     // Sérialiser les piles
+    std::cout <<"serialisation main "<<joueur.getNom()<< std::endl;
     j["main"] = mainToJson(joueur.getMain());
+    std::cout <<"serialisation deck "<<joueur.getNom()<< std::endl;
     j["deck"] = deckToJson(joueur.getDeck());
+    std::cout <<"serialisation defausse "<<joueur.getNom()<< std::endl;
     j["defausse"] = pileToJson(joueur.getDefausse());
+    std::cout <<"serialisation champions "<<joueur.getNom()<< std::endl;
     
     // Champions en jeu
     json champions = json::array();
@@ -280,7 +308,7 @@ json joueurToJson(Joueur& joueur) {
         champions.push_back(carteToJson(joueur.getChampions()[i]));
     }
     j["champions"] = champions;
-        
+    std::cout <<"===================================="<< std::endl;
     return j;
 }
 
@@ -304,17 +332,14 @@ Joueur* jsonToJoueur(const json& j) {
     if (j.contains("main")) {
         Main* main = jsonToMain(j["main"]);
         joueur->setMain(main);
-        delete main;
     }
     if (j.contains("deck")) {
         Deck* deck = jsonToDeck(j["deck"]);
         joueur->setDeck(deck);
-        delete deck;
     }
     if (j.contains("defausse")) {
         Pile* defausse = jsonToPile(j["defausse"]);
         joueur->setDefausse(defausse);
-        delete defausse;
     }
     
     // Restaurer les champions
