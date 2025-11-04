@@ -30,7 +30,7 @@ std::vector<Carte*> Pile::getCartes(){
     return cartes;
 }
 
-const std::vector<Carte*>& Pile::getCartes() const {
+const std::vector<Carte*> Pile::getCartes() const {
     return cartes;
 }
 

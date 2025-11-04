@@ -110,9 +110,6 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                         }
                     }
                 }
-                for (Joueur* j : partie->getJoueurs()){
-                    std::cout << j->getChampions().size() <<" champions dans effet.cpp pour "<< j->getNom() << std::endl;
-                }
             }
             else{
                 // Invalid target type for this effect

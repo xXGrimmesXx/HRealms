@@ -11,8 +11,6 @@ void Champion::mobiliser(Partie* p,std::vector<ChoixEffet*> target) {
             return;
         }
         for (size_t i = 0; i < effetsActiver.size(); ++i) {
-            std::cout << "Application de l'effet d'activation " << i << std::endl;
-            std::cout << "Type d'effet : " << static_cast<int>(effetsActiver.at(i).getTypeEffet()) << std::endl;
             effetsActiver.at(i).appliquer(this, target.at(i)->getCible(), p, target.at(i)->getChoix());
         }
         mobilise = true;

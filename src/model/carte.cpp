@@ -8,6 +8,12 @@ Carte::Carte( const std::string nom, int cout, Faction f) : nom(nom), cout(cout)
     static int compteurId = 0;
     id = compteurId;
     compteurId++;
+    effetsAllie = std::vector<Effet>();
+    effetsPrimaire = std::vector<Effet>();
+    effetsSacrifice = std::vector<Effet>();
+    effetPrimaireActivé = false;
+    effetAllieActivé = false;
+
 }
 
 // Méthodes

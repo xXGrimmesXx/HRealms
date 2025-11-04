@@ -41,13 +41,13 @@ json carteToJson(const Carte* carte) {
     j["faction"] = static_cast<int>(carte->getFaction());
     j["effetPrimaireActive"] = carte->getEffetPrimaireActive();
     j["effetAllieActive"] = carte->getEffetAllieActive();
-    
     // Sérialiser les effets primaires
     json effetsPrimaires = json::array();
     for (const auto& effet : carte->getEffetsPrimaire()) {
         effetsPrimaires.push_back(effetToJson(effet));
     }
     j["effets_primaires"] = effetsPrimaires;
+
     
     // Sérialiser les effets alliés
     json effetsAllie = json::array();
@@ -56,6 +56,13 @@ json carteToJson(const Carte* carte) {
     }
     j["effets_allie"] = effetsAllie;
     
+    // Effet de sacrifice pour les actions
+    json effetsSacrifice = json::array();
+    for (const auto& effet : carte->getEffetsSacrifice()) {
+        effetsSacrifice.push_back(effetToJson(effet));
+    }
+    j["effets_sacrifice"] = effetsSacrifice;
+
     // Type discrimination pour polymorphisme
     if (const Champion* champ = dynamic_cast<const Champion*>(carte)) {
         j["type"] = "champion";
@@ -70,33 +77,16 @@ json carteToJson(const Carte* carte) {
         }
         j["effets_activer"] = effetsActiver;
         
-        // Effet de sacrifice
-        json effetsSacrifice = json::array();
-        for (const auto& effet : champ->getEffetsSacrifice()) {
-            effetsSacrifice.push_back(effetToJson(effet));
-        }
-        j["effets_sacrifice"] = effetsSacrifice;
     } 
     else if (dynamic_cast<const CarteAction*>(carte)) {
         j["type"] = "action";
         
-        // Effet de sacrifice pour les actions
-        json effetsSacrifice = json::array();
-        for (const auto& effet : carte->getEffetsSacrifice()) {
-            effetsSacrifice.push_back(effetToJson(effet));
-        }
-        j["effets_sacrifice"] = effetsSacrifice;
+        
     } 
     else if (dynamic_cast<const CarteObjet*>(carte)) {
         j["type"] = "objet";
-        
-        // Effet de sacrifice pour les objets
-        json effetsSacrifice = json::array();
-        for (const auto& effet : carte->getEffetsSacrifice()) {
-            effetsSacrifice.push_back(effetToJson(effet));
-        }
-        j["effets_sacrifice"] = effetsSacrifice;
     }
+    
     
     return j;
 }
@@ -198,7 +188,9 @@ Carte* jsonToCarte(const json& j) {
 // ========== PILE ==========
 json pileToJson(const Pile* pile) {
     json j = json::array();
-    
+    if (!pile || pile->estVide()) {
+        return j;
+    }
     for (int i = 0; i < pile->getTaille(); i++) {
         Carte* carte = pile->getCartes().at(i);
         j.push_back(carteToJson(carte));
@@ -277,7 +269,6 @@ json joueurToJson(Joueur& joueur) {
     j["pv"] = joueur.getPv();
     j["prochain_achat_action_dessus_deck"] = joueur.getProchainAchatActionDessusDeck();
     j["prochain_achat_dans_main"] = joueur.getProchainAchatDansMain();
-    
     // Sérialiser les piles
     j["main"] = mainToJson(joueur.getMain());
     j["deck"] = deckToJson(joueur.getDeck());
@@ -289,14 +280,7 @@ json joueurToJson(Joueur& joueur) {
         champions.push_back(carteToJson(joueur.getChampions()[i]));
     }
     j["champions"] = champions;
-    
-    // Gardes
-    json gardes = json::array();
-    for (size_t i = 0; i < joueur.getGardes().size(); i++) {
-        gardes.push_back(carteToJson(joueur.getGardes()[i]));
-    }
-    j["gardes"] = gardes;
-    
+        
     return j;
 }
 
@@ -469,31 +453,27 @@ json partieToJson(Partie* partie) {
     
     j["nb_tour"] = partie->getNbTour();
     j["idx_joueur_actuel"] = partie->getIdxJoueurActuel();
-    
     // Joueurs
     json joueurs = json::array();
     for (const auto& joueur : partie->getJoueurs()) {
         joueurs.push_back(joueurToJson(*joueur));
     }
     j["joueurs"] = joueurs;
+
     
     // Pile de sacrifice
     j["cartes_sacrifie"] = pileToJson(partie->getCartesSacrifie());
     
     // Gemme de feu (complète avec toute la pile)
     j["gemme_de_feu"] = gemmeDeFeuToJson(partie->getGemmeDeFeu());
-
     // GodMode
     j["god_mode_actif"] = partie->getGodMode()->actif;
 
     // Marché (deck et ligne)
     j["marche"] = marcheToJson(partie->getMarche());
-    
     // Tour courant
     j["tour_courant"] = tourToJson(partie->getTourCourant());
-
     j["mode_jeu"] = static_cast<int>(partie->getModeJeu());
-    
     return j;
 }
 

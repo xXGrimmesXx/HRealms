@@ -54,7 +54,7 @@ bool SaveManager::sauvegarderPartie(Partie* partie, const std::string& nomFichie
         
         // Obtenir le chemin complet du fichier
         std::string cheminComplet = obtenirCheminComplet(nomFichier);
-        
+
         // Écrire dans le fichier
         std::ofstream fichier(cheminComplet);
         if (!fichier.is_open()) {
@@ -64,6 +64,7 @@ bool SaveManager::sauvegarderPartie(Partie* partie, const std::string& nomFichie
         
         // Écrire le JSON avec indentation pour la lisibilité
         fichier << j.dump(4);
+        std::cout << "apres ecriture chichier"<<std::endl;
         fichier.close();
         
         return true;
