@@ -1,8 +1,8 @@
 #pragma once
-#include "../model/partie.h"
-#include "../view/gameView.h"
-#include "../model/tour.h"
-#include "../model/choixEffet.h"
+#include "partie.h"
+#include "gameView.h"
+#include "tour.h"
+#include "choixEffet.h"
 #include <memory>
 
 class GameController {

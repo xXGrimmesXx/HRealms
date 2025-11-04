@@ -2,7 +2,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include "jsonSerializer.h"
-#include "../model/partie.h"
+#include "partie.h"
 
 using json = nlohmann::json;
 

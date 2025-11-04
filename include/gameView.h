@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../model/typeEffet.h"
+#include "typeEffet.h"
 
 
 // Forward declarations

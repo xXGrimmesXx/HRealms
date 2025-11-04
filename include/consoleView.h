@@ -1,12 +1,12 @@
 #pragma once
-#include "../gameView.h"
-#include "../../model/faction.h"
-#include "../../model/tour.h"
-#include "../../model/pile.h"
-#include "../../model/typeEffet.h"
-#include "../../model/typeCible.h"
-#include "../../model/deck.h"
-#include "../../model/choixEffet.h"
+#include "gameView.h"
+#include "faction.h"
+#include "tour.h"
+#include "pile.h"
+#include "typeEffet.h"
+#include "typeCible.h"
+#include "deck.h"
+#include "choixEffet.h"
 
 
 #include <iostream>

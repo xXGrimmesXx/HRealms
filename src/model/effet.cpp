@@ -1,5 +1,4 @@
 #include "effet.h"
-
 #include "joueur.h"
 #include "partie.h"
 #include "tour.h"

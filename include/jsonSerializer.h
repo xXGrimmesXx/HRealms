@@ -1,17 +1,17 @@
 #pragma once
 #include <nlohmann/json.hpp>
-#include "../model/carte.h"
-#include "../model/champion.h"
-#include "../model/carteAction.h"
-#include "../model/carteObjet.h"
-#include "../model/joueur.h"
-#include "../model/partie.h"
-#include "../model/effet.h"
-#include "../model/pile.h"
-#include "../model/deck.h"
-#include "../model/marche.h"
-#include "../model/gemmeDeFeu.h"
-#include "../model/tour.h"
+#include "carte.h"
+#include "champion.h"
+#include "carteAction.h"
+#include "carteObjet.h"
+#include "joueur.h"
+#include "partie.h"
+#include "effet.h"
+#include "pile.h"
+#include "deck.h"
+#include "marche.h"
+#include "gemmeDeFeu.h"
+#include "tour.h"
 
 using json = nlohmann::json;
 

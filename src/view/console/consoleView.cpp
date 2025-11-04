@@ -1,9 +1,9 @@
 #include "consoleView.h"
-#include "../../model/partie.h"
-#include "../../model/joueur.h"
-#include "../../model/marche.h"
-#include "../../model/carte.h"
-#include "../../model/champion.h"
+#include "partie.h"
+#include "joueur.h"
+#include "marche.h"
+#include "carte.h"
+#include "champion.h"
 #include "cardRenderer.h"
 
 
@@ -41,11 +41,14 @@ void ConsoleView::afficherPartie(Partie* partie) {
     // Afficher le joueur actuel
     Joueur* joueurActuel = partie->getJoueurActuel();
     std::cout << "🎮 Joueur actuel: " << joueurActuel->getNom() << std::endl;
+
     std::cout << "❤️  Vie: " << joueurActuel->getPv() << " | ";
     std::cout << "💰 Or: " << partie->getTourCourant()->getOr() << " | ";
     std::cout << "⚔️  Combat: " << partie->getTourCourant()->getDegats() << std::endl;
+
     std::cout << "📚 Pioche: " << joueurActuel->getDeck()->getTaille() << " cartes | ";
     std::cout << "🗂️  Défausse: " << joueurActuel->getDefausse()->getTaille() << " cartes" << std::endl;
+
     std::cout << std::endl;
 }
 
@@ -60,7 +63,7 @@ std::string ConsoleView::typeEffetToString (TypeEffet t) {
         case TypeEffet::AJOUT_COMBAT: return "Ajout Combat";
         case TypeEffet::AJOUT_VIE: return "Ajout Vie";
         case TypeEffet::PIOCHER: return "Piocher";
-        case TypeEffet::DEFAUSSER: return "Défausser";
+        case TypeEffet::DEFAUSSER: return "L'adversaire defausse";
         case TypeEffet::SACRIFIER: return "Sacrifier";
         case TypeEffet::ASSOMMER_CHAMPION: return "Assommer Champion";
         case TypeEffet::PREPARE_CHAMPION: return "Préparer Champion";
@@ -71,7 +74,7 @@ std::string ConsoleView::typeEffetToString (TypeEffet t) {
         case TypeEffet::COMBAT_PAR_ALLIE: return "Combat par Allié";
         case TypeEffet::VIE_PAR_CHAMPION: return "Vie par Champion";
         case TypeEffet::OR_OU_VIE_PAR_CHAMPION: return "Or ou Vie par Champion";
-        case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK: return "Défausse au dessus du deck";
+        case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK: return "Defausse au dessus du deck";
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK: return "Champion défausse au dessus deck";
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK: return "Prochain achat action dessus deck";
         case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN: return "Prochain achat dans main";

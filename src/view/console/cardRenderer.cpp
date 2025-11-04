@@ -1,5 +1,5 @@
 #include "cardRenderer.h"
-#include "../../model/effet.h"
+#include "effet.h"
 #include <iomanip>
 #include <algorithm>
 
@@ -72,26 +72,6 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
         }
     }
 
-    // Effets alliés
-    if (!carte->getEffetsAllie().empty()) {
-        if (carte->getEffetAllieActive()) {
-            effects.push_back(std::string("Effets allies (active)"));
-        } else {
-            effects.push_back("Effets allies");
-        }
-        for (const auto& effet : carte->getEffetsAllie()) {
-            effects.push_back("   " + formatEffect(effet));
-        }
-    }
-
-    // Effets sacrifice
-    if (!carte->getEffetsSacrifice().empty()) {
-        effects.push_back("Effets sacrifice");
-        for (const auto& effet : carte->getEffetsSacrifice()) {
-            effects.push_back("   " + formatEffect(effet));
-        }
-    }
-
     // Si champion, effets d'activation
 
     if (const Champion* champion = dynamic_cast<const Champion*>(carte)) {
@@ -116,6 +96,26 @@ std::vector<std::string> CardRenderer::renderCard(const Carte* carte, int index)
     else {
         // Si pas champion, ligne vide avant la bordure inférieure
         lines[ CARD_HEIGHT - 2] = grayOut + "│" + std::string(CARD_WIDTH - 2, ' ') + "│" + RESET;
+    }
+
+    // Effets alliés
+    if (!carte->getEffetsAllie().empty()) {
+        if (carte->getEffetAllieActive()) {
+            effects.push_back(std::string("Effets allies (active)"));
+        } else {
+            effects.push_back("Effets allies");
+        }
+        for (const auto& effet : carte->getEffetsAllie()) {
+            effects.push_back("   " + formatEffect(effet));
+        }
+    }
+
+    // Effets sacrifice
+    if (!carte->getEffetsSacrifice().empty()) {
+        effects.push_back("Effets sacrifice");
+        for (const auto& effet : carte->getEffetsSacrifice()) {
+            effects.push_back("   " + formatEffect(effet));
+        }
     }
     
     // Remplir les lignes d'effets
@@ -277,7 +277,7 @@ std::string CardRenderer::formatEffect(const Effet effet) {
             result = "Piocher " + std::to_string(effet.getMontant1());
             break;
         case TypeEffet::DEFAUSSER:
-            result = "Defausser " + std::to_string(effet.getMontant1());
+            result = "L'adversaire defausse " + std::to_string(effet.getMontant1());
             break;
         case TypeEffet::SACRIFIER:
             result = "Sacrifier";
@@ -310,13 +310,13 @@ std::string CardRenderer::formatEffect(const Effet effet) {
             result = "+" + std::to_string(effet.getMontant1()) + " or ou " + std::to_string(effet.getMontant2()) + " vie par champion";
             break;
         case TypeEffet::DEFAUSSE_AU_DESSUS_DU_DECK:
-            result = "Defausse au dessus du deck";
+            result = "Choisi carte de la defausse et ajoute au dessus du deck";
             break;
         case TypeEffet::CHAMPION_DEFAUSSE_AU_DESSUS_DECK:
-            result = "Champion defausse au dessus du deck";
+            result = "Choisi champion de la defausse et ajoute au dessus du deck";
             break;
         case TypeEffet::PROCHAIN_ACHAT_ACTION_DESSUS_DECK:
-            result = "Prochain achat: action au dessus du deck";
+            result = "Prochain achat action: au dessus du deck";
             break;
         case TypeEffet::PROCHAIN_ACHAT_DANS_MAIN:
             result = "Prochain achat: dans la main";
@@ -325,7 +325,7 @@ std::string CardRenderer::formatEffect(const Effet effet) {
             result = "Sacrifier, si oui -> +" + std::to_string(effet.getMontant1()) + " combat";
             break;
         case TypeEffet::PIOCHE_SIOUI_DEFAUSSE:
-            result = "Piocher, si oui -> defausse " + std::to_string(effet.getMontant1());;
+            result = "Piocher, si oui -> defausse " + std::to_string(effet.getMontant1())+" carte(s) de ta main";
             break;
 
         default:

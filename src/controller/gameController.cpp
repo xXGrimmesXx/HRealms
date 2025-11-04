@@ -1,8 +1,8 @@
 #include "gameController.h"
-#include "../model/joueur.h"
-#include "../model/marche.h"
-#include "../model/carte.h"
-#include "../serialization/saveManager.h"
+#include "joueur.h"
+#include "marche.h"
+#include "carte.h"
+#include "saveManager.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -21,7 +21,7 @@ void GameController::lancerJeu() {
     std::string message = "Bienvenue dans Hero Realms !";
     view->afficherMessage(message);
     
-    int choixChargement = view->demanderChoixInitialisationPartie(); // Réutilisation pour choix menu initial
+    int choixChargement = view->demanderChoixInitialisationPartie();
     while (choixChargement != 1 && choixChargement != 2) {
         std::string msg = "Choix invalide. Veuillez réessayer.";
         view->afficherErreur(msg);
@@ -69,6 +69,7 @@ void GameController::initialiserPartie() {
 
     //demander le mode de jeu
     ModeJeu modeJeu = ModeJeu::CLASSIQUE;
+    //si on est deux joueurs on ne peux joueur que le mode classique
     if (nombreJoueurs > 2) {
         int choixMode = view->demanderChoixModeJeu();
         while (choixMode < 0 || choixMode > 2) {
@@ -109,6 +110,7 @@ void GameController::chargerPartie() {
     else {
         std::string message = "Sauvegardes disponibles:";
         view->afficherMessage(message);
+        //on affiche toutes les sauvegardes disponibles
         for (std::string nom : sauvegardes) {
             view->afficherMessage(nom);
         }
@@ -145,12 +147,11 @@ void GameController::jouerTour() {
         //sauvegarde automatique avant chaque tour
         HRealms::Serialization::SaveManager::sauvegarderPartie(partie.get(), "autosave.json");
 
-        // Commencer le tour
+        // si il n'y à pas de tour en cours, on commence un nouveau tour
         if(partie->getTourCourant()==nullptr){
             partie->commencerTour();
         }
-        
-        
+
         // Afficher l'état du jeu
         afficherEtatJeu();
 
@@ -159,6 +160,7 @@ void GameController::jouerTour() {
         while (!tourTermine && !partie->estTerminee()) {
             gererActionJoueur();
             
+            //si le tour courant est nul c'est que le tour est terminé
             if (partie->getTourCourant()==nullptr) {
                 tourTermine = true;
             }

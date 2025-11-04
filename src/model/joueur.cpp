@@ -1,5 +1,5 @@
 #include "Joueur.h"
-#include "../view/console/cardRenderer.h"
+#include "cardRenderer.h"
 
 
 Joueur::Joueur(std::string nom) {

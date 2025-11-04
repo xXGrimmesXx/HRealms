@@ -2,15 +2,15 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "../../model/carte.h"
-#include "../../model/champion.h"
-#include "../../model/carteObjet.h"
-#include "../../model/carteAction.h"
+#include "carte.h"
+#include "champion.h"
+#include "carteObjet.h"
+#include "carteAction.h"
 
 class CardRenderer {
 public:
     static constexpr int CARD_WIDTH = 32;
-    static constexpr int CARD_HEIGHT = 15;
+    static constexpr int CARD_HEIGHT = 17;
     
     // Codes couleurs
     static constexpr const char* RESET = "\033[0m";
@@ -24,6 +24,7 @@ public:
     static constexpr const char* GRAY = "\033[90m";
     static constexpr const char* ORANGE = "\033[38;5;208m";
     static constexpr const char* BOLD = "\033[1m";
+    static constexpr const char* DIM = "\033[2m";
     static constexpr const char* NORMAL = "\033[22m";
     
     static std::vector<std::string> renderCard(const Carte* carte, int index = -1);

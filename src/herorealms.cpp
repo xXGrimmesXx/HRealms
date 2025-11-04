@@ -1,5 +1,5 @@
-#include "view/console/consoleView.h"
-#include "controller/gameController.h"
+#include "consoleView.h"
+#include "gameController.h"
 #include <memory>
 
 #ifdef _WIN32
