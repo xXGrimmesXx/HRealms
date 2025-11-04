@@ -200,6 +200,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             if (cible== TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
+                    //on compte le nombre de champions total (en jeu + main)
                     int nbChampions = joueurTgt->getChampions().size();
                     int nbChampionsMain = joueurTgt->getChampionsMain().size();
                     partie->getTourCourant()->ajouterDegats(montant1*(nbChampions + nbChampionsMain));
@@ -219,6 +220,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             if (cible== TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
+                    //on compte le nombre de gardes total (en jeu + main)
                     int nbGardes = joueurTgt->getGardes().size();
                     int nbGardesMain = joueurTgt->getGardesMain().size();
                     partie->getTourCourant()->ajouterDegats(montant1*(nbGardes + nbGardesMain));
@@ -240,7 +242,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                 if (joueurTgt != nullptr){
                     Faction allie = source->getFaction();
                     int nbAllie = 0;
-
+                    //on compte le nombre d'alliés de la même faction (champions en jeu + main)
                     for (auto champ : joueurTgt->getChampions()){
                         if (champ->getFaction()==allie){
                             nbAllie++;
@@ -270,6 +272,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr) {
                     if (choix) {
+                        //on compte le nombre de champions total (en jeu + main)
                         int nbChampions = joueurTgt->getChampions().size();
                         int nbChampionsMain = joueurTgt->getChampionsMain().size();
                         joueurTgt->soigner(montant2 * (nbChampions + nbChampionsMain));
@@ -286,6 +289,7 @@ void Effet::appliquer(Carte* source, void* target, Partie* partie, bool choix) c
             if (cible == TypeCible::SOI){
                 Joueur* joueurTgt = static_cast<Joueur*>(target);
                 if (joueurTgt != nullptr){
+                    //on compte le nombre de champions total (en jeu + main)
                     int nbChampions = joueurTgt->getChampions().size();
                     int nbChampionsMain = joueurTgt->getChampionsMain().size();
                     joueurTgt->soigner(montant1 * (nbChampions + nbChampionsMain));

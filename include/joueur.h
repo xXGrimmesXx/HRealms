@@ -42,7 +42,6 @@ public:
     void soigner(int montant);
     void defausser(Carte * c);
     void sacrifier(Carte*c,Partie* p);
-    void assomerChampions();
     void assomerChampion(Champion* c);
     void activerProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=true;}
     void desactiverProchainAchatActionDessusDeck(){prochainAchatActionDessusDeck=false;}

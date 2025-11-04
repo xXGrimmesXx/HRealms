@@ -32,6 +32,7 @@ void Joueur::piocher(int n){
     }
 }
 bool Joueur::jouerCarte(Carte* c,Partie *p,std::vector<ChoixEffet*> target,std::vector<ChoixEffet*> targetAllies){
+    //si la carte est nulle ou déjà jouée, on ne peut pas la jouer
     if (c == nullptr) {
         throw std::invalid_argument("Carte invalide");
         return false;
@@ -39,6 +40,7 @@ bool Joueur::jouerCarte(Carte* c,Partie *p,std::vector<ChoixEffet*> target,std::
     if (c->getEffetPrimaireActive()&& c->getEffetAllieActive()) {
     return false;
     }
+
     if (dynamic_cast<Champion*>(c)) {
         champions.push_back(dynamic_cast<Champion*>(c));
         main.defausser(c); // Retirer de la main sans aller dans la défausse
@@ -145,12 +147,7 @@ void Joueur::sacrifier(Carte* c,Partie* p){
         p->getCartesSacrifie()->ajouter(c);
     }
 }
-void Joueur::assomerChampions(){
-    for(auto c : champions){
-        defausse.ajouter(c);
-    }
-    champions.clear();
-}
+
 void Joueur::assomerChampion(Champion* c){
 
     for (int i=0; i<(int)champions.size();i++){

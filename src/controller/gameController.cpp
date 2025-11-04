@@ -71,6 +71,7 @@ void GameController::initialiserPartie() {
     ModeJeu modeJeu = ModeJeu::CLASSIQUE;
     //si on est deux joueurs on ne peux joueur que le mode classique
     if (nombreJoueurs > 2) {
+        //sinon on demande le mode de jeu
         int choixMode = view->demanderChoixModeJeu();
         while (choixMode < 0 || choixMode > 2) {
             std::string msg = "Choix invalide. Veuillez réessayer.";
@@ -1193,7 +1194,7 @@ void GameController::afficherChampionsDefausseAdversaire() {
     // S'il n'y a qu'un seul adversaire
     else{
         Joueur* j = adversaires.at(0);
-        view->afficherMain(j);
+        view->afficherDefausse(j);
         if (!(j->getChampions().empty())) {
             view->afficherChampions(j->getChampions());
         }

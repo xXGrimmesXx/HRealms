@@ -2,9 +2,6 @@ FAIRE EN SORTE QUE SI ON ENTRE UNE LETTRE LE PROGRAMME PLANTE PAS (faire un cin 
 
 PIOCHE_SIOUI_DEFAUSSE
 --> le rendre possible que sur des cartes non jouées
-QUAND JE JOUE TITHE PRIEST, 
-❌ ERREUR: Échec du jeu de la carte.
-❌ ERREUR: Impossible de jouer cette carte.
 si pas assez dégâts pour tuer champion, affiche pas d'erreur
 si erreur d'index redemander pas faire d'erreur
 duplication or et gemmedefeu
